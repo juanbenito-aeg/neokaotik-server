@@ -9,7 +9,7 @@ async function verifyIdToken(req: any, res: any, next: any) {
     {
       method: "POST",
       body: JSON.stringify({
-        requestUri: `http://10.50.0.50:6001${req.originalUrl}`,
+        requestUri: `http://10.50.0.50:6000${req.originalUrl}`,
         postBody: `id_token=${idToken}&providerId=google.com`,
         returnSecureToken: true,
       }),

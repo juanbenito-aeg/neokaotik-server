@@ -5,6 +5,7 @@ import { FieldsToUseInDisconnection } from "../../interfaces/socket";
 import {
   SocketServerToClientEvents,
   SocketClientToServerEvents,
+  SocketGeneralEvents,
 } from "../../constants";
 import { handleAccessToExitFromLab } from "./angelo-lab";
 
@@ -22,7 +23,7 @@ function handleConnection(socket: Socket) {
     }
   );
 
-  socket.on("disconnect", () => {
+  socket.on(SocketGeneralEvents.DISCONNECT, () => {
     handleDisconnection(socket);
   });
 }

@@ -8,4 +8,19 @@ enum SocketClientToServerEvents {
   ACCESS_TO_EXIT_FROM_LAB = "access to/exit from lab",
 }
 
-export { SocketServerToClientEvents, SocketClientToServerEvents };
+enum SocketGeneralEvents {
+  CONNECTION = "connection",
+  DISCONNECT = "disconnect",
+}
+
+enum Methods {
+  POST = 0,
+  PUT = 1,
+}
+
+export {
+  SocketServerToClientEvents,
+  SocketClientToServerEvents,
+  SocketGeneralEvents,
+  Methods,
+};

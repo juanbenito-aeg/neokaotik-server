@@ -1,5 +1,6 @@
 import User from "../database/userDatabase";
 import USER_ROLES from "../roles/roles";
+import { Methods } from "../constants";
 import EMAIL from "../roles/emails";
 
 const getUser = async (userEmail: string) => {
@@ -73,25 +74,15 @@ const loginUser = async (userEmail: string) => {
     if (!mongoUser) {
       const newUser = {
         active: false,
-        rol: "",
+        rol: assignRoleByEmail(userEmail),
         socketId: "",
         isInside: false,
         ...kaotikaUser,
       };
 
-      if (newUser.email.includes(EMAIL.ACOLYTE)) {
-        newUser.rol = USER_ROLES.ACOLYTE;
-      } else if (newUser.email === EMAIL.ISTVAN) {
-        newUser.rol = USER_ROLES.ISTVAN;
-      } else if (newUser.email === EMAIL.MORTIMER) {
-        newUser.rol = USER_ROLES.MORTIMER;
-      } else if (newUser.email === EMAIL.VILLAIN) {
-        newUser.rol = USER_ROLES.VILLAIN;
-      }
-
       const createdUser = await createUser(newUser);
 
-      putOrPost.push(0);
+      putOrPost.push(Methods.POST);
       putOrPost.push(createdUser);
 
       return putOrPost;
@@ -102,12 +93,24 @@ const loginUser = async (userEmail: string) => {
       ...kaotikaUser,
     });
 
-    putOrPost.push(1);
+    putOrPost.push(Methods.PUT);
     putOrPost.push(updatedUser);
 
     return putOrPost;
   } catch (error) {
     throw error;
+  }
+};
+
+const assignRoleByEmail = (email: string) => {
+  if (email.includes(EMAIL.ACOLYTE)) {
+    return USER_ROLES.ACOLYTE;
+  } else if (email === EMAIL.ISTVAN) {
+    return USER_ROLES.ISTVAN;
+  } else if (email === EMAIL.MORTIMER) {
+    return USER_ROLES.MORTIMER;
+  } else if (email === EMAIL.VILLAIN) {
+    return USER_ROLES.VILLAIN;
   }
 };
 

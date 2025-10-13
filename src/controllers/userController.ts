@@ -1,4 +1,5 @@
 import userService from "../services/userService";
+import { Methods } from "../constants";
 
 //TESTING
 const getMongoUser = async (req: any, res: any) => {
@@ -19,7 +20,7 @@ const getMongoUser = async (req: any, res: any) => {
         data: { error: `Can't find user with the Email: ${userEmail}` },
       });
     }
-    res.send({  user });
+    res.send({ user });
   } catch (error: any) {
     res.status(500).send({
       status: "FAILED",
@@ -45,7 +46,9 @@ const getKaotikaUser = async (req: any, res: any) => {
     if (!user) {
       return res.status(403).send({
         status: "FAILED",
-        data: { error: `Can't find user in Kaotika with the Email: ${userEmail}` },
+        data: {
+          error: `Can't find user in Kaotika with the Email: ${userEmail}`,
+        },
       });
     }
     res.send({ user });
@@ -60,9 +63,9 @@ const getKaotikaUser = async (req: any, res: any) => {
 
 const loginUser = async (req: any, res: any) => {
   const userEmail = res.locals.userEmail;
-  console.log(`Logging in with Email: ${userEmail}.`)
+  console.log(`Logging in with Email: ${userEmail}.`);
   if (!userEmail) {
-    console.log(`Email not available: ${userEmail}.`)
+    console.log(`Email not available: ${userEmail}.`);
     return res.status(400).send({
       status: "FAILED",
       data: { error: "userEmail not available" },
@@ -74,36 +77,35 @@ const loginUser = async (req: any, res: any) => {
 
     const user = putOrPost[1];
 
-    if(putOrPost[0] === 0) {
-      console.log("User created successfully.\n")
+    if (putOrPost[0] === Methods.POST) {
+      console.log("User created successfully.\n");
       return res.status(201).send({
         status: "OK",
         message: "User created successfully",
-        user
+        user,
       });
     } else {
-      console.log("User updated successfully.\n")
+      console.log("User updated successfully.\n");
       return res.status(200).send({
         status: "OK",
         message: "User updated successfully",
-        user
+        user,
       });
     }
-    
   } catch (error) {
-    console.log(`User not found in Kaotika with Email: ${userEmail}`)
+    console.log(`User not found in Kaotika with Email: ${userEmail}`);
     res.status(403).send({
       status: "FAILED",
-      message: "User not found on kaotika"
+      message: "User not found on kaotika",
     });
   }
 };
 
 const loggedUser = async (req: any, res: any) => {
   const userEmail = res.locals.userEmail;
-  console.log(`User with email: ${userEmail} already logged in.`)
+  console.log(`User with email: ${userEmail} already logged in.`);
   if (!userEmail) {
-    console.log(`Email not available: ${userEmail}.`)
+    console.log(`Email not available: ${userEmail}.`);
     return res.status(400).send({
       status: "FAILED",
       data: { error: "userEmail not available" },
@@ -112,13 +114,12 @@ const loggedUser = async (req: any, res: any) => {
 
   try {
     const updatedUser = await userService.logedUser(userEmail);
-    console.log("User updated successfully.\n")
+    console.log("User updated successfully.\n");
     return res.status(200).send({
       status: "OK",
       message: "User updated successfully",
       user: updatedUser,
     });
-
   } catch (error) {
     return res.status(400).send({
       status: "FAILED",
@@ -127,8 +128,10 @@ const loggedUser = async (req: any, res: any) => {
   }
 };
 
-const getUser = async (req: any, res: any ) => {
-  const {params: {userEmail}} = req;
+const getUser = async (req: any, res: any) => {
+  const {
+    params: { userEmail },
+  } = req;
 
   try {
     const user = await userService.getUser(userEmail);
@@ -138,7 +141,7 @@ const getUser = async (req: any, res: any ) => {
         data: { error: `Can't find user with the Email: ${userEmail}` },
       });
     }
-    res.send({  user });
+    res.send({ user });
   } catch (error: any) {
     res.status(500).send({
       status: "FAILED",
@@ -151,54 +154,50 @@ const getUser = async (req: any, res: any ) => {
 const updateUser = async (req: any, res: any) => {
   const {
     body,
-    params: {userEmail},
-  } = req
+    params: { userEmail },
+  } = req;
 
-  if(!userEmail) {
+  if (!userEmail) {
     return res.status(400).send({
       status: "FAILED",
-      data: { error: "Parameter ':userEmail' can not be empty"},
+      data: { error: "Parameter ':userEmail' can not be empty" },
     });
   }
 
   try {
     const updatedUser = await userService.updateUser(userEmail, body);
 
-    if(!updateUser) {
+    if (!updateUser) {
       return res.status(403).send({
         status: "FAILED",
-        data: { error: `Can't find user with the Email: ${userEmail}`}
+        data: { error: `Can't find user with the Email: ${userEmail}` },
       });
     }
-    console.log("User updated successfully.")
-    res.send( updatedUser )
-
-  } catch(error: any) {
+    console.log("User updated successfully.");
+    res.send(updatedUser);
+  } catch (error: any) {
     res.status(500).send({
       status: "FAILED",
       message: "Error updating user",
       data: { error: error?.message || error },
     });
   }
-      
 };
 
 const getAcolytes = async (req: any, res: any) => {
   try {
     const acolytes = await userService.getAcolytes();
     if (acolytes.length === 0) {
-      return res.status(404).send({message: "Acolytes not found"});
+      return res.status(404).send({ message: "Acolytes not found" });
     }
-    res.send( acolytes )
-
-  } catch(error: any) {
-    res.status(500).send({ 
+    res.send(acolytes);
+  } catch (error: any) {
+    res.status(500).send({
       status: "FAILED",
       message: "Error fetching acolytes",
-      data: { error: error?.message || error}
+      data: { error: error?.message || error },
     });
   }
-
 };
 
 const userController = {

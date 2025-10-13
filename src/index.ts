@@ -10,6 +10,7 @@ import type {
   ClientToServerEvents,
   ServerToClientEvents,
 } from "./interfaces/socket";
+import { SocketGeneralEvents } from "./constants";
 import handleConnection from "./socket/handlers/connection";
 
 initializeApp({
@@ -24,7 +25,7 @@ const PORT = +(process.env.PORT || 3000);
 app.use(bodyParser.json());
 app.use("/user", userRouter);
 
-io.on("connection", handleConnection);
+io.on(SocketGeneralEvents.CONNECTION, handleConnection);
 
 async function start() {
   try {

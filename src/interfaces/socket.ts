@@ -8,11 +8,25 @@ interface ServerToClientEvents {
   [SocketServerToClientEvents.ACOLYTE_DISCONNECTED]: (
     acolyteEmail: string
   ) => void;
+  [SocketServerToClientEvents.ACOLYTE_INSIDE_OUTSIDE_LAB]: (
+    updatedAcolyteData: AcolyteDataToBroadcast
+  ) => void;
 }
 
 // Declaration of the events used when receiving events from the client
 interface ClientToServerEvents {
   [SocketClientToServerEvents.CONNECTION_OPEN]: (userEmail: string) => void;
+  [SocketClientToServerEvents.ACCESS_TO_EXIT_FROM_LAB]: (
+    acolyteEmail: string,
+    isInside: boolean
+  ) => void;
+}
+
+interface AcolyteDataToBroadcast {
+  email: string;
+  isInside: boolean;
+  nickname: string;
+  avatar: string;
 }
 
 interface FieldsToUseInDisconnection {
@@ -23,5 +37,6 @@ interface FieldsToUseInDisconnection {
 export type {
   ServerToClientEvents,
   ClientToServerEvents,
+  AcolyteDataToBroadcast,
   FieldsToUseInDisconnection,
 };

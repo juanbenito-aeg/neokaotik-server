@@ -5,7 +5,9 @@ import { FieldsToUseInDisconnection } from "../../interfaces/socket";
 import {
   SocketServerToClientEvents,
   SocketClientToServerEvents,
+  SocketGeneralEvents,
 } from "../../constants";
+import { handleAccessToExitFromLab } from "./angelo-lab";
 
 function handleConnection(socket: Socket) {
   console.log("Client connected to the server socket.");
@@ -14,7 +16,14 @@ function handleConnection(socket: Socket) {
     handleConnectionOpening(socket, userEmail);
   });
 
-  socket.on("disconnect", () => {
+  socket.on(
+    SocketClientToServerEvents.ACCESS_TO_EXIT_FROM_LAB,
+    (acolyteEmail: string, isInside: boolean) => {
+      handleAccessToExitFromLab(socket.id, acolyteEmail, isInside);
+    }
+  );
+
+  socket.on(SocketGeneralEvents.DISCONNECT, () => {
     handleDisconnection(socket);
   });
 }

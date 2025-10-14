@@ -6,5 +6,5 @@ services:
       - "6000:3000"
     restart: unless-stopped
     volumes:
-      - ./firebase-service.json:/app/firebase-service.json
-      - ./.env:/app/.env
+      - ./firebase-service.json:/usr/src/app/firebase-service.json
+      - ./.env:/usr/src/app/.env

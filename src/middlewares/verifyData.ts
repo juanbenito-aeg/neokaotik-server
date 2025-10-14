@@ -26,13 +26,11 @@ async function verifyIdToken(req: any, res: any, next: any) {
       console.log(`Valid ID token.`);
       next();
     })
-    .catch(() => {
-      console.log(
-        "Failed validating the ID token: it is not valid or has expired."
-      );
+    .catch((error) => {
+      console.log(`Failed validating the ID token: ${error.message}`);
       return res.status(500).send({
         status: "FAILED",
-        data: { error: "The ID token is not valid or has expired." },
+        data: { error: error.message },
       });
     });
 }

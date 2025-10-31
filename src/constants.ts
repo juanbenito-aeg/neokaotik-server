@@ -18,9 +18,14 @@ enum Methods {
   PUT = 1,
 }
 
+enum MqttEvents {
+  CONNECT = "connect",
+}
+
 export {
   SocketServerToClientEvents,
   SocketClientToServerEvents,
   SocketGeneralEvents,
+  MqttEvents,
   Methods,
 };

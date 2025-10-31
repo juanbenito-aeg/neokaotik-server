@@ -77,6 +77,10 @@ const loginUser = async (userEmail: string) => {
         rol: assignRoleByEmail(userEmail),
         socketId: "",
         isInside: false,
+        card_id: "",
+        pushToken: "",
+        is_in_tower_entrance: false,
+        is_inside_tower: false,
         ...kaotikaUser,
       };
 

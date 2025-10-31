@@ -12,6 +12,7 @@ import type {
 } from "./interfaces/socket";
 import { SocketGeneralEvents } from "./constants";
 import handleConnection from "./socket/handlers/connection";
+import mqtt from "mqtt";
 
 initializeApp({
   credential: applicationDefault(),
@@ -21,6 +22,7 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer);
 const PORT = +(process.env.PORT || 3000);
+const client = mqtt.connect("mqtt://broker.hivemq.com");
 
 app.use(bodyParser.json());
 app.use("/user", userRouter);

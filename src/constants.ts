@@ -22,10 +22,15 @@ enum MqttEvents {
   CONNECT = "connect",
 }
 
+enum MqttTopics {
+  TOWER_CARDID = "tower/cardid",
+}
+
 export {
   SocketServerToClientEvents,
   SocketClientToServerEvents,
   SocketGeneralEvents,
-  MqttEvents,
   Methods,
+  MqttEvents,
+  MqttTopics,
 };

@@ -20,6 +20,7 @@ enum Methods {
 
 enum MqttEvents {
   CONNECT = "connect",
+  MESSAGE = "message",
 }
 
 enum MqttTopics {

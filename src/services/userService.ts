@@ -60,7 +60,7 @@ const updateUser = async (userEmail: string, changes: any) => {
   }
 };
 
-const loginUser = async (userEmail: string) => {
+const loginUser = async (userEmail: string, fcmToken: string) => {
   try {
     const kaotikaUser = await getKaotikaUser(userEmail);
     if (!kaotikaUser) {
@@ -78,7 +78,7 @@ const loginUser = async (userEmail: string) => {
         socketId: "",
         isInside: false,
         card_id: "",
-        pushToken: "",
+        pushToken: fcmToken,
         is_in_tower_entrance: false,
         is_inside_tower: false,
         ...kaotikaUser,
@@ -94,6 +94,7 @@ const loginUser = async (userEmail: string) => {
 
     const updatedUser = await updateUser(userEmail, {
       active: true,
+      pushToken: fcmToken,
       ...kaotikaUser,
     });
 
@@ -118,7 +119,7 @@ const assignRoleByEmail = (email: string) => {
   }
 };
 
-const logedUser = async (userEmail: string) => {
+const logedUser = async (userEmail: string, fcmToken: string) => {
   try {
     const kaotikaUser = await getKaotikaUser(userEmail);
     if (!kaotikaUser) {
@@ -127,6 +128,7 @@ const logedUser = async (userEmail: string) => {
 
     const updatedUser = await updateUser(userEmail, {
       active: true,
+      pushToken: fcmToken,
       ...kaotikaUser,
     });
 

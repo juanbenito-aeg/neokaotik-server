@@ -25,6 +25,7 @@ enum MqttEvents {
 
 enum MqttTopics {
   TOWER_CARDID = "tower/cardid",
+  TOWER_ACCESS = "tower/access",
 }
 
 export {

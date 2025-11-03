@@ -1,8 +1,14 @@
 import userModel from "../models/userModel";
 
-const getUserByField = async (fieldToFilterBy: any) => {
+const getUserByField = async (
+  fieldToFilterBy: any,
+  fieldsToIncludeOrExclude = ""
+) => {
   try {
-    const user = await userModel.findOne(fieldToFilterBy);
+    const user = await userModel.findOne(
+      fieldToFilterBy,
+      fieldsToIncludeOrExclude
+    );
     return user;
   } catch (error) {
     throw error;

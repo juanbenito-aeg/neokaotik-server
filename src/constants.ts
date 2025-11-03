@@ -20,12 +20,19 @@ enum Methods {
 
 enum MqttEvents {
   CONNECT = "connect",
+  MESSAGE = "message",
+}
+
+enum MqttTopics {
+  TOWER_CARDID = "tower/cardid",
+  TOWER_ACCESS = "tower/access",
 }
 
 export {
   SocketServerToClientEvents,
   SocketClientToServerEvents,
   SocketGeneralEvents,
-  MqttEvents,
   Methods,
+  MqttEvents,
+  MqttTopics,
 };

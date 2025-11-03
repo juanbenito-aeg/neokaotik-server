@@ -1,6 +1,7 @@
 enum SocketServerToClientEvents {
   ACOLYTE_INSIDE_OUTSIDE_LAB = "acolyte inside/outside lab",
   ACOLYTE_DISCONNECTED = "acolyte disconnected",
+  ACOLYTE_TOWER_ACCESS = "acolyte tower access",
 }
 
 enum SocketClientToServerEvents {
@@ -26,6 +27,7 @@ enum MqttEvents {
 enum MqttTopics {
   TOWER_CARDID = "tower/cardid",
   TOWER_ACCESS = "tower/access",
+  TOWER_DOOR = "tower/door",
 }
 
 enum NotificationTypes {

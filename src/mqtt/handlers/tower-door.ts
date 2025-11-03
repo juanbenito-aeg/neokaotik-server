@@ -15,8 +15,8 @@ async function handlerTowerDoor(cardId: string, openDoor: string) {
 
   if (updatedAcolyte?.socketId) {
     const acolyteData = {
-      is_in_tower_entrance: updatedAcolyte.is_in_tower_entrance,
-      is_inside_tower: updatedAcolyte.is_inside_tower,
+      is_in_tower_entrance: updatedAcolyte.is_in_tower_entrance ?? false,
+      is_inside_tower: updatedAcolyte.is_inside_tower ?? false,
     };
 
     io.to(updatedAcolyte.socketId).emit(

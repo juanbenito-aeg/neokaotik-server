@@ -63,8 +63,14 @@ async function sendUnauthorizedAccessMessageToMortimer() {
 
     const notificationBody =
       "An unauthorized bastard tried to enter the Swamp Tower!";
+    const notificationTitle = "Swamp Tower";
 
-    await sendMessage(mortimer.pushToken, data, notificationBody);
+    await sendMessage(
+      mortimer.pushToken,
+      data,
+      notificationBody,
+      notificationTitle
+    );
   }
 }
 

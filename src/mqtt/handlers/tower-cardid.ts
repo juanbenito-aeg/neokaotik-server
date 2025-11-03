@@ -1,5 +1,9 @@
 import { client } from "../..";
-import { MqttTopics } from "../../constants";
+import {
+  MqttTopics,
+  NotificationTypes,
+  ScreenChangingNotificationDestinations,
+} from "../../constants";
 import User from "../../database/userDatabase";
 import USER_ROLES from "../../roles/roles";
 import { sendMessage } from "../../utils";
@@ -59,7 +63,10 @@ async function sendUnauthorizedAccessMessageToMortimer() {
   ))!;
 
   if (mortimer.pushToken) {
-    const data = { destination: "Swamp Tower" };
+    const data = {
+      type: NotificationTypes.ERROR,
+      destination: ScreenChangingNotificationDestinations.SWAMP_TOWER,
+    };
 
     const notificationBody =
       "An unauthorized bastard tried to enter the Swamp Tower!";

@@ -28,6 +28,16 @@ enum MqttTopics {
   TOWER_ACCESS = "tower/access",
 }
 
+enum NotificationTypes {
+  SUCCESS = "success",
+  ERROR = "error",
+  INFO = "info",
+}
+
+enum ScreenChangingNotificationDestinations {
+  SWAMP_TOWER = "Swamp Tower",
+}
+
 export {
   SocketServerToClientEvents,
   SocketClientToServerEvents,
@@ -35,4 +45,6 @@ export {
   Methods,
   MqttEvents,
   MqttTopics,
+  NotificationTypes,
+  ScreenChangingNotificationDestinations,
 };

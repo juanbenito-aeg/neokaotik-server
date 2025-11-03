@@ -63,6 +63,7 @@ const getKaotikaUser = async (req: any, res: any) => {
 
 const loginUser = async (req: any, res: any) => {
   const userEmail = res.locals.userEmail;
+  const fcmToken = res.locals.fcmToken;
   console.log(`Logging in with Email: ${userEmail}.`);
   if (!userEmail) {
     console.log(`Email not available: ${userEmail}.`);
@@ -73,7 +74,7 @@ const loginUser = async (req: any, res: any) => {
   }
 
   try {
-    const putOrPost = await userService.loginUser(userEmail);
+    const putOrPost = await userService.loginUser(userEmail, fcmToken);
 
     const user = putOrPost[1];
 
@@ -103,6 +104,7 @@ const loginUser = async (req: any, res: any) => {
 
 const loggedUser = async (req: any, res: any) => {
   const userEmail = res.locals.userEmail;
+  const fcmToken = res.locals.fcmToken;
   console.log(`User with email: ${userEmail} already logged in.`);
   if (!userEmail) {
     console.log(`Email not available: ${userEmail}.`);
@@ -113,7 +115,7 @@ const loggedUser = async (req: any, res: any) => {
   }
 
   try {
-    const updatedUser = await userService.logedUser(userEmail);
+    const updatedUser = await userService.logedUser(userEmail, fcmToken);
     console.log("User updated successfully.\n");
     return res.status(200).send({
       status: "OK",

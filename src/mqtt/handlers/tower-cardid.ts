@@ -58,12 +58,14 @@ async function sendUnauthorizedAccessMessageToMortimer() {
     fieldsToIncludeOrExclude
   ))!;
 
-  const data = { destination: "Swamp Tower" };
+  if (mortimer.pushToken) {
+    const data = { destination: "Swamp Tower" };
 
-  const notificationBody =
-    "An unauthorized bastard tried to enter the Swamp Tower!";
+    const notificationBody =
+      "An unauthorized bastard tried to enter the Swamp Tower!";
 
-  await sendMessage(mortimer.pushToken!, data, notificationBody);
+    await sendMessage(mortimer.pushToken, data, notificationBody);
+  }
 }
 
 export default handleTowerCardid;

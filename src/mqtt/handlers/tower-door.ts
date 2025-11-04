@@ -32,7 +32,7 @@ async function handlerTowerDoor(cardId: string) {
       acolyteData
     );
 
-    if (!acolyte!.is_inside_tower && updatedAcolyte.is_inside_tower) {
+    if (!wasInsideTower && updatedAcolyte.is_inside_tower) {
       await sendAcolyteEnteredNotification(updatedAcolyte);
     }
     client.publish(

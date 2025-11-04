@@ -23,6 +23,9 @@ interface ClientToServerEvents {
     acolyteEmail: string,
     isInside: boolean
   ) => void;
+  [SocketClientToServerEvents.INSIDE_OUTSIDE_TOWER_ENTRANCE]: (
+    acolyteIsInEntranceTower: boolean
+  ) => void;
 }
 
 interface AcolyteDataToBroadcast {

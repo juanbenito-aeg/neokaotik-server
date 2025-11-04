@@ -7,6 +7,7 @@ enum SocketServerToClientEvents {
 enum SocketClientToServerEvents {
   CONNECTION_OPEN = "connection open",
   ACCESS_TO_EXIT_FROM_LAB = "access to/exit from lab",
+  INSIDE_OUTSIDE_TOWER_ENTRANCE = "acolyte inside/outside tower",
 }
 
 enum SocketGeneralEvents {

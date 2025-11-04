@@ -2,7 +2,7 @@ import { client, io } from "../..";
 import { MqttTopics, SocketServerToClientEvents } from "../../constants";
 import User from "../../database/userDatabase";
 
-async function handlerTowerDoor(cardId: string, openDoor: string) {
+async function handlerTowerDoor(cardId: string) {
   const acolyte = await User.getUserByField({ card_id: cardId });
   const newStatus = {
     is_in_tower_entrance: !acolyte!.is_in_tower_entrance,
@@ -24,7 +24,10 @@ async function handlerTowerDoor(cardId: string, openDoor: string) {
       acolyteData
     );
 
-    client.publish(MqttTopics.TOWER_DOOR, "closed");
+    client.publish(
+      MqttTopics.TOWER_DOOR,
+      JSON.stringify({ isDoorOpen: false })
+    );
   } else {
     console.log("The acolyte's socketId was not found");
   }

@@ -11,6 +11,9 @@ interface ServerToClientEvents {
   [SocketServerToClientEvents.ACOLYTE_INSIDE_OUTSIDE_LAB]: (
     updatedAcolyteData: AcolyteDataToBroadcast
   ) => void;
+  [SocketServerToClientEvents.ACOLYTE_TOWER_ACCESS]: (
+    acolyteData: AcolyteDataToAccessOrExitTower
+  ) => void;
 }
 
 // Declaration of the events used when receiving events from the client
@@ -20,6 +23,9 @@ interface ClientToServerEvents {
     acolyteEmail: string,
     isInside: boolean
   ) => void;
+  [SocketClientToServerEvents.INSIDE_OUTSIDE_TOWER_ENTRANCE]: (
+    acolyteIsInEntranceTower: boolean
+  ) => void;
 }
 
 interface AcolyteDataToBroadcast {
@@ -27,6 +33,11 @@ interface AcolyteDataToBroadcast {
   isInside: boolean;
   nickname: string;
   avatar: string;
+}
+
+interface AcolyteDataToAccessOrExitTower {
+  is_in_tower_entrance: boolean;
+  is_inside_tower: boolean;
 }
 
 interface FieldsToUseInDisconnection {

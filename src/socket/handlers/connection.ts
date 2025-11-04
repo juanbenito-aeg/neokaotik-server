@@ -8,6 +8,7 @@ import {
   SocketGeneralEvents,
 } from "../../constants";
 import { handleAccessToExitFromLab } from "./angelo-lab";
+import { handleAcolyteTowerEntranceStatus } from "./acolyte-tower";
 
 function handleConnection(socket: Socket) {
   console.log("Client connected to the server socket.");
@@ -15,6 +16,13 @@ function handleConnection(socket: Socket) {
   socket.on(SocketClientToServerEvents.CONNECTION_OPEN, (userEmail: string) => {
     handleConnectionOpening(socket, userEmail);
   });
+
+  socket.on(
+    SocketClientToServerEvents.INSIDE_OUTSIDE_TOWER_ENTRANCE,
+    async (isInTowerEntrance: boolean) => {
+      await handleAcolyteTowerEntranceStatus(socket.id, isInTowerEntrance);
+    }
+  );
 
   socket.on(
     SocketClientToServerEvents.ACCESS_TO_EXIT_FROM_LAB,

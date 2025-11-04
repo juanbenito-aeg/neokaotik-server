@@ -20,7 +20,7 @@ function handleConnection(socket: Socket) {
   socket.on(
     SocketClientToServerEvents.INSIDE_OUTSIDE_TOWER_ENTRANCE,
     async (isInTowerEntrance: boolean) => {
-      await handleAcolyteTowerEntranceStatus(socket.id, isInTowerEntrance);
+      handleAcolyteTowerEntranceStatus(socket.id, isInTowerEntrance);
     }
   );
 
@@ -45,8 +45,16 @@ async function handleConnectionOpening(socket: Socket, userEmail: string) {
 async function handleDisconnection(socket: Socket) {
   console.log("Client disconnected from the server socket.");
 
-  const fieldToFilterBy: FieldsToUseInDisconnection = { socketId: socket.id };
-  const changesToApply: FieldsToUseInDisconnection = { socketId: "" };
+  const fieldToFilterBy: FieldsToUseInDisconnection = {
+    socketId: socket.id,
+    is_inside_tower: false,
+    is_in_tower_entrance: false,
+  };
+  const changesToApply: FieldsToUseInDisconnection = {
+    socketId: "",
+    is_inside_tower: false,
+    is_in_tower_entrance: false,
+  };
 
   const socketUser = await User.getUserByField(fieldToFilterBy);
   const isSocketUserAcolyte = socketUser?.rol === USER_ROLES.ACOLYTE;
@@ -67,6 +75,11 @@ async function handleDisconnection(socket: Socket) {
           socketUser.email
         );
     }
+  }
+
+  if (isSocketUserAcolyte) {
+    changesToApply.is_in_tower_entrance = false;
+    changesToApply.is_inside_tower = false;
   }
 
   await User.updateUserByField(fieldToFilterBy, changesToApply);

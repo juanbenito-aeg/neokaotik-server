@@ -47,9 +47,8 @@ async function handleDisconnection(socket: Socket) {
 
   const fieldToFilterBy: FieldsToUseInDisconnection = {
     socketId: socket.id,
-    is_inside_tower: false,
-    is_in_tower_entrance: false,
   };
+
   const changesToApply: FieldsToUseInDisconnection = {
     socketId: "",
     is_inside_tower: false,
@@ -57,9 +56,8 @@ async function handleDisconnection(socket: Socket) {
   };
 
   const socketUser = await User.getUserByField(fieldToFilterBy);
-  const isSocketUserAcolyte = socketUser?.rol === USER_ROLES.ACOLYTE;
 
-  if (isSocketUserAcolyte && socketUser.isInside) {
+  if (socketUser?.isInside) {
     changesToApply.isInside = false;
 
     const mortimer = await User.getUserByField({
@@ -75,10 +73,9 @@ async function handleDisconnection(socket: Socket) {
           socketUser.email
         );
     }
-  }
-
-  if (isSocketUserAcolyte) {
+  } else if (socketUser?.is_in_tower_entrance) {
     changesToApply.is_in_tower_entrance = false;
+  } else if (socketUser?.is_inside_tower) {
     changesToApply.is_inside_tower = false;
   }
 

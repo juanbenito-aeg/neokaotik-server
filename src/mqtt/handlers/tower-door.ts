@@ -11,7 +11,6 @@ import { sendMessage } from "../../utils";
 
 async function handlerTowerDoor(cardId: string) {
   const acolyte = await User.getUserByField({ card_id: cardId });
-  const wasInsideTower = acolyte!.is_inside_tower;
   const newStatus = {
     is_in_tower_entrance: !acolyte!.is_in_tower_entrance,
     is_inside_tower: !acolyte!.is_inside_tower,
@@ -32,17 +31,7 @@ async function handlerTowerDoor(cardId: string) {
       acolyteData
     );
 
-    if (!wasInsideTower && updatedAcolyte.is_inside_tower) {
-      await sendAcolyteEnteredNotification(updatedAcolyte);
-    } else {
-      const mortimer = await User.getUserByField({ rol: USER_ROLES.MORTIMER });
-      if (mortimer?.socketId) {
-        io.to(mortimer.socketId).emit(
-          SocketServerToClientEvents.ACOLYTE_TOWER_ACCESS,
-          acolyteData
-        );
-      }
-    }
+    await sendAcolyteEnteredNotification(updatedAcolyte);
 
     client.publish(
       MqttTopics.TOWER_DOOR,
@@ -63,7 +52,9 @@ async function sendAcolyteEnteredNotification(acolyte: any) {
   ))!;
 
   if (mortimer.pushToken) {
-    const notificationBody = `¡${acolyte.nickname} entered the Swamp Tower!`;
+    const notificationBody = acolyte.is_inside_tower
+      ? `${acolyte.nickname} entered the Swamp Tower!`
+      : `${acolyte.nickname} exited the Swamp Tower!`;
     const notificationTitle = "Swamp Tower";
     const data = {
       type: NotificationTypes.SUCCESS,

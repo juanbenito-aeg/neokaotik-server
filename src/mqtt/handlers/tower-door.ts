@@ -63,7 +63,7 @@ async function sendAcolyteEnteredNotification(acolyte: any) {
   ))!;
 
   if (mortimer.pushToken) {
-    const notificationBody = `¡${acolyte.nickname} enter the Swamp Tower!`;
+    const notificationBody = `¡${acolyte.nickname} entered the Swamp Tower!`;
     const notificationTitle = "Swamp Tower";
     const data = {
       type: NotificationTypes.SUCCESS,

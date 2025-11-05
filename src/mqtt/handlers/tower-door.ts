@@ -34,7 +34,16 @@ async function handlerTowerDoor(cardId: string) {
 
     if (!wasInsideTower && updatedAcolyte.is_inside_tower) {
       await sendAcolyteEnteredNotification(updatedAcolyte);
+    } else {
+      const mortimer = await User.getUserByField({ rol: USER_ROLES.MORTIMER });
+      if (mortimer?.socketId) {
+        io.to(mortimer.socketId).emit(
+          SocketServerToClientEvents.ACOLYTE_TOWER_ACCESS,
+          acolyteData
+        );
+      }
     }
+
     client.publish(
       MqttTopics.TOWER_DOOR,
       JSON.stringify({ isDoorOpen: false })

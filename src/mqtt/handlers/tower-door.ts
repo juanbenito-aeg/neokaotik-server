@@ -31,7 +31,7 @@ async function handlerTowerDoor(cardId: string) {
       acolyteData
     );
 
-    await sendAcolyteEnteredNotification(updatedAcolyte);
+    await sendAcolyteEnteredExitedNotification(updatedAcolyte);
 
     client.publish(
       MqttTopics.TOWER_DOOR,
@@ -42,7 +42,7 @@ async function handlerTowerDoor(cardId: string) {
   }
 }
 
-async function sendAcolyteEnteredNotification(acolyte: any) {
+async function sendAcolyteEnteredExitedNotification(acolyte: any) {
   const fieldToFilterBy = { rol: USER_ROLES.MORTIMER };
   const fieldsToIncludeOrExclude = "-_id pushToken";
 
@@ -72,4 +72,4 @@ async function sendAcolyteEnteredNotification(acolyte: any) {
   }
 }
 
-export { handlerTowerDoor };
+export { handlerTowerDoor, sendAcolyteEnteredExitedNotification };

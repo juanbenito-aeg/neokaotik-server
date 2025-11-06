@@ -13,6 +13,7 @@ import type {
 import { SocketGeneralEvents, MqttEvents } from "./constants";
 import handleConnection from "./socket/handlers/connection";
 import mqtt from "mqtt";
+import fs from "node:fs";
 import { handleConnect, handleMessage } from "./mqtt/handlers/generics";
 
 initializeApp({
@@ -29,7 +30,16 @@ app.use("/user", userRouter);
 
 io.on(SocketGeneralEvents.CONNECTION, handleConnection);
 
-const client = mqtt.connect("mqtt://broker.hivemq.com");
+// Securely connect to the broker
+const options = {
+  key: fs.readFileSync("confidential-data/node.key"),
+  cert: fs.readFileSync("confidential-data/node.crt"),
+  ca: fs.readFileSync("confidential-data/ca.crt"),
+  rejectUnauthorized: true,
+};
+const client = mqtt.connect("mqtts://10.50.0.50:8883", options);
+
+// Listen for the successful connection to the broker & incoming messages
 client.on(MqttEvents.CONNECT, handleConnect);
 client.on(MqttEvents.MESSAGE, handleMessage);
 

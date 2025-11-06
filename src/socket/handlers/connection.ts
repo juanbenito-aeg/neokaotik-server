@@ -8,6 +8,8 @@ import {
   SocketGeneralEvents,
 } from "../../constants";
 import { handleAccessToExitFromLab } from "./angelo-lab";
+import { handleAcolyteTowerEntranceStatus } from "./acolyte-tower";
+import { sendAcolyteEnteredExitedNotification } from "../../mqtt/handlers/tower-door";
 
 function handleConnection(socket: Socket) {
   console.log("Client connected to the server socket.");
@@ -15,6 +17,13 @@ function handleConnection(socket: Socket) {
   socket.on(SocketClientToServerEvents.CONNECTION_OPEN, (userEmail: string) => {
     handleConnectionOpening(socket, userEmail);
   });
+
+  socket.on(
+    SocketClientToServerEvents.INSIDE_OUTSIDE_TOWER_ENTRANCE,
+    async (isInTowerEntrance: boolean) => {
+      handleAcolyteTowerEntranceStatus(socket.id, isInTowerEntrance);
+    }
+  );
 
   socket.on(
     SocketClientToServerEvents.ACCESS_TO_EXIT_FROM_LAB,
@@ -37,31 +46,50 @@ async function handleConnectionOpening(socket: Socket, userEmail: string) {
 async function handleDisconnection(socket: Socket) {
   console.log("Client disconnected from the server socket.");
 
-  const fieldToFilterBy: FieldsToUseInDisconnection = { socketId: socket.id };
-  const changesToApply: FieldsToUseInDisconnection = { socketId: "" };
+  const fieldToFilterBy: FieldsToUseInDisconnection = {
+    socketId: socket.id,
+  };
+
+  const changesToApply: FieldsToUseInDisconnection = {
+    socketId: "",
+  };
 
   const socketUser = await User.getUserByField(fieldToFilterBy);
-  const isSocketUserAcolyte = socketUser?.rol === USER_ROLES.ACOLYTE;
 
-  if (isSocketUserAcolyte && socketUser.isInside) {
+  if (socketUser?.isInside) {
     changesToApply.isInside = false;
 
-    const mortimer = await User.getUserByField({
-      rol: USER_ROLES.MORTIMER,
-    });
-    const mortimerSocketId = mortimer?.socketId;
-
-    if (mortimerSocketId) {
-      socket
-        .to(mortimerSocketId)
-        .emit(
-          SocketServerToClientEvents.ACOLYTE_DISCONNECTED,
-          socketUser.email
-        );
-    }
+    await notifyMortimerAboutAcolyteDisconnection(socket, socketUser);
+  } else if (socketUser?.is_in_tower_entrance) {
+    changesToApply.is_in_tower_entrance = false;
+  } else if (socketUser?.is_inside_tower) {
+    changesToApply.is_inside_tower = false;
   }
 
-  await User.updateUserByField(fieldToFilterBy, changesToApply);
+  const updatedUser = await User.updateUserByField(
+    fieldToFilterBy,
+    changesToApply
+  );
+
+  if ("is_inside_tower" in changesToApply) {
+    sendAcolyteEnteredExitedNotification(updatedUser);
+  }
+}
+
+async function notifyMortimerAboutAcolyteDisconnection(
+  socket: Socket,
+  acolyte: any
+) {
+  const mortimer = await User.getUserByField({
+    rol: USER_ROLES.MORTIMER,
+  });
+  const mortimerSocketId = mortimer?.socketId;
+
+  if (mortimerSocketId) {
+    socket
+      .to(mortimerSocketId)
+      .emit(SocketServerToClientEvents.ACOLYTE_DISCONNECTED, acolyte.email);
+  }
 }
 
 export default handleConnection;

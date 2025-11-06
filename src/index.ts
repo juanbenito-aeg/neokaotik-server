@@ -10,27 +10,34 @@ import type {
   ClientToServerEvents,
   ServerToClientEvents,
 } from "./interfaces/socket";
-import { SocketGeneralEvents } from "./constants";
+import { SocketGeneralEvents, MqttEvents } from "./constants";
 import handleConnection from "./socket/handlers/connection";
+import mqtt from "mqtt";
+import { handleConnect, handleMessage } from "./mqtt/handlers/generics";
 
 initializeApp({
   credential: applicationDefault(),
 });
 
 const app = express();
+
 const httpServer = createServer(app);
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer);
-const PORT = +(process.env.PORT || 3000);
 
 app.use(bodyParser.json());
 app.use("/user", userRouter);
 
 io.on(SocketGeneralEvents.CONNECTION, handleConnection);
 
+const client = mqtt.connect("mqtt://broker.hivemq.com");
+client.on(MqttEvents.CONNECT, handleConnect);
+client.on(MqttEvents.MESSAGE, handleMessage);
+
 async function start() {
   try {
     await mongoose.connect(process.env.MONGODB_ROUTE!);
 
+    const PORT = +(process.env.PORT || 3000);
     httpServer.listen(PORT, () => {
       console.log(`API is listening on port ${PORT}.`);
     });
@@ -43,4 +50,4 @@ async function start() {
 
 start();
 
-export { io };
+export { io, client };

@@ -200,6 +200,10 @@ const inventorySchema = new Schema(
 );
 
 const playerSchema = new Schema({
+  card_id: String,
+  pushToken: String,
+  is_in_tower_entrance: Boolean,
+  is_inside_tower: Boolean,
   active: Boolean,
   rol: String,
   socketId: String,

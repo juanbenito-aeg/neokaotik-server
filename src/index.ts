@@ -12,8 +12,6 @@ import type {
 } from "./interfaces/socket";
 import { SocketGeneralEvents, MqttEvents } from "./constants";
 import handleConnection from "./socket/handlers/connection";
-import mqtt from "mqtt";
-import { handleConnect, handleMessage } from "./mqtt/handlers/generics";
 
 initializeApp({
   credential: applicationDefault(),
@@ -28,10 +26,6 @@ app.use(bodyParser.json());
 app.use("/user", userRouter);
 
 io.on(SocketGeneralEvents.CONNECTION, handleConnection);
-
-const client = mqtt.connect("mqtt://broker.hivemq.com");
-client.on(MqttEvents.CONNECT, handleConnect);
-client.on(MqttEvents.MESSAGE, handleMessage);
 
 async function start() {
   try {
@@ -50,4 +44,4 @@ async function start() {
 
 start();
 
-export { io, client };
+export { io };

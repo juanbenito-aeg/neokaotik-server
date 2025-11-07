@@ -22,9 +22,9 @@ jobs:
 
       - name: Decode certs
         run: |
-          echo "${{ secrets.NODE_PRIVATE_KEY_B64 }}" | base64 --decode > ./confidential-data/node.key
-          echo "${{ secrets.NODE_CRT_B64 }}" | base64 --decode > ./confidential-data/node.crt
-          echo "${{ secrets.CA_CRT_B64 }}" | base64 --decode > ./confidential-data/ca.crt
+          echo "${{ secrets.NODE_PRIVATE_KEY_B64 }}" | base64 --decode > confidential-data/node.key
+          echo "${{ secrets.NODE_CRT_B64 }}" | base64 --decode > confidential-data/node.crt
+          echo "${{ secrets.CA_CRT_B64 }}" | base64 --decode > confidential-data/ca.crt
 
       - name: Pull latest changes
         run: git pull origin main

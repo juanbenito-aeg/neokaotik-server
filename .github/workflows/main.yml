@@ -22,6 +22,7 @@ jobs:
 
       - name: Decode certs
         run: |
+          mkdir confidential-data
           echo "${{ secrets.NODE_PRIVATE_KEY_B64 }}" | base64 --decode > confidential-data/node.key
           echo "${{ secrets.NODE_CRT_B64 }}" | base64 --decode > confidential-data/node.crt
           echo "${{ secrets.CA_CRT_B64 }}" | base64 --decode > confidential-data/ca.crt

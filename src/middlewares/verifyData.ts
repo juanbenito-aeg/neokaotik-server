@@ -1,6 +1,7 @@
+import { Request, Response, NextFunction } from "express";
 import { getAuth } from "firebase-admin/auth";
 
-async function verifyIdToken(req: any, res: any, next: any) {
+async function verifyIdToken(req: Request, res: Response, next: NextFunction) {
   const { idToken, fcmToken } = req.body;
 
   const response = await fetch(

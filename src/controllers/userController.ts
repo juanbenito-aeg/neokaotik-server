@@ -1,8 +1,9 @@
 import userService from "../services/userService";
 import { Methods } from "../constants";
+import { Request, Response } from "express";
 
-//TESTING
-const getMongoUser = async (req: any, res: any) => {
+// TESTING
+const getMongoUser = async (req: Request, res: Response) => {
   const userEmail = res.locals.userEmail;
 
   if (!userEmail) {
@@ -30,8 +31,8 @@ const getMongoUser = async (req: any, res: any) => {
   }
 };
 
-//TESTING
-const getKaotikaUser = async (req: any, res: any) => {
+// TESTING
+const getKaotikaUser = async (req: Request, res: Response) => {
   const userEmail = res.locals.userEmail;
 
   if (!userEmail) {
@@ -61,7 +62,7 @@ const getKaotikaUser = async (req: any, res: any) => {
   }
 };
 
-const loginUser = async (req: any, res: any) => {
+const loginUser = async (req: Request, res: Response) => {
   const userEmail = res.locals.userEmail;
   const fcmToken = res.locals.fcmToken;
   console.log(`Logging in with Email: ${userEmail}.`);
@@ -102,7 +103,7 @@ const loginUser = async (req: any, res: any) => {
   }
 };
 
-const loggedUser = async (req: any, res: any) => {
+const loggedUser = async (req: Request, res: Response) => {
   const userEmail = res.locals.userEmail;
   const fcmToken = res.locals.fcmToken;
   console.log(`User with email: ${userEmail} already logged in.`);
@@ -130,7 +131,7 @@ const loggedUser = async (req: any, res: any) => {
   }
 };
 
-const getUser = async (req: any, res: any) => {
+const getUser = async (req: Request, res: Response) => {
   const {
     params: { userEmail },
   } = req;
@@ -162,7 +163,7 @@ const getUser = async (req: any, res: any) => {
   }
 };
 
-const updateUser = async (req: any, res: any) => {
+const updateUser = async (req: Request, res: Response) => {
   const {
     body,
     params: { userEmail },
@@ -195,7 +196,7 @@ const updateUser = async (req: any, res: any) => {
   }
 };
 
-const getAcolytes = async (req: any, res: any) => {
+const getAcolytes = async (req: Request, res: Response) => {
   try {
     const acolytes = await userService.getAcolytes();
     if (acolytes.length === 0) {

@@ -2,6 +2,7 @@ import User from "../database/userDatabase";
 import USER_ROLES from "../roles/roles";
 import { Methods } from "../constants";
 import EMAIL from "../roles/emails";
+import { Fields } from "../interfaces/generics";
 
 const getUser = async (userEmail: string) => {
   try {
@@ -46,7 +47,7 @@ const createUser = async (newUser: any) => {
   }
 };
 
-const updateUser = async (userEmail: string, changes: any) => {
+const updateUser = async (userEmail: string, changes: Fields) => {
   try {
     console.log("Updating user...");
 

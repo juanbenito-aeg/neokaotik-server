@@ -1,7 +1,8 @@
+import { Fields } from "../interfaces/generics";
 import userModel from "../models/userModel";
 
 const getUserByField = async (
-  fieldToFilterBy: any,
+  fieldToFilterBy: Fields,
   fieldsToIncludeOrExclude = ""
 ) => {
   try {
@@ -25,7 +26,10 @@ const createUser = async (newUser: any) => {
   }
 };
 
-const updateUserByField = async (fieldToFilterBy: any, changesToApply: any) => {
+const updateUserByField = async (
+  fieldToFilterBy: Fields,
+  changesToApply: Fields
+) => {
   try {
     const updatedUser = await userModel.findOneAndUpdate(
       fieldToFilterBy,

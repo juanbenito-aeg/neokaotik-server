@@ -3,6 +3,7 @@ import USER_ROLES from "../roles/roles";
 import { Methods } from "../constants";
 import EMAIL from "../roles/emails";
 import { Fields } from "../interfaces/generics";
+import IPlayer from "../interfaces/IPlayer";
 
 const getUser = async (userEmail: string) => {
   try {
@@ -35,7 +36,7 @@ const getKaotikaUser = async (userEmail: string) => {
   }
 };
 
-const createUser = async (newUser: any) => {
+const createUser = async (newUser: IPlayer) => {
   try {
     console.log("User not found in MongoDB.");
     console.log("Creating user...");

@@ -1,5 +1,6 @@
 import { Fields } from "../interfaces/generics";
 import userModel from "../models/userModel";
+import IPlayer from "../interfaces/IPlayer";
 
 const getUserByField = async (
   fieldToFilterBy: Fields,
@@ -16,7 +17,7 @@ const getUserByField = async (
   }
 };
 
-const createUser = async (newUser: any) => {
+const createUser = async (newUser: IPlayer) => {
   try {
     const userToInsert = new userModel(newUser);
     const createdUser = await userToInsert.save();

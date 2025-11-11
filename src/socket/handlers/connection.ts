@@ -10,6 +10,8 @@ import {
 import { handleAccessToExitFromLab } from "./angelo-lab";
 import { handleAcolyteTowerEntranceStatus } from "./acolyte-tower";
 import { sendAcolyteEnteredExitedNotification } from "../../mqtt/handlers/tower-door";
+import { HydratedDocument } from "mongoose";
+import IPlayer from "../../interfaces/IPlayer";
 
 function handleConnection(socket: Socket) {
   console.log("Client connected to the server socket.");
@@ -66,10 +68,10 @@ async function handleDisconnection(socket: Socket) {
     changesToApply.is_inside_tower = false;
   }
 
-  const updatedUser = await User.updateUserByField(
+  const updatedUser = (await User.updateUserByField(
     fieldToFilterBy,
     changesToApply
-  );
+  ))!;
 
   if ("is_inside_tower" in changesToApply) {
     sendAcolyteEnteredExitedNotification(updatedUser);
@@ -78,7 +80,7 @@ async function handleDisconnection(socket: Socket) {
 
 async function notifyMortimerAboutAcolyteDisconnection(
   socket: Socket,
-  acolyte: any
+  acolyte: HydratedDocument<IPlayer>
 ) {
   const mortimer = await User.getUserByField({
     rol: USER_ROLES.MORTIMER,

@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
-const { Schema } = mongoose;
-const ObjectId = mongoose.Types.ObjectId;
+import IPlayer from "../interfaces/IPlayer";
+
+const { Schema, model } = mongoose;
+
+const ObjectId = Schema.Types.ObjectId;
 
 const skillSchema = new Schema({
   skill: ObjectId,
@@ -199,7 +202,7 @@ const inventorySchema = new Schema(
   { _id: false }
 );
 
-const playerSchema = new Schema({
+const playerSchema = new Schema<IPlayer>({
   card_id: String,
   pushToken: String,
   is_in_tower_entrance: Boolean,
@@ -227,4 +230,6 @@ const playerSchema = new Schema({
   skills: [skillSchema],
 });
 
-export default mongoose.model("Player", playerSchema);
+const Player = model<IPlayer>("Player", playerSchema);
+
+export default Player;

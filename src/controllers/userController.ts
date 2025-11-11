@@ -135,6 +135,15 @@ const getUser = async (req: any, res: any) => {
     params: { userEmail },
   } = req;
 
+  if (!userEmail) {
+    return res
+      .status(400)
+      .send({
+        status: "FAILED",
+        data: { error: "Parameter ':userEmail' cannot be empty" },
+      });
+  }
+
   try {
     const user = await userService.getUser(userEmail);
     if (!user) {

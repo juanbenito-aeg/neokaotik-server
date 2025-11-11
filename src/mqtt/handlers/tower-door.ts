@@ -1,3 +1,4 @@
+import { HydratedDocument } from "mongoose";
 import { client, io } from "../..";
 import {
   MqttTopics,
@@ -8,6 +9,7 @@ import {
 import User from "../../database/userDatabase";
 import USER_ROLES from "../../roles/roles";
 import { sendMessage } from "../../utils";
+import IPlayer from "../../interfaces/IPlayer";
 
 async function handlerTowerDoor(cardId: string) {
   const acolyte = await User.getUserByField({ card_id: cardId });
@@ -42,7 +44,9 @@ async function handlerTowerDoor(cardId: string) {
   }
 }
 
-async function sendAcolyteEnteredExitedNotification(acolyte: any) {
+async function sendAcolyteEnteredExitedNotification(
+  acolyte: HydratedDocument<IPlayer>
+) {
   const fieldToFilterBy = { rol: USER_ROLES.MORTIMER };
   const fieldsToIncludeOrExclude = "-_id pushToken";
 

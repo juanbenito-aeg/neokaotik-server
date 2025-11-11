@@ -1,7 +1,9 @@
+import { Fields } from "../interfaces/generics";
 import userModel from "../models/userModel";
+import IPlayer from "../interfaces/IPlayer";
 
 const getUserByField = async (
-  fieldToFilterBy: any,
+  fieldToFilterBy: Fields,
   fieldsToIncludeOrExclude = ""
 ) => {
   try {
@@ -15,7 +17,7 @@ const getUserByField = async (
   }
 };
 
-const createUser = async (newUser: any) => {
+const createUser = async (newUser: IPlayer) => {
   try {
     const userToInsert = new userModel(newUser);
     const createdUser = await userToInsert.save();
@@ -25,7 +27,10 @@ const createUser = async (newUser: any) => {
   }
 };
 
-const updateUserByField = async (fieldToFilterBy: any, changesToApply: any) => {
+const updateUserByField = async (
+  fieldToFilterBy: Fields,
+  changesToApply: Fields
+) => {
   try {
     const updatedUser = await userModel.findOneAndUpdate(
       fieldToFilterBy,

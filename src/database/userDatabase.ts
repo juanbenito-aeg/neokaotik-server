@@ -43,6 +43,17 @@ const updateUserByField = async (
   }
 };
 
+const updateUsersByField = async (
+  fieldToFilterBy: Fields,
+  changesToApply: Fields
+) => {
+  try {
+    await userModel.updateMany(fieldToFilterBy, changesToApply);
+  } catch (error: any) {
+    throw error;
+  }
+};
+
 const getAcolytes = async () => {
   try {
     const acolytes = userModel.find({ rol: "acolyte" });
@@ -56,6 +67,7 @@ const userDatabase = {
   getUserByField,
   createUser,
   updateUserByField,
+  updateUsersByField,
   getAcolytes,
 };
 

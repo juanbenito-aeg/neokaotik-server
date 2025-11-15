@@ -1,0 +1,37 @@
+import USER_ROLES from "../../roles/roles";
+import User from "../../database/userDatabase";
+import {
+  NotificationTypes,
+  ScreenChangingNotificationDestinations,
+} from "../../constants";
+import { sendMessage } from "../../utils";
+
+async function handleAcolyteScrollPress(isPressed: boolean) {
+  if (!isPressed) return;
+
+  const fieldToFilterBy = { rol: USER_ROLES.MORTIMER };
+  const fieldsToIncludeOrExclude = "-_id pushToken";
+
+  const mortimer = (await User.getUserByField(
+    fieldToFilterBy,
+    fieldsToIncludeOrExclude
+  ))!;
+
+  if (mortimer.pushToken) {
+    const notificationBody = "Scroll found";
+    const notificationTitle = "Acolyte Discovery";
+    const data = {
+      type: NotificationTypes.INFO,
+      destination: ScreenChangingNotificationDestinations.REMOVE_SPEEL,
+    };
+
+    await sendMessage(
+      mortimer.pushToken,
+      data,
+      notificationBody,
+      notificationTitle
+    );
+  }
+}
+
+export { handleAcolyteScrollPress };

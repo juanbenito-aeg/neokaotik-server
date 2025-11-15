@@ -26,6 +26,7 @@ interface ClientToServerEvents {
   [SocketClientToServerEvents.INSIDE_OUTSIDE_TOWER_ENTRANCE]: (
     acolyteIsInEntranceTower: boolean
   ) => void;
+  [SocketClientToServerEvents.REMOVE_SPELL_PRESS]: () => void;
 }
 
 interface AcolyteDataToBroadcast {

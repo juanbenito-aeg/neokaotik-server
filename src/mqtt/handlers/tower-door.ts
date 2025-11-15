@@ -8,7 +8,7 @@ import {
 } from "../../constants";
 import User from "../../database/userDatabase";
 import USER_ROLES from "../../roles/roles";
-import { sendMessage } from "../../utils";
+import { sendMessageToOneOrMoreRecipients } from "../../utils";
 import IPlayer from "../../interfaces/IPlayer";
 
 async function handlerTowerDoor(cardId: string) {
@@ -67,7 +67,7 @@ async function sendAcolyteEnteredExitedNotification(
       is_inside_tower: String(acolyte.is_inside_tower),
     };
 
-    await sendMessage(
+    await sendMessageToOneOrMoreRecipients(
       mortimer.pushToken,
       data,
       notificationBody,

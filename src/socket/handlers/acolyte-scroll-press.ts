@@ -4,7 +4,7 @@ import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
 } from "../../constants";
-import { sendMessage } from "../../utils";
+import { sendMessageToOneOrMoreRecipients } from "../../utils";
 
 async function handleAcolyteScrollPress(isPressed: boolean) {
   if (!isPressed) return;
@@ -25,7 +25,7 @@ async function handleAcolyteScrollPress(isPressed: boolean) {
       destination: ScreenChangingNotificationDestinations.REMOVE_SPEEL,
     };
 
-    await sendMessage(
+    await sendMessageToOneOrMoreRecipients(
       mortimer.pushToken,
       data,
       notificationBody,

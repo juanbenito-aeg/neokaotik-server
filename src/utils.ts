@@ -1,19 +1,30 @@
 import admin from "firebase-admin";
 
-async function sendMessage(
-  token: string,
+async function sendMessageToOneOrMoreRecipients(
+  tokenOrTokens: string | string[],
   data: { [key: string]: string },
   notificationBody: string,
   notificationTitle: string
 ) {
-  await admin.messaging().send({
-    token,
+  const messageChunkForAnyNumberOfRecipients = {
     data,
     notification: {
       body: notificationBody,
       title: notificationTitle,
     },
-  });
+  };
+
+  if (typeof tokenOrTokens === "string") {
+    await admin.messaging().send({
+      token: tokenOrTokens,
+      ...messageChunkForAnyNumberOfRecipients,
+    });
+  } else {
+    await admin.messaging().sendEachForMulticast({
+      tokens: tokenOrTokens,
+      ...messageChunkForAnyNumberOfRecipients,
+    });
+  }
 }
 
-export { sendMessage };
+export { sendMessageToOneOrMoreRecipients };

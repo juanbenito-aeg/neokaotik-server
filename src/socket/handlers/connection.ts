@@ -12,6 +12,7 @@ import { handleAcolyteTowerEntranceStatus } from "./acolyte-tower";
 import { sendAcolyteEnteredExitedNotification } from "../../mqtt/handlers/tower-door";
 import { HydratedDocument } from "mongoose";
 import IPlayer from "../../interfaces/IPlayer";
+import { handleAcolyteScrollPress } from "./acolyte-scroll-press";
 
 function handleConnection(socket: Socket) {
   console.log("Client connected to the server socket.");
@@ -33,6 +34,10 @@ function handleConnection(socket: Socket) {
       handleAccessToExitFromLab(socket.id, acolyteEmail, isInside);
     }
   );
+
+  socket.on(SocketClientToServerEvents.SCROLL_PRESS, (isPressed: boolean) => {
+    handleAcolyteScrollPress(isPressed);
+  });
 
   socket.on(SocketGeneralEvents.DISCONNECT, () => {
     handleDisconnection(socket);

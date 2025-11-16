@@ -142,7 +142,7 @@ const logedUser = async (userEmail: string, fcmToken: string) => {
 
 const getAcolytes = async () => {
   try {
-    const acolytes = User.getAcolytes();
+    const acolytes = await User.getAcolytes();
     return acolytes;
   } catch (error: any) {
     throw error;

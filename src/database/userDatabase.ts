@@ -56,7 +56,7 @@ const updateUsersByField = async (
 
 const getAcolytes = async () => {
   try {
-    const acolytes = userModel.find({ rol: "acolyte" });
+    const acolytes = await userModel.find({ rol: "acolyte" });
     return acolytes;
   } catch (error: any) {
     throw error;

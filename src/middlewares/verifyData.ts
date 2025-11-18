@@ -1,7 +1,9 @@
+import { Request, Response, NextFunction } from "express";
 import { getAuth } from "firebase-admin/auth";
 
-async function verifyIdToken(req: any, res: any, next: any) {
+async function verifyIdToken(req: Request, res: Response, next: NextFunction) {
   const { idToken, fcmToken } = req.body;
+  console.log("ID token received...");
 
   const response = await fetch(
     `https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=${process.env.GOOGLE_API_KEY}`,
@@ -21,6 +23,7 @@ async function verifyIdToken(req: any, res: any, next: any) {
   getAuth()
     .verifyIdToken(firebaseIdToken)
     .then((decodedToken) => {
+      console.log(`Valid ID token.`);
       res.locals.userEmail = decodedToken.email;
       res.locals.fcmToken = fcmToken;
       next();

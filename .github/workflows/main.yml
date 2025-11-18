@@ -15,17 +15,24 @@ jobs:
 
       - name: Create .env file from GitHub secret
         run: echo "${{ secrets.PROD_ENV_FILE }}" > .env
-        
+
       - name: Create Firebase JSON file from secret
         run: |
           echo "${{ secrets.FIREBASE_SERVICE }}" | base64 --decode > firebase-service.json
+
+      - name: Decode certs
+        run: |
+          mkdir confidential-data
+          echo "${{ secrets.NODE_PRIVATE_KEY_B64 }}" | base64 --decode > confidential-data/node.key
+          echo "${{ secrets.NODE_CRT_B64 }}" | base64 --decode > confidential-data/node.crt
+          echo "${{ secrets.CA_CRT_B64 }}" | base64 --decode > confidential-data/ca.crt
 
       - name: Pull latest changes
         run: git pull origin main
 
       - name: Set container name
         run: |
-       
+
           if [ -z "${{ secrets.CONTAINER_NAME }}" ]; then
             echo "ERROR: El secreto CONTAINER_NAME no está definido"
             exit 1
@@ -36,13 +43,11 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE
 
-          
+
           docker rm -f $CONTAINER_NAME || true
 
-          
-          docker compose -f docker-compose.yml up -d --build server
-          
 
+          docker compose -f docker-compose.yml up -d --build server
 
       - name: Clean up
         run: echo "Deployment for $CONTAINER_NAME complete."

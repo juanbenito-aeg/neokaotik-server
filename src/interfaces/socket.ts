@@ -43,6 +43,8 @@ interface AcolyteDataToAccessOrExitTower {
 interface FieldsToUseInDisconnection {
   socketId: string;
   isInside?: boolean;
+  is_in_tower_entrance?: boolean;
+  is_inside_tower?: boolean;
 }
 
 export type {

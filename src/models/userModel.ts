@@ -228,6 +228,7 @@ const playerSchema = new Schema<IPlayer>({
   created_date: String,
   isBetrayer: Boolean,
   skills: [skillSchema],
+  has_been_summoned_to_hos: { type: Boolean, required: false },
 });
 
 const Player = model<IPlayer>("Player", playerSchema);

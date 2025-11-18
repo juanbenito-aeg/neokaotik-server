@@ -8,6 +8,8 @@ enum SocketClientToServerEvents {
   CONNECTION_OPEN = "connection open",
   ACCESS_TO_EXIT_FROM_LAB = "access to/exit from lab",
   INSIDE_OUTSIDE_TOWER_ENTRANCE = "acolyte inside/outside tower",
+  SCROLL_PRESS = "scroll press",
+  REMOVE_SPELL_PRESS = "remove spell press",
 }
 
 enum SocketGeneralEvents {
@@ -39,6 +41,8 @@ enum NotificationTypes {
 
 enum ScreenChangingNotificationDestinations {
   SWAMP_TOWER = "Swamp Tower",
+  REMOVE_SPEEL = "Remove spell",
+  HALL_SAGES = "The Hall of Sages",
 }
 
 export {

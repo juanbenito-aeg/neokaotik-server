@@ -6,7 +6,7 @@ import {
 } from "../../constants";
 import User from "../../database/userDatabase";
 import USER_ROLES from "../../roles/roles";
-import { sendMessage } from "../../utils";
+import { sendMessageToOneOrMoreRecipients } from "../../utils";
 
 async function handleTowerCardid(cardId: string) {
   const acolyteWithReceivedCardId = await getAcolyteWithReceivedCardId(cardId);
@@ -72,7 +72,7 @@ async function sendUnauthorizedAccessMessageToMortimer() {
       "An unauthorized bastard tried to enter the Swamp Tower!";
     const notificationTitle = "Swamp Tower";
 
-    await sendMessage(
+    await sendMessageToOneOrMoreRecipients(
       mortimer.pushToken,
       data,
       notificationBody,

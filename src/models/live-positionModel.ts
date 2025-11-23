@@ -16,6 +16,6 @@ const livePositionSchema = new Schema<ILivePosition>(
   }
 );
 
-const LivePositions = model<ILivePosition>("LivePosition", livePositionSchema);
+const LivePosition = model<ILivePosition>("LivePosition", livePositionSchema);
 
-export default LivePositions;
+export default LivePosition;

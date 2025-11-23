@@ -45,6 +45,11 @@ enum ScreenChangingNotificationDestinations {
   HALL_SAGES = "The Hall of Sages",
 }
 
+enum ArtifactState {
+  ACTIVE = "active",
+  COLLECTED = "collected",
+}
+
 export {
   SocketServerToClientEvents,
   SocketClientToServerEvents,
@@ -54,4 +59,5 @@ export {
   MqttTopics,
   NotificationTypes,
   ScreenChangingNotificationDestinations,
+  ArtifactState,
 };

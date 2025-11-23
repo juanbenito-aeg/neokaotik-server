@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import Location from "./Location";
 import { ArtifactState } from "../constants";
 
 interface IArtifact {
@@ -7,11 +8,6 @@ interface IArtifact {
   source: string;
   state: ArtifactState;
   location: Location;
-}
-
-interface Location {
-  type: "Point";
-  coordinates: number[];
 }
 
 export default IArtifact;

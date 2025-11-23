@@ -37,6 +37,9 @@ interface IPlayer {
   pushToken: string;
   card_id: string;
   has_been_summoned_to_hos?: boolean;
+  has_completed_artifacts_search?: boolean;
+  is_inside_hs?: boolean;
+  found_artifacts?: Types.ObjectId[];
 }
 
 interface CommonEquipmentFields {

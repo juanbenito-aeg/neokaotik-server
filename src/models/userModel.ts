@@ -229,6 +229,11 @@ const playerSchema = new Schema<IPlayer>({
   isBetrayer: Boolean,
   skills: [skillSchema],
   has_been_summoned_to_hos: { type: Boolean, required: false },
+  has_completed_artifacts_search: { type: Boolean, required: false },
+  is_inside_hs: { type: Boolean, required: false },
+  found_artifacts: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "Artifact", required: false },
+  ],
 });
 
 const Player = model<IPlayer>("Player", playerSchema);

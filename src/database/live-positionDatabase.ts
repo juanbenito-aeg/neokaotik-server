@@ -2,7 +2,7 @@ import LivePosition from "../models/live-positionModel";
 
 async function updateLivePositionByPlayer(
   playerId: string,
-  newCoordinates: [number, number]
+  newCoordinates: number[]
 ) {
   try {
     const updatedPosition = await LivePosition.findOneAndUpdate(

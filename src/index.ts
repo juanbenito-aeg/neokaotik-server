@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import userRouter from "./routes/userRoutes";
+import artifactRoutes from "./routes/artifactRoutes";
 import mongoose from "mongoose";
 import { initializeApp, applicationDefault } from "firebase-admin/app";
 import "dotenv/config";
@@ -26,6 +27,7 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer);
 
 app.use(bodyParser.json());
 app.use("/user", userRouter);
+app.use("/api/artifacts", artifactRoutes);
 
 io.on(SocketGeneralEvents.CONNECTION, handleConnection);
 

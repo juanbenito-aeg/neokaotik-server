@@ -63,12 +63,18 @@ const getAcolytes = async () => {
   }
 };
 
+const getNonAcolytePlayers = async () => {
+  const nonAcolytePlayers = await userModel.find({ rol: { $ne: "acolyte" } });
+  return nonAcolytePlayers;
+};
+
 const userDatabase = {
   getUserByField,
   createUser,
   updateUserByField,
   updateUsersByField,
   getAcolytes,
+  getNonAcolytePlayers,
 };
 
 export default userDatabase;

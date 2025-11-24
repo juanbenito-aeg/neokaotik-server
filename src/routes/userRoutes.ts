@@ -24,4 +24,6 @@ router.patch("/update/:userEmail", userController.updateUser);
 
 router.get("/get-acolytes", userController.getAcolytes);
 
+router.get("/non-acolyte-players", userController.getNonAcolytePlayers);
+
 export default router;

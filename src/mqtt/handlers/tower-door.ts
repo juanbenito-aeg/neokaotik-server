@@ -48,7 +48,7 @@ async function sendAcolyteEnteredExitedNotification(
   acolyte: HydratedDocument<IPlayer>
 ) {
   const fieldToFilterBy = { rol: USER_ROLES.MORTIMER };
-  const fieldsToIncludeOrExclude = "-_id pushToken";
+  const fieldsToIncludeOrExclude = "pushToken";
 
   const mortimer = (await User.getUserByField(
     fieldToFilterBy,

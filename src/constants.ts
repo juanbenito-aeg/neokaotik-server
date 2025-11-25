@@ -3,6 +3,7 @@ enum SocketServerToClientEvents {
   ACOLYTE_DISCONNECTED = "acolyte disconnected",
   ACOLYTE_TOWER_ACCESS = "acolyte tower access",
   ACOLYTE_POSITION_CHANGED = "acolyte's position changed",
+  ARTIFACT_COLLECTED = "artifact collected",
 }
 
 enum SocketClientToServerEvents {
@@ -12,6 +13,7 @@ enum SocketClientToServerEvents {
   SCROLL_PRESS = "scroll press",
   REMOVE_SPELL_PRESS = "remove spell press",
   ACOLYTE_MOVED = "acolyte moved",
+  ARTIFACT_PRESSED = "artifact pressed",
 }
 
 enum SocketGeneralEvents {

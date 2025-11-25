@@ -16,6 +16,7 @@ import { handleAcolyteScrollPress } from "./acolyte-scroll-press";
 import handleRemoveSpellPress from "./remove-spell-press";
 import { Location } from "../../interfaces/geolocalization";
 import handleAcolyteMoved from "./acolyte-moved";
+import handleArtifactPressed from "./artifact-pressed";
 
 function handleConnection(socket: Socket) {
   console.log("Client connected to the server socket.");
@@ -48,6 +49,13 @@ function handleConnection(socket: Socket) {
   );
 
   socket.on(SocketClientToServerEvents.ACOLYTE_MOVED, handleAcolyteMoved);
+
+  socket.on(
+    SocketClientToServerEvents.ARTIFACT_PRESSED,
+    (acolyteId: Types.ObjectId, artifactId: Types.ObjectId) => {
+      handleArtifactPressed(acolyteId, artifactId, socket.id);
+    }
+  );
 
   socket.on(SocketGeneralEvents.DISCONNECT, () => {
     handleDisconnection(socket);

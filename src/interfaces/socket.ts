@@ -2,6 +2,8 @@ import {
   SocketServerToClientEvents,
   SocketClientToServerEvents,
 } from "../constants";
+import { Types } from "mongoose";
+import { Location } from "./geolocalization";
 
 // Declaration of the events used when sending and broadcasting events to the client
 interface ServerToClientEvents {
@@ -13,6 +15,10 @@ interface ServerToClientEvents {
   ) => void;
   [SocketServerToClientEvents.ACOLYTE_TOWER_ACCESS]: (
     acolyteData: AcolyteDataToAccessOrExitTower
+  ) => void;
+  [SocketServerToClientEvents.ACOLYTE_POSITION_CHANGED]: (
+    acolyteId: Types.ObjectId,
+    acolyteLocation: Location
   ) => void;
 }
 
@@ -27,6 +33,10 @@ interface ClientToServerEvents {
     acolyteIsInEntranceTower: boolean
   ) => void;
   [SocketClientToServerEvents.REMOVE_SPELL_PRESS]: () => void;
+  [SocketClientToServerEvents.ACOLYTE_MOVED]: (
+    acolyteId: Types.ObjectId,
+    acolyteLocation: Location
+  ) => void;
 }
 
 interface AcolyteDataToBroadcast {

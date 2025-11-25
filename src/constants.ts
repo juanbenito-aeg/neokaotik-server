@@ -2,6 +2,7 @@ enum SocketServerToClientEvents {
   ACOLYTE_INSIDE_OUTSIDE_LAB = "acolyte inside/outside lab",
   ACOLYTE_DISCONNECTED = "acolyte disconnected",
   ACOLYTE_TOWER_ACCESS = "acolyte tower access",
+  ACOLYTE_POSITION_CHANGED = "acolyte's position changed",
 }
 
 enum SocketClientToServerEvents {
@@ -10,6 +11,7 @@ enum SocketClientToServerEvents {
   INSIDE_OUTSIDE_TOWER_ENTRANCE = "acolyte inside/outside tower",
   SCROLL_PRESS = "scroll press",
   REMOVE_SPELL_PRESS = "remove spell press",
+  ACOLYTE_MOVED = "acolyte moved",
 }
 
 enum SocketGeneralEvents {

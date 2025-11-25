@@ -10,10 +10,12 @@ import {
 import { handleAccessToExitFromLab } from "./angelo-lab";
 import { handleAcolyteTowerEntranceStatus } from "./acolyte-tower";
 import { sendAcolyteEnteredExitedNotification } from "../../mqtt/handlers/tower-door";
-import { HydratedDocument } from "mongoose";
+import { HydratedDocument, Types } from "mongoose";
 import IPlayer from "../../interfaces/IPlayer";
 import { handleAcolyteScrollPress } from "./acolyte-scroll-press";
 import handleRemoveSpellPress from "./remove-spell-press";
+import { Location } from "../../interfaces/geolocalization";
+import handleAcolyteMoved from "./acolyte-moved";
 
 function handleConnection(socket: Socket) {
   console.log("Client connected to the server socket.");
@@ -44,6 +46,8 @@ function handleConnection(socket: Socket) {
     SocketClientToServerEvents.REMOVE_SPELL_PRESS,
     handleRemoveSpellPress
   );
+
+  socket.on(SocketClientToServerEvents.ACOLYTE_MOVED, handleAcolyteMoved);
 
   socket.on(SocketGeneralEvents.DISCONNECT, () => {
     handleDisconnection(socket);

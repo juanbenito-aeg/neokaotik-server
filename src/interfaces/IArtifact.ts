@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
 import { ArtifactState } from "../constants";
+import { Location } from "./geolocalization";
 
 interface IArtifact {
   _id: Types.ObjectId;
@@ -7,11 +8,6 @@ interface IArtifact {
   source: string;
   state: ArtifactState;
   location: Location;
-}
-
-interface Location {
-  type: "Point";
-  coordinates: number[];
 }
 
 export default IArtifact;

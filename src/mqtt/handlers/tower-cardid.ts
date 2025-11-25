@@ -43,7 +43,7 @@ async function handleTowerCardid(cardId: string) {
 
 async function getAcolyteWithReceivedCardId(cardId: string) {
   const fieldToFilterBy = { card_id: cardId };
-  const fieldsToIncludeOrExclude = "-_id is_in_tower_entrance is_inside_tower";
+  const fieldsToIncludeOrExclude = "is_in_tower_entrance is_inside_tower";
 
   const acolyteWithReceivedCardId = await User.getUserByField(
     fieldToFilterBy,
@@ -55,7 +55,7 @@ async function getAcolyteWithReceivedCardId(cardId: string) {
 
 async function sendUnauthorizedAccessMessageToMortimer() {
   const fieldToFilterBy = { rol: USER_ROLES.MORTIMER };
-  const fieldsToIncludeOrExclude = "-_id pushToken";
+  const fieldsToIncludeOrExclude = "pushToken";
 
   const mortimer = (await User.getUserByField(
     fieldToFilterBy,

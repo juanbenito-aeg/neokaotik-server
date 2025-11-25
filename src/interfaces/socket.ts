@@ -20,6 +20,10 @@ interface ServerToClientEvents {
     acolyteId: Types.ObjectId,
     acolyteLocation: Location
   ) => void;
+  [SocketServerToClientEvents.ARTIFACT_COLLECTED]: (
+    acolyteId: Types.ObjectId,
+    artifactId: Types.ObjectId
+  ) => void;
 }
 
 // Declaration of the events used when receiving events from the client
@@ -36,6 +40,10 @@ interface ClientToServerEvents {
   [SocketClientToServerEvents.ACOLYTE_MOVED]: (
     acolyteId: Types.ObjectId,
     acolyteLocation: Location
+  ) => void;
+  [SocketClientToServerEvents.ARTIFACT_PRESSED]: (
+    acolyteId: Types.ObjectId,
+    artifactId: Types.ObjectId
   ) => void;
 }
 

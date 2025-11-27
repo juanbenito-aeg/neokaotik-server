@@ -17,6 +17,7 @@ import handleRemoveSpellPress from "./remove-spell-press";
 import { Location } from "../../interfaces/geolocalization";
 import handleAcolyteMoved from "./acolyte-moved";
 import handleArtifactPressed from "./artifact-pressed";
+import { handleAcolyteOrMortimerEnteredOrExitedHS } from "./entered-exited-hs";
 
 function handleConnection(socket: Socket) {
   console.log("Client connected to the server socket.");
@@ -24,6 +25,13 @@ function handleConnection(socket: Socket) {
   socket.on(SocketClientToServerEvents.CONNECTION_OPEN, (userEmail: string) => {
     handleConnectionOpening(socket, userEmail);
   });
+
+  socket.on(
+    SocketClientToServerEvents.ENTERED_EXITED_HS,
+    async (acolyteOrMortimerId: Types.ObjectId, isInsideHS: boolean) => {
+      handleAcolyteOrMortimerEnteredOrExitedHS(acolyteOrMortimerId, isInsideHS);
+    }
+  );
 
   socket.on(
     SocketClientToServerEvents.INSIDE_OUTSIDE_TOWER_ENTRANCE,
@@ -89,6 +97,8 @@ async function handleDisconnection(socket: Socket) {
     changesToApply.is_in_tower_entrance = false;
   } else if (socketUser?.is_inside_tower) {
     changesToApply.is_inside_tower = false;
+  } else if (socketUser?.is_inside_hs) {
+    changesToApply.is_inside_hs = false;
   }
 
   const updatedUser = (await User.updateUserByField(

@@ -14,6 +14,7 @@ enum SocketClientToServerEvents {
   REMOVE_SPELL_PRESS = "remove spell press",
   ACOLYTE_MOVED = "acolyte moved",
   ARTIFACT_PRESSED = "artifact pressed",
+  ENTERED_EXITED_HS = "player entered/exited HS",
 }
 
 enum SocketGeneralEvents {

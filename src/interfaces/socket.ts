@@ -45,6 +45,10 @@ interface ClientToServerEvents {
     acolyteId: Types.ObjectId,
     artifactId: Types.ObjectId
   ) => void;
+  [SocketClientToServerEvents.ENTERED_EXITED_HS]: (
+    acolyteOrMortimerId: Types.ObjectId,
+    isInsideHS: boolean
+  ) => void;
 }
 
 interface AcolyteDataToBroadcast {
@@ -64,6 +68,7 @@ interface FieldsToUseInDisconnection {
   isInside?: boolean;
   is_in_tower_entrance?: boolean;
   is_inside_tower?: boolean;
+  is_inside_hs?: boolean;
 }
 
 export type {

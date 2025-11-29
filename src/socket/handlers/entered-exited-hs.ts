@@ -4,12 +4,15 @@ import USER_ROLES from "../../roles/roles";
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
+  SocketServerToClientEvents,
 } from "../../constants";
 import { sendMessageToOneOrMoreRecipients } from "../../utils";
+import { Socket } from "socket.io";
 
 async function handleAcolyteOrMortimerEnteredOrExitedHS(
   acolyteOrMortimerId: Types.ObjectId,
-  isInsideHS: boolean
+  isInsideHS: boolean,
+  socket: Socket
 ) {
   const updatedPlayer = await User.updateUserByField(
     { _id: acolyteOrMortimerId },
@@ -19,7 +22,9 @@ async function handleAcolyteOrMortimerEnteredOrExitedHS(
   const enteredOrExitedHS = updatedPlayer!.is_inside_hs ? "entered" : "exited";
 
   console.log(
-    `${updatedPlayer!.name} has ${enteredOrExitedHS} with great success.`
+    `${
+      updatedPlayer!.name
+    } has ${enteredOrExitedHS} The Hall of Sages with great success.`
   );
 
   const { allArtifactsCollected, allAcolytesInsideHS } =
@@ -28,6 +33,12 @@ async function handleAcolyteOrMortimerEnteredOrExitedHS(
   if (allAcolytesInsideHS && allArtifactsCollected) {
     sendAcolytesAreInsideHSNotification();
   }
+
+  socket.broadcast.emit(
+    SocketServerToClientEvents.ENTERED_EXITED_HS,
+    acolyteOrMortimerId,
+    isInsideHS
+  );
 }
 
 async function checkAcolytesStatus() {
@@ -37,6 +48,7 @@ async function checkAcolytesStatus() {
     if (acolyte.found_artifacts) {
       acc.push(...acolyte.found_artifacts);
     }
+
     return acc;
   }, [] as Types.ObjectId[]);
 
@@ -63,8 +75,8 @@ async function sendAcolytesAreInsideHSNotification() {
   ))!;
 
   if (mortimer.pushToken) {
-    const notificationBody = "All Acolytes have gathered in The Hall Of Sages";
-    const notificationTitle = "Hall Of Sages";
+    const notificationBody = "All acolytes have gathered in The Hall of Sages";
+    const notificationTitle = "Acolytes in The Hall of Sages";
     const data = {
       type: NotificationTypes.INFO,
       destination: ScreenChangingNotificationDestinations.HALL_SAGES,

@@ -4,6 +4,7 @@ enum SocketServerToClientEvents {
   ACOLYTE_TOWER_ACCESS = "acolyte tower access",
   ACOLYTE_POSITION_CHANGED = "acolyte's position changed",
   ARTIFACT_COLLECTED = "artifact collected",
+  ENTERED_EXITED_HS = "player entered/exited HS",
 }
 
 enum SocketClientToServerEvents {

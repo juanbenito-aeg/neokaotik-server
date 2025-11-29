@@ -14,7 +14,6 @@ import { HydratedDocument, Types } from "mongoose";
 import IPlayer from "../../interfaces/IPlayer";
 import { handleAcolyteScrollPress } from "./acolyte-scroll-press";
 import handleRemoveSpellPress from "./remove-spell-press";
-import { Location } from "../../interfaces/geolocalization";
 import handleAcolyteMoved from "./acolyte-moved";
 import handleArtifactPressed from "./artifact-pressed";
 import { handleAcolyteOrMortimerEnteredOrExitedHS } from "./entered-exited-hs";
@@ -28,8 +27,12 @@ function handleConnection(socket: Socket) {
 
   socket.on(
     SocketClientToServerEvents.ENTERED_EXITED_HS,
-    async (acolyteOrMortimerId: Types.ObjectId, isInsideHS: boolean) => {
-      handleAcolyteOrMortimerEnteredOrExitedHS(acolyteOrMortimerId, isInsideHS);
+    (acolyteOrMortimerId: Types.ObjectId, isInsideHS: boolean) => {
+      handleAcolyteOrMortimerEnteredOrExitedHS(
+        acolyteOrMortimerId,
+        isInsideHS,
+        socket
+      );
     }
   );
 

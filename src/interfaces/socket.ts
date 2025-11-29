@@ -24,6 +24,10 @@ interface ServerToClientEvents {
     acolyteId: Types.ObjectId,
     artifactId: Types.ObjectId
   ) => void;
+  [SocketServerToClientEvents.ENTERED_EXITED_HS]: (
+    acolyteOrMortimerId: Types.ObjectId,
+    isInsideHS: boolean
+  ) => void;
 }
 
 // Declaration of the events used when receiving events from the client

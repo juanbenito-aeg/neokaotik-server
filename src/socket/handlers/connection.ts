@@ -108,6 +108,13 @@ async function handleDisconnection(socket: Socket) {
     changesToApply.is_inside_tower = false;
   } else if (socketUser?.is_inside_hs) {
     changesToApply.is_inside_hs = false;
+
+    // Reflect acolytes' & Mortimer's app closing in others' screen when they are inside The Hall of Sages
+    socket.broadcast.emit(
+      SocketServerToClientEvents.ENTERED_EXITED_HS,
+      socketUser._id,
+      false
+    );
   }
 
   const updatedUser = (await User.updateUserByField(

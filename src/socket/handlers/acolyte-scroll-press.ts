@@ -18,7 +18,7 @@ async function handleAcolyteScrollPress(isPressed: boolean) {
   ))!;
 
   if (mortimer.pushToken) {
-    const notificationBody = "Scroll found";
+    const notificationBody = "Scroll found.";
     const notificationTitle = "Acolyte Discovery";
     const data = {
       type: NotificationTypes.INFO,

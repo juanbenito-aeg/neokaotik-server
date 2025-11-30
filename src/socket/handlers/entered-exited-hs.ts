@@ -8,12 +8,17 @@ import {
 } from "../../constants";
 import { sendMessageToOneOrMoreRecipients } from "../../utils";
 import { Socket } from "socket.io";
+import { VoidFunction } from "../../interfaces/generics";
 
 async function handleAcolyteOrMortimerEnteredOrExitedHS(
   acolyteOrMortimerId: Types.ObjectId,
   isInsideHS: boolean,
+  acknowledgeEvent: VoidFunction,
   socket: Socket
 ) {
+  // Make the client know the event has been received, so that it does not have to emit it again
+  acknowledgeEvent();
+
   const updatedPlayer = await User.updateUserByField(
     { _id: acolyteOrMortimerId },
     { is_inside_hs: isInsideHS }
@@ -27,11 +32,13 @@ async function handleAcolyteOrMortimerEnteredOrExitedHS(
     } has ${enteredOrExitedHS} The Hall of Sages with great success.`
   );
 
-  const { allArtifactsCollected, allAcolytesInsideHS } =
-    await checkAcolytesStatus();
+  if (updatedPlayer!.rol === USER_ROLES.ACOLYTE) {
+    const { allArtifactsCollected, allAcolytesInsideHS } =
+      await checkAcolytesStatus();
 
-  if (allAcolytesInsideHS && allArtifactsCollected) {
-    sendAcolytesAreInsideHSNotification();
+    if (allAcolytesInsideHS && allArtifactsCollected) {
+      sendAcolytesAreInsideHSNotification();
+    }
   }
 
   socket.broadcast.emit(
@@ -75,7 +82,7 @@ async function sendAcolytesAreInsideHSNotification() {
   ))!;
 
   if (mortimer.pushToken) {
-    const notificationBody = "All acolytes have gathered in The Hall of Sages";
+    const notificationBody = "All acolytes have gathered in The Hall of Sages.";
     const notificationTitle = "Acolytes in The Hall of Sages";
     const data = {
       type: NotificationTypes.INFO,

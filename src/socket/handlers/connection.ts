@@ -17,6 +17,7 @@ import handleRemoveSpellPress from "./remove-spell-press";
 import handleAcolyteMoved from "./acolyte-moved";
 import handleArtifactPressed from "./artifact-pressed";
 import { handleAcolyteOrMortimerEnteredOrExitedHS } from "./entered-exited-hs";
+import { VoidFunction } from "../../interfaces/generics";
 
 function handleConnection(socket: Socket) {
   console.log("Client connected to the server socket.");
@@ -27,10 +28,15 @@ function handleConnection(socket: Socket) {
 
   socket.on(
     SocketClientToServerEvents.ENTERED_EXITED_HS,
-    (acolyteOrMortimerId: Types.ObjectId, isInsideHS: boolean) => {
+    (
+      acolyteOrMortimerId: Types.ObjectId,
+      isInsideHS: boolean,
+      acknowledgeEvent: VoidFunction
+    ) => {
       handleAcolyteOrMortimerEnteredOrExitedHS(
         acolyteOrMortimerId,
         isInsideHS,
+        acknowledgeEvent,
         socket
       );
     }

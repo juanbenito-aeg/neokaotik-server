@@ -8,12 +8,17 @@ import {
 } from "../../constants";
 import { sendMessageToOneOrMoreRecipients } from "../../utils";
 import { Socket } from "socket.io";
+import { VoidFunction } from "../../interfaces/generics";
 
 async function handleAcolyteOrMortimerEnteredOrExitedHS(
   acolyteOrMortimerId: Types.ObjectId,
   isInsideHS: boolean,
+  acknowledgeEvent: VoidFunction,
   socket: Socket
 ) {
+  // Make the client know the event has been received, so that it does not have to emit it again
+  acknowledgeEvent();
+
   const updatedPlayer = await User.updateUserByField(
     { _id: acolyteOrMortimerId },
     { is_inside_hs: isInsideHS }

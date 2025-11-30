@@ -4,6 +4,7 @@ import {
 } from "../constants";
 import { Types } from "mongoose";
 import { Location } from "./geolocalization";
+import { VoidFunction } from "./generics";
 
 // Declaration of the events used when sending and broadcasting events to the client
 interface ServerToClientEvents {
@@ -51,7 +52,8 @@ interface ClientToServerEvents {
   ) => void;
   [SocketClientToServerEvents.ENTERED_EXITED_HS]: (
     acolyteOrMortimerId: Types.ObjectId,
-    isInsideHS: boolean
+    isInsideHS: boolean,
+    acknowledgeEvent: VoidFunction
   ) => void;
 }
 

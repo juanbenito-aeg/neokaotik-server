@@ -27,11 +27,13 @@ async function handleAcolyteOrMortimerEnteredOrExitedHS(
     } has ${enteredOrExitedHS} The Hall of Sages with great success.`
   );
 
-  const { allArtifactsCollected, allAcolytesInsideHS } =
-    await checkAcolytesStatus();
+  if (updatedPlayer!.rol === USER_ROLES.ACOLYTE) {
+    const { allArtifactsCollected, allAcolytesInsideHS } =
+      await checkAcolytesStatus();
 
-  if (allAcolytesInsideHS && allArtifactsCollected) {
-    sendAcolytesAreInsideHSNotification();
+    if (allAcolytesInsideHS && allArtifactsCollected) {
+      sendAcolytesAreInsideHSNotification();
+    }
   }
 
   socket.broadcast.emit(
@@ -75,7 +77,7 @@ async function sendAcolytesAreInsideHSNotification() {
   ))!;
 
   if (mortimer.pushToken) {
-    const notificationBody = "All acolytes have gathered in The Hall of Sages";
+    const notificationBody = "All acolytes have gathered in The Hall of Sages.";
     const notificationTitle = "Acolytes in The Hall of Sages";
     const data = {
       type: NotificationTypes.INFO,

@@ -20,6 +20,9 @@ import { handleAcolyteOrMortimerEnteredOrExitedHS } from "./entered-exited-hs";
 import { VoidFunction } from "../../interfaces/generics";
 import handleRequestedToShowArtifacts from "./requested-to-show-artifacts";
 import handleArtifactsSearchValidatedReset from "./artifacts-search-validated-reset";
+import { io } from "../..";
+import { getNonAcolytePlayersSocketId } from "../../helpers/socket.helpers";
+import { Location } from "../../interfaces/geolocalization";
 
 function handleConnection(socket: Socket) {
   console.log("Client connected to the server socket.");
@@ -127,6 +130,20 @@ async function handleDisconnection(socket: Socket) {
       SocketServerToClientEvents.ENTERED_EXITED_HS,
       socketUser._id,
       false
+    );
+  } else if (socketUser?.rol === USER_ROLES.ACOLYTE) {
+    const nonAcolytePlayersSocketId = await getNonAcolytePlayersSocketId();
+
+    const nullLocation: Location = {
+      type: "Point",
+      coordinates: [0, 0],
+    };
+
+    // Reflect acolytes' app closing in non-acolyte players' app
+    io.to(nonAcolytePlayersSocketId).emit(
+      SocketServerToClientEvents.ACOLYTE_POSITION_CHANGED,
+      socketUser._id,
+      nullLocation
     );
   }
 

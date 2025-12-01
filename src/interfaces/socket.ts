@@ -29,6 +29,7 @@ interface ServerToClientEvents {
     acolyteOrMortimerId: Types.ObjectId,
     isInsideHS: boolean
   ) => void;
+  [SocketClientToServerEvents.REQUESTED_TO_SHOW_ARTIFACTS]: () => void;
 }
 
 // Declaration of the events used when receiving events from the client
@@ -55,6 +56,7 @@ interface ClientToServerEvents {
     isInsideHS: boolean,
     acknowledgeEvent: VoidFunction
   ) => void;
+  [SocketClientToServerEvents.REQUESTED_TO_SHOW_ARTIFACTS]: () => void;
 }
 
 interface AcolyteDataToBroadcast {

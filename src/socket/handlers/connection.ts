@@ -18,6 +18,7 @@ import handleAcolyteMoved from "./acolyte-moved";
 import handleArtifactPressed from "./artifact-pressed";
 import { handleAcolyteOrMortimerEnteredOrExitedHS } from "./entered-exited-hs";
 import { VoidFunction } from "../../interfaces/generics";
+import handleRequestedToShowArtifacts from "./requested-to-show-artifacts";
 
 function handleConnection(socket: Socket) {
   console.log("Client connected to the server socket.");
@@ -41,6 +42,10 @@ function handleConnection(socket: Socket) {
       );
     }
   );
+
+  socket.on(SocketClientToServerEvents.REQUESTED_TO_SHOW_ARTIFACTS, () => {
+    handleRequestedToShowArtifacts(socket);
+  });
 
   socket.on(
     SocketClientToServerEvents.INSIDE_OUTSIDE_TOWER_ENTRANCE,

@@ -20,6 +20,9 @@ import { handleAcolyteOrMortimerEnteredOrExitedHS } from "./entered-exited-hs";
 import { VoidFunction } from "../../interfaces/generics";
 import handleRequestedToShowArtifacts from "./requested-to-show-artifacts";
 import handleArtifactsSearchValidatedReset from "./artifacts-search-validated-reset";
+import { io } from "../..";
+import { getNonAcolytePlayersSocketId } from "../../helpers/socket.helpers";
+import { Location } from "../../interfaces/geolocalization";
 
 function handleConnection(socket: Socket) {
   console.log("Client connected to the server socket.");
@@ -128,6 +131,8 @@ async function handleDisconnection(socket: Socket) {
       socketUser._id,
       false
     );
+  } else if (socketUser?.rol === USER_ROLES.ACOLYTE) {
+    await informNonAcolytesAboutAcolyteExitFromSwamp(socketUser._id);
   }
 
   const updatedUser = (await User.updateUserByField(
@@ -154,6 +159,24 @@ async function notifyMortimerAboutAcolyteDisconnection(
       .to(mortimerSocketId)
       .emit(SocketServerToClientEvents.ACOLYTE_DISCONNECTED, acolyte.email);
   }
+}
+
+async function informNonAcolytesAboutAcolyteExitFromSwamp(
+  exitingAcolyteId: Types.ObjectId
+) {
+  const nonAcolytePlayersSocketId = await getNonAcolytePlayersSocketId();
+
+  const nullLocation: Location = {
+    type: "Point",
+    coordinates: [0, 0],
+  };
+
+  // Reflect acolyte's app closing when they are inside "The Swamp" screen in non-acolyte players' app
+  io.to(nonAcolytePlayersSocketId).emit(
+    SocketServerToClientEvents.ACOLYTE_POSITION_CHANGED,
+    exitingAcolyteId,
+    nullLocation
+  );
 }
 
 export default handleConnection;

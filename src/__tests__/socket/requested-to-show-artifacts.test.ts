@@ -1,24 +1,24 @@
-import { Socket } from "socket.io";
 import handleRequestedToShowArtifacts from "../../socket/handlers/requested-to-show-artifacts";
 import { SocketServerToClientEvents } from "../../constants";
+import { io } from "../../index";
 
-jest.mock("socket.io", () => ({
-  Socket: jest.fn().mockImplementation(() => ({
-    emit: jest.fn(),
-  })),
-}));
+jest.clearAllMocks();
 
 describe("handleRequestedToShowArtifacts", () => {
-  let socket: any;
+  let mockEmit: jest.Mock;
+  let mockTo: jest.Mock;
 
   beforeEach(() => {
-    socket = new (Socket as unknown as jest.Mock)();
+    mockEmit = jest.fn();
+    mockTo = jest.fn().mockReturnValue({ emit: mockEmit });
+
+    jest.spyOn(io, "to").mockImplementation(mockTo);
   });
 
-  it("should emit the REQUESTED_TO_SHOW_ARTIFACTS event", () => {
-    handleRequestedToShowArtifacts(socket);
+  it("should emit the REQUESTED_TO_SHOW_ARTIFACTS event", async () => {
+    await handleRequestedToShowArtifacts();
 
-    expect(socket.emit).toHaveBeenCalledWith(
+    expect(mockEmit).toHaveBeenCalledWith(
       SocketServerToClientEvents.REQUESTED_TO_SHOW_ARTIFACTS
     );
   });

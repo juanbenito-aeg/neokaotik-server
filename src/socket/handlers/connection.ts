@@ -19,6 +19,7 @@ import handleArtifactPressed from "./artifact-pressed";
 import { handleAcolyteOrMortimerEnteredOrExitedHS } from "./entered-exited-hs";
 import { VoidFunction } from "../../interfaces/generics";
 import handleRequestedToShowArtifacts from "./requested-to-show-artifacts";
+import handleArtifactsSearchValidatedReset from "./artifacts-search-validated-reset";
 
 function handleConnection(socket: Socket) {
   console.log("Client connected to the server socket.");
@@ -76,6 +77,13 @@ function handleConnection(socket: Socket) {
     SocketClientToServerEvents.ARTIFACT_PRESSED,
     (acolyteId: Types.ObjectId, artifactId: Types.ObjectId) => {
       handleArtifactPressed(acolyteId, artifactId, socket.id);
+    }
+  );
+
+  socket.on(
+    SocketClientToServerEvents.ARTIFACTS_SEARCH_VALIDATED_RESET,
+    (isSearchValidated: boolean) => {
+      handleArtifactsSearchValidatedReset(isSearchValidated, socket.id);
     }
   );
 

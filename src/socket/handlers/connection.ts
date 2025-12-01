@@ -44,7 +44,7 @@ function handleConnection(socket: Socket) {
   );
 
   socket.on(SocketClientToServerEvents.REQUESTED_TO_SHOW_ARTIFACTS, () => {
-    handleRequestedToShowArtifacts(socket);
+    handleRequestedToShowArtifacts();
   });
 
   socket.on(

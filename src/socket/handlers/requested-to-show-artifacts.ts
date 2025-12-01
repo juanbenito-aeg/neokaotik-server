@@ -1,8 +1,24 @@
-import { Socket } from "socket.io";
 import { SocketServerToClientEvents } from "../../constants";
+import User from "../../database/userDatabase";
+import USER_ROLES from "../../roles/roles";
+import { io } from "../..";
 
-function handleRequestedToShowArtifacts(socket: Socket) {
-  socket.emit(SocketServerToClientEvents.REQUESTED_TO_SHOW_ARTIFACTS);
+async function handleRequestedToShowArtifacts() {
+  const acolytes = await User.getAcolytes();
+  const mortimer = await User.getUserByField({ rol: USER_ROLES.MORTIMER });
+  let acolytesSocketId: string[] = [];
+  acolytes.map((acolyte) => {
+    acolytesSocketId.push(acolyte.socketId);
+  });
+
+  const collectedSocketsId: string[] = [
+    mortimer!.socketId,
+    ...acolytesSocketId,
+  ];
+
+  io.to(collectedSocketsId).emit(
+    SocketServerToClientEvents.REQUESTED_TO_SHOW_ARTIFACTS
+  );
 }
 
 export default handleRequestedToShowArtifacts;

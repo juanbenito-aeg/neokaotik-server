@@ -54,9 +54,12 @@ const updateUsersByField = async (
   }
 };
 
-const getAcolytes = async () => {
+const getAcolytes = async (fieldsToIncludeOrExclude = "") => {
   try {
-    const acolytes = await userModel.find({ rol: "acolyte" });
+    const acolytes = await userModel.find(
+      { rol: "acolyte" },
+      fieldsToIncludeOrExclude
+    );
     return acolytes;
   } catch (error: any) {
     throw error;

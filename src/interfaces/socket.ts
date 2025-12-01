@@ -30,6 +30,9 @@ interface ServerToClientEvents {
     isInsideHS: boolean
   ) => void;
   [SocketServerToClientEvents.REQUESTED_TO_SHOW_ARTIFACTS]: () => void;
+  [SocketServerToClientEvents.ARTIFACTS_SEARCH_VALIDATION_RESET_MANAGED]: (
+    acolytesHaveCompletedArtifactsSearch: boolean
+  ) => void;
 }
 
 // Declaration of the events used when receiving events from the client
@@ -57,6 +60,9 @@ interface ClientToServerEvents {
     acknowledgeEvent: VoidFunction
   ) => void;
   [SocketClientToServerEvents.REQUESTED_TO_SHOW_ARTIFACTS]: () => void;
+  [SocketClientToServerEvents.ARTIFACTS_SEARCH_VALIDATED_RESET]: (
+    isSearchValidated: boolean
+  ) => void;
 }
 
 interface AcolyteDataToBroadcast {

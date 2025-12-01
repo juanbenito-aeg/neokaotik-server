@@ -6,6 +6,7 @@ enum SocketServerToClientEvents {
   ARTIFACT_COLLECTED = "artifact collected",
   ENTERED_EXITED_HS = "player entered/exited HS",
   REQUESTED_TO_SHOW_ARTIFACTS = "requested to show artifacts",
+  ARTIFACTS_SEARCH_VALIDATION_RESET_MANAGED = "artifacts search validation/reset managed",
 }
 
 enum SocketClientToServerEvents {
@@ -18,6 +19,7 @@ enum SocketClientToServerEvents {
   ARTIFACT_PRESSED = "artifact pressed",
   ENTERED_EXITED_HS = "player entered/exited HS",
   REQUESTED_TO_SHOW_ARTIFACTS = "requested to show artifacts",
+  ARTIFACTS_SEARCH_VALIDATED_RESET = "artifacts search validated/reset",
 }
 
 enum SocketGeneralEvents {

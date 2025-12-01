@@ -11,7 +11,7 @@ import type {
   ClientToServerEvents,
   ServerToClientEvents,
 } from "./interfaces/socket";
-import { SocketGeneralEvents, MqttEvents } from "./constants";
+import { SocketGeneralEvents, MqttEvents, Environment } from "./constants";
 import handleConnection from "./socket/handlers/connection";
 import mqtt from "mqtt";
 import { handleConnect, handleMessage } from "./mqtt/handlers/generics";
@@ -37,7 +37,11 @@ client.on(MqttEvents.MESSAGE, handleMessage);
 
 async function start() {
   try {
-    await mongoose.connect(process.env.MONGODB_ROUTE!);
+    const mongoDbUri =
+      process.env.NODE_ENV === Environment.TEST
+        ? process.env.MONGODB_URI_TEST
+        : process.env.MONGODB_URI_PRODUCTION;
+    await mongoose.connect(mongoDbUri!);
 
     const PORT = +(process.env.PORT || 3000);
     httpServer.listen(PORT, () => {
@@ -52,4 +56,4 @@ async function start() {
 
 start();
 
-export { io, client };
+export { app, io, client };

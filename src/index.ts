@@ -43,10 +43,14 @@ async function start() {
         : process.env.MONGODB_URI_PRODUCTION;
     await mongoose.connect(mongoDbUri!);
 
-    const PORT = +(process.env.PORT || 3000);
-    httpServer.listen(PORT, () => {
-      console.log(`API is listening on port ${PORT}.`);
-    });
+    // When running tests, do not explicitly listen on a port & let "supertest" choose the first available one
+    // Doing so, each test suite will run on a different port & there will be no conflicts
+    if (process.env.NODE_ENV !== Environment.TEST) {
+      const PORT = +(process.env.PORT || 3000);
+      httpServer.listen(PORT, () => {
+        console.log(`API is listening on port ${PORT}.`);
+      });
+    }
 
     console.log("You are now connected to Mongo.");
   } catch (error: any) {

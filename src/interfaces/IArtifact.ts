@@ -5,7 +5,6 @@ import { Location } from "./geolocalization";
 interface IArtifact {
   _id: Types.ObjectId;
   name: string;
-  source: string;
   state: ArtifactState;
   location: Location;
 }

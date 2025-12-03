@@ -29,10 +29,10 @@ describe("GET /user/get-acolytes", () => {
 });
 
 describe("PATCH /user/update/:userEmail", () => {
-  it("should update the user with the specified email", async () => {
-    const fieldToUpdate = "experience";
-    const newValue = 61000;
+  const fieldToUpdate = "experience";
+  const newValue = 61000;
 
+  it("should update the user with the specified email", async () => {
     const response = await request(app)
       .patch("/user/update/juan.benito@ikasle.aeg.eus")
       .send({ [fieldToUpdate]: newValue });
@@ -42,5 +42,19 @@ describe("PATCH /user/update/:userEmail", () => {
     const user: IPlayer = response.body;
 
     expect(user[fieldToUpdate]).toEqual(newValue);
+  });
+
+  it("should answer with a 403 Forbidden error when no user with the specified email exists in the DB", async () => {
+    const invalidEmail = "j.b@ikasle.aeg.eus";
+
+    const response = await request(app)
+      .patch(`/user/update/${invalidEmail}`)
+      .send({ [fieldToUpdate]: newValue });
+
+    expect(response.statusCode).toBe(403);
+
+    const errorMessage = `Cannot find user with the email "${invalidEmail}".`;
+
+    expect(response.body.data.error).toBe(errorMessage);
   });
 });

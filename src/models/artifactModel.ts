@@ -14,7 +14,6 @@ const pointSchema = new Schema(
 
 const artifactSchema = new Schema<IArtifact>({
   name: { type: String, required: true },
-  source: { type: String, required: true },
   state: {
     type: String,
     required: true,

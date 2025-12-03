@@ -177,10 +177,10 @@ const updateUser = async (req: Request, res: Response) => {
   try {
     const updatedUser = await userService.updateUser(userEmail, body);
 
-    if (!updateUser) {
+    if (!updatedUser) {
       return res.status(403).send({
         status: "FAILED",
-        data: { error: `Can't find user with the Email: ${userEmail}` },
+        data: { error: `Cannot find user with the email "${userEmail}".` },
       });
     }
     console.log("User updated successfully.");

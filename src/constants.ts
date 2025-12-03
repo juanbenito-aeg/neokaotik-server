@@ -1,3 +1,9 @@
+enum Environment {
+  TEST = "test",
+  DEVELOPMENT = "development",
+  PRODUCTION = "production",
+}
+
 enum SocketServerToClientEvents {
   ACOLYTE_INSIDE_OUTSIDE_LAB = "acolyte inside/outside lab",
   ACOLYTE_DISCONNECTED = "acolyte disconnected",
@@ -61,6 +67,7 @@ enum ArtifactState {
 }
 
 export {
+  Environment,
   SocketServerToClientEvents,
   SocketClientToServerEvents,
   SocketGeneralEvents,

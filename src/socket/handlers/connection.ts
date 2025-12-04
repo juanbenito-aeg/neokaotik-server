@@ -76,16 +76,7 @@ function handleConnection(socket: Socket) {
 
   socket.on(SocketClientToServerEvents.ACOLYTE_MOVED, handleAcolyteMoved);
 
-  socket.on(
-    SocketClientToServerEvents.ARTIFACT_PRESSED,
-    (
-      acolyteId: Types.ObjectId,
-      acolyteLocation: Location,
-      artifactId: Types.ObjectId
-    ) => {
-      handleArtifactPressed(acolyteId, acolyteLocation, artifactId, socket.id);
-    }
-  );
+  socket.on(SocketClientToServerEvents.ARTIFACT_PRESSED, handleArtifactPressed);
 
   socket.on(
     SocketClientToServerEvents.ARTIFACTS_SEARCH_VALIDATED_RESET,

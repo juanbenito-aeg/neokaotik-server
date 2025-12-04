@@ -5,12 +5,12 @@ import userDatabase from "../../database/userDatabase";
 import USER_ROLES from "../../roles/roles";
 import { io } from "../..";
 import { Location } from "../../interfaces/geolocalization";
+import { getAcolytesSocketId } from "../../helpers/socket.helpers";
 
 async function handleArtifactPressed(
   acolyteId: Types.ObjectId,
   acolyteLocation: Location,
-  artifactId: Types.ObjectId,
-  socketId: string
+  artifactId: Types.ObjectId
 ) {
   console.log(
     `Handling tap of acolyte with _id "${acolyteId}" on artifact with _id "${artifactId}"...`
@@ -39,23 +39,28 @@ async function handleArtifactPressed(
       { found_artifacts: [...found_artifacts!, artifactId] }
     );
 
-    // Emit "artifact collected" to collector & Mortimer
+    // Emit "artifact collected" to acolytes & Mortimer
+
+    const acolytesSocketIds = await getAcolytesSocketId();
 
     const { socketId: mortimerSocketId } = (await userDatabase.getUserByField(
       { rol: USER_ROLES.MORTIMER },
       "socketId"
     ))!;
 
-    const collectorAndMortimerSocketIds = [socketId, mortimerSocketId];
+    const acolytesAndMortimerSocketIds = [
+      ...acolytesSocketIds,
+      mortimerSocketId,
+    ];
 
-    io.to(collectorAndMortimerSocketIds).emit(
+    io.to(acolytesAndMortimerSocketIds).emit(
       SocketServerToClientEvents.ARTIFACT_COLLECTED,
       acolyteId,
       artifactId
     );
 
     console.log(
-      `Acolyte with _id "${acolyteId}" & Mortimer have been informed about artifact's (with _id "${artifactId}") collection.`
+      `Acolytes & Mortimer have been informed about artifact's (with _id "${artifactId}") collection.`
     );
   } else {
     console.log(

@@ -1,11 +1,10 @@
-import { HydratedDocument } from "mongoose";
 import { ArtifactState, SocketServerToClientEvents } from "../../constants";
 import artifactDatabase from "../../database/artifactDatabase";
 import userDatabase from "../../database/userDatabase";
 import { Fields } from "../../interfaces/generics";
 import USER_ROLES from "../../roles/roles";
-import IPlayer from "../../interfaces/IPlayer";
 import { io } from "../..";
+import { getAcolytesSocketId } from "../../helpers/socket.helpers";
 
 async function handleArtifactsSearchValidatedReset(
   isSearchValidated: boolean,
@@ -17,9 +16,9 @@ async function handleArtifactsSearchValidatedReset(
 
   await updateAcolytesAndArtifactsFields(isSearchValidated);
 
-  const acolytesSocketIds = await getAcolytesSocketIds();
+  const acolytesSocketId = await getAcolytesSocketId();
 
-  const relevantSocketIds = [mortimerSocketId, ...acolytesSocketIds];
+  const relevantSocketIds = [mortimerSocketId, ...acolytesSocketId];
 
   io.to(relevantSocketIds).emit(
     SocketServerToClientEvents.ARTIFACTS_SEARCH_VALIDATION_RESET_MANAGED,
@@ -51,16 +50,6 @@ async function updateAcolytesAndArtifactsFields(isSearchValidated: boolean) {
     { rol: USER_ROLES.ACOLYTE },
     changesToApplyToAcolytes
   );
-}
-
-async function getAcolytesSocketIds() {
-  const acolytes: HydratedDocument<IPlayer>[] = await userDatabase.getAcolytes(
-    "socketId"
-  );
-
-  const acolytesSocketIds = acolytes.map((acolyte) => acolyte.socketId);
-
-  return acolytesSocketIds;
 }
 
 export default handleArtifactsSearchValidatedReset;

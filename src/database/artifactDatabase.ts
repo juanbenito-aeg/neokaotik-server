@@ -1,5 +1,14 @@
+import { Types } from "mongoose";
 import Artifact from "../models/artifactModel";
 import { Fields } from "../interfaces/generics";
+
+async function getArtifactById(
+  id: Types.ObjectId,
+  fieldsToIncludeOrExclude = ""
+) {
+  const artifact = await Artifact.findById(id, fieldsToIncludeOrExclude);
+  return artifact;
+}
 
 async function getArtifacts() {
   const artifacts = await Artifact.find({});
@@ -13,4 +22,4 @@ async function updateArtifactsByField(
   await Artifact.updateMany(fieldToFilterBy, changesToApply);
 }
 
-export default { getArtifacts, updateArtifactsByField };
+export default { getArtifactById, getArtifacts, updateArtifactsByField };

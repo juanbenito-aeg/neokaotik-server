@@ -52,6 +52,7 @@ interface ClientToServerEvents {
   ) => void;
   [SocketClientToServerEvents.ARTIFACT_PRESSED]: (
     acolyteId: Types.ObjectId,
+    acolyteLocation: Location,
     artifactId: Types.ObjectId
   ) => void;
   [SocketClientToServerEvents.ENTERED_EXITED_HS]: (

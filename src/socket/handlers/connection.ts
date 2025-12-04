@@ -78,8 +78,12 @@ function handleConnection(socket: Socket) {
 
   socket.on(
     SocketClientToServerEvents.ARTIFACT_PRESSED,
-    (acolyteId: Types.ObjectId, artifactId: Types.ObjectId) => {
-      handleArtifactPressed(acolyteId, artifactId, socket.id);
+    (
+      acolyteId: Types.ObjectId,
+      acolyteLocation: Location,
+      artifactId: Types.ObjectId
+    ) => {
+      handleArtifactPressed(acolyteId, acolyteLocation, artifactId, socket.id);
     }
   );
 

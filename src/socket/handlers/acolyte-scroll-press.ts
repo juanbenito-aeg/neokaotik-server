@@ -10,7 +10,7 @@ async function handleAcolyteScrollPress(isPressed: boolean) {
   if (!isPressed) return;
 
   const fieldToFilterBy = { rol: USER_ROLES.MORTIMER };
-  const fieldsToIncludeOrExclude = "-_id pushToken";
+  const fieldsToIncludeOrExclude = "pushToken";
 
   const mortimer = (await User.getUserByField(
     fieldToFilterBy,
@@ -18,7 +18,7 @@ async function handleAcolyteScrollPress(isPressed: boolean) {
   ))!;
 
   if (mortimer.pushToken) {
-    const notificationBody = "Scroll found";
+    const notificationBody = "Scroll found.";
     const notificationTitle = "Acolyte Discovery";
     const data = {
       type: NotificationTypes.INFO,

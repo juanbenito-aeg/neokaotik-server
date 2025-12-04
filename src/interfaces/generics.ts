@@ -1,5 +1,7 @@
+type VoidFunction = () => void;
+
 interface Fields {
   [key: string]: any;
 }
 
-export type { Fields };
+export type { VoidFunction, Fields };

@@ -137,12 +137,10 @@ const getUser = async (req: Request, res: Response) => {
   } = req;
 
   if (!userEmail) {
-    return res
-      .status(400)
-      .send({
-        status: "FAILED",
-        data: { error: "Parameter ':userEmail' cannot be empty" },
-      });
+    return res.status(400).send({
+      status: "FAILED",
+      data: { error: "Parameter ':userEmail' cannot be empty" },
+    });
   }
 
   try {
@@ -179,10 +177,10 @@ const updateUser = async (req: Request, res: Response) => {
   try {
     const updatedUser = await userService.updateUser(userEmail, body);
 
-    if (!updateUser) {
+    if (!updatedUser) {
       return res.status(403).send({
         status: "FAILED",
-        data: { error: `Can't find user with the Email: ${userEmail}` },
+        data: { error: `Cannot find user with the email "${userEmail}".` },
       });
     }
     console.log("User updated successfully.");
@@ -212,6 +210,15 @@ const getAcolytes = async (req: Request, res: Response) => {
   }
 };
 
+const getNonAcolytePlayers = async (req: Request, res: Response) => {
+  try {
+    const nonAcolytePlayers = await userService.getNonAcolytePlayers();
+    res.send(nonAcolytePlayers);
+  } catch (error: any) {
+    res.status(500).send(error.message);
+  }
+};
+
 const userController = {
   getMongoUser,
   getKaotikaUser,
@@ -220,6 +227,7 @@ const userController = {
   getUser,
   updateUser,
   getAcolytes,
+  getNonAcolytePlayers,
 };
 
 export default userController;

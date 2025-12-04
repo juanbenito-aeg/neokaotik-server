@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import userRouter from "./routes/userRoutes";
+import artifactRoutes from "./routes/artifactRoutes";
 import mongoose from "mongoose";
 import { initializeApp, applicationDefault } from "firebase-admin/app";
 import "dotenv/config";
@@ -10,7 +11,7 @@ import type {
   ClientToServerEvents,
   ServerToClientEvents,
 } from "./interfaces/socket";
-import { SocketGeneralEvents, MqttEvents } from "./constants";
+import { SocketGeneralEvents, MqttEvents, Environment } from "./constants";
 import handleConnection from "./socket/handlers/connection";
 import mqtt from "mqtt";
 import fs from "node:fs";
@@ -27,6 +28,7 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer);
 
 app.use(bodyParser.json());
 app.use("/user", userRouter);
+app.use("/api/artifacts", artifactRoutes);
 
 io.on(SocketGeneralEvents.CONNECTION, handleConnection);
 
@@ -45,12 +47,20 @@ client.on(MqttEvents.MESSAGE, handleMessage);
 
 async function start() {
   try {
-    await mongoose.connect(process.env.MONGODB_ROUTE!);
+    const mongoDbUri =
+      process.env.NODE_ENV === Environment.TEST
+        ? process.env.MONGODB_URI_TEST
+        : process.env.MONGODB_URI_PRODUCTION;
+    await mongoose.connect(mongoDbUri!);
 
-    const PORT = +(process.env.PORT || 3000);
-    httpServer.listen(PORT, () => {
-      console.log(`API is listening on port ${PORT}.`);
-    });
+    // When running tests, do not explicitly listen on a port & let "supertest" choose the first available one
+    // Doing so, each test suite will run on a different port & there will be no conflicts
+    if (process.env.NODE_ENV !== Environment.TEST) {
+      const PORT = +(process.env.PORT || 3000);
+      httpServer.listen(PORT, () => {
+        console.log(`API is listening on port ${PORT}.`);
+      });
+    }
 
     console.log("You are now connected to Mongo.");
   } catch (error: any) {
@@ -60,4 +70,4 @@ async function start() {
 
 start();
 
-export { io, client };
+export { app, io, client };

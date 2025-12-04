@@ -54,13 +54,21 @@ const updateUsersByField = async (
   }
 };
 
-const getAcolytes = async () => {
+const getAcolytes = async (fieldsToIncludeOrExclude = "") => {
   try {
-    const acolytes = await userModel.find({ rol: "acolyte" });
+    const acolytes = await userModel.find(
+      { rol: "acolyte" },
+      fieldsToIncludeOrExclude
+    );
     return acolytes;
   } catch (error: any) {
     throw error;
   }
+};
+
+const getNonAcolytePlayers = async () => {
+  const nonAcolytePlayers = await userModel.find({ rol: { $ne: "acolyte" } });
+  return nonAcolytePlayers;
 };
 
 const userDatabase = {
@@ -69,6 +77,7 @@ const userDatabase = {
   updateUserByField,
   updateUsersByField,
   getAcolytes,
+  getNonAcolytePlayers,
 };
 
 export default userDatabase;

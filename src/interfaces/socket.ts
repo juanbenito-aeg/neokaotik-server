@@ -2,6 +2,9 @@ import {
   SocketServerToClientEvents,
   SocketClientToServerEvents,
 } from "../constants";
+import { Types } from "mongoose";
+import { Location } from "./geolocalization";
+import { VoidFunction } from "./generics";
 
 // Declaration of the events used when sending and broadcasting events to the client
 interface ServerToClientEvents {
@@ -13,6 +16,22 @@ interface ServerToClientEvents {
   ) => void;
   [SocketServerToClientEvents.ACOLYTE_TOWER_ACCESS]: (
     acolyteData: AcolyteDataToAccessOrExitTower
+  ) => void;
+  [SocketServerToClientEvents.ACOLYTE_POSITION_CHANGED]: (
+    acolyteId: Types.ObjectId,
+    acolyteLocation: Location
+  ) => void;
+  [SocketServerToClientEvents.ARTIFACT_COLLECTED]: (
+    acolyteId: Types.ObjectId,
+    artifactId: Types.ObjectId
+  ) => void;
+  [SocketServerToClientEvents.ENTERED_EXITED_HS]: (
+    acolyteOrMortimerId: Types.ObjectId,
+    isInsideHS: boolean
+  ) => void;
+  [SocketServerToClientEvents.REQUESTED_TO_SHOW_ARTIFACTS]: () => void;
+  [SocketServerToClientEvents.ARTIFACTS_SEARCH_VALIDATION_RESET_MANAGED]: (
+    acolytesHaveCompletedArtifactsSearch: boolean
   ) => void;
 }
 
@@ -27,6 +46,23 @@ interface ClientToServerEvents {
     acolyteIsInEntranceTower: boolean
   ) => void;
   [SocketClientToServerEvents.REMOVE_SPELL_PRESS]: () => void;
+  [SocketClientToServerEvents.ACOLYTE_MOVED]: (
+    acolyteId: Types.ObjectId,
+    acolyteLocation: Location
+  ) => void;
+  [SocketClientToServerEvents.ARTIFACT_PRESSED]: (
+    acolyteId: Types.ObjectId,
+    artifactId: Types.ObjectId
+  ) => void;
+  [SocketClientToServerEvents.ENTERED_EXITED_HS]: (
+    acolyteOrMortimerId: Types.ObjectId,
+    isInsideHS: boolean,
+    acknowledgeEvent: VoidFunction
+  ) => void;
+  [SocketClientToServerEvents.REQUESTED_TO_SHOW_ARTIFACTS]: () => void;
+  [SocketClientToServerEvents.ARTIFACTS_SEARCH_VALIDATED_RESET]: (
+    isSearchValidated: boolean
+  ) => void;
 }
 
 interface AcolyteDataToBroadcast {
@@ -46,6 +82,7 @@ interface FieldsToUseInDisconnection {
   isInside?: boolean;
   is_in_tower_entrance?: boolean;
   is_inside_tower?: boolean;
+  is_inside_hs?: boolean;
 }
 
 export type {

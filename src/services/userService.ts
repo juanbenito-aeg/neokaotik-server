@@ -149,6 +149,11 @@ const getAcolytes = async () => {
   }
 };
 
+const getNonAcolytePlayers = async () => {
+  const nonAcolytePlayers = await User.getNonAcolytePlayers();
+  return nonAcolytePlayers;
+};
+
 const userService = {
   getUser,
   createUser,
@@ -157,6 +162,7 @@ const userService = {
   loginUser,
   logedUser,
   getAcolytes,
+  getNonAcolytePlayers,
 };
 
 export default userService;

@@ -33,18 +33,7 @@ function handleConnection(socket: Socket) {
 
   socket.on(
     SocketClientToServerEvents.ENTERED_EXITED_HS,
-    (
-      acolyteOrMortimerId: Types.ObjectId,
-      isInsideHS: boolean,
-      acknowledgeEvent: VoidFunction
-    ) => {
-      handleAcolyteOrMortimerEnteredOrExitedHS(
-        acolyteOrMortimerId,
-        isInsideHS,
-        acknowledgeEvent,
-        socket
-      );
-    }
+    handleAcolyteOrMortimerEnteredOrExitedHS
   );
 
   socket.on(SocketClientToServerEvents.REQUESTED_TO_SHOW_ARTIFACTS, () => {

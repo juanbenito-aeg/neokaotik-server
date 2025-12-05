@@ -1,28 +1,21 @@
-import { Socket } from "socket.io";
 import { Types } from "mongoose";
 import { handleAcolyteOrMortimerEnteredOrExitedHS } from "../../socket/handlers/entered-exited-hs";
 import User from "../../database/userDatabase";
 import { SocketServerToClientEvents } from "../../constants";
 import { sendMessageToOneOrMoreRecipients } from "../../utils";
+import { io } from "../../index";
 
 jest.mock("../../database/userDatabase");
 jest.mock("../../utils");
 
-jest.mock("socket.io", () => ({
-  Socket: jest.fn().mockImplementation(() => ({
-    emit: jest.fn(),
-    broadcast: {
-      emit: jest.fn(),
-    },
-  })),
-}));
-
 describe("entered-exited-hs socket event", () => {
-  let socket: Socket;
+  let mockEmit: any;
   let mockAcknowledgeEvent: jest.Mock;
 
   beforeEach(() => {
-    socket = new (Socket as unknown as jest.Mock)();
+    mockEmit = jest.fn();
+    jest.spyOn(io, "emit").mockImplementation(mockEmit);
+
     mockAcknowledgeEvent = jest.fn();
 
     User.getAcolytes = jest.fn();
@@ -40,8 +33,7 @@ describe("entered-exited-hs socket event", () => {
     await handleAcolyteOrMortimerEnteredOrExitedHS(
       acolyteOrMortimerId,
       isInsideHS,
-      mockAcknowledgeEvent,
-      socket
+      mockAcknowledgeEvent
     );
 
     expect(User.updateUserByField).toHaveBeenCalledWith(
@@ -57,11 +49,10 @@ describe("entered-exited-hs socket event", () => {
     await handleAcolyteOrMortimerEnteredOrExitedHS(
       acolyteOrMortimerId,
       isInsideHS,
-      mockAcknowledgeEvent,
-      socket
+      mockAcknowledgeEvent
     );
 
-    expect(socket.broadcast.emit).toHaveBeenCalledWith(
+    expect(io.emit).toHaveBeenCalledWith(
       SocketServerToClientEvents.ENTERED_EXITED_HS,
       acolyteOrMortimerId,
       isInsideHS
@@ -90,8 +81,7 @@ describe("entered-exited-hs socket event", () => {
     await handleAcolyteOrMortimerEnteredOrExitedHS(
       acolyteOrMortimerId,
       isInsideHS,
-      mockAcknowledgeEvent,
-      socket
+      mockAcknowledgeEvent
     );
 
     expect(sendMessageToOneOrMoreRecipients).not.toHaveBeenCalled();

@@ -58,3 +58,33 @@ describe("PATCH /user/update/:userEmail", () => {
     expect(response.body.data.error).toBe(errorMessage);
   });
 });
+
+describe("GET /user/non-acolyte-players", () => {
+  it("should return all players that are not acolytes", async () => {
+    const response = await request(app).get("/user/non-acolyte-players");
+
+    const nonAcolytes: IPlayer[] = response.body;
+
+    expect(response.statusCode).toBe(200);
+    expect(nonAcolytes).not.toBeNull();
+    expect(nonAcolytes.length).toBeGreaterThan(0);
+  });
+});
+
+describe("GET /user/get/:userEmail", () => {
+  it("should return player with the specified email", async () => {
+    const email = "oskar.calvo@aeg.eus";
+    const response = await request(app).get(`/user/get/${email}`);
+
+    expect.objectContaining({ email: email });
+    expect(response.statusCode).toBe(200);
+  });
+
+  it("should return an error if the email is invalid", async () => {
+    const email = "p.j@km.es";
+    const response = await request(app).get(`/user/get/${email}`);
+
+    expect(response.statusCode).toBe(403);
+    expect(response.body.errorMessage).not.toBeNull();
+  });
+});

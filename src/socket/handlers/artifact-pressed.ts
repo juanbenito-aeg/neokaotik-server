@@ -16,6 +16,12 @@ async function handleArtifactPressed(
     `Handling tap of acolyte with _id "${acolyteId}" on artifact with _id "${artifactId}"...`
   );
 
+  await isArtifactAvailable(artifactId);
+  if (!isArtifactAvailable(artifactId)) {
+    console.log(`Artifact with ID "${artifactId}" cannot be collected.`);
+    return;
+  }
+
   const distanceBetweenUserAndArtifact =
     await calculateDistanceBetweenUserAndArtifact(acolyteLocation, artifactId);
 
@@ -67,6 +73,30 @@ async function handleArtifactPressed(
       `Distance between acolyte with _id "${acolyteId}" & artifact with _id "${artifactId}" is of 1 m or more, so the tap has had no effect`
     );
   }
+}
+
+async function isArtifactAvailable(artifactId: Types.ObjectId) {
+  const acolytes = await userDatabase.getAcolytes();
+  const artifact = await artifactDatabase.getArtifactById(artifactId, "state");
+
+  const isArtifactAvailable = artifact?.state === ArtifactState.ACTIVE;
+
+  if (!isArtifactAvailable) {
+    console.log(`Artifact with ID ${artifactId} is not available`);
+    return false;
+  }
+
+  const artifactHasBeenCollected = acolytes.find((acolyte) =>
+    acolyte.found_artifacts?.includes(artifactId)
+  );
+
+  if (artifactHasBeenCollected) {
+    console.log(`Artifact with ID ${artifactId} has already been collected.`);
+    return false;
+  }
+
+  console.log(`Artifact with ID ${artifactId} is available for collection.`);
+  return true;
 }
 
 async function calculateDistanceBetweenUserAndArtifact(

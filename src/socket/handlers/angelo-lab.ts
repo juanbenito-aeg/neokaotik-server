@@ -1,7 +1,7 @@
 import { SocketServerToClientEvents } from "../../constants/socket";
 import User from "../../database/userDatabase";
 import { AcolyteDataToBroadcast } from "../../interfaces/socket";
-import USER_ROLES from "../../roles/roles";
+import { UserRole } from "../../constants/player";
 import { io } from "../..";
 
 async function handleAccessToExitFromLab(
@@ -37,7 +37,7 @@ async function handleAccessToExitFromLab(
   const acolyteSocketId: string = updatedAcolyte?.socketId!;
 
   const mortimer = await User.getUserByField({
-    rol: USER_ROLES.MORTIMER,
+    rol: UserRole.MORTIMER,
   });
   const mortimerSocketId: string = mortimer?.socketId!;
 

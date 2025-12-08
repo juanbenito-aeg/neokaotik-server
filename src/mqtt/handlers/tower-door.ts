@@ -7,7 +7,7 @@ import {
 import { MqttTopics } from "../../constants/mqtt";
 import { SocketServerToClientEvents } from "../../constants/socket";
 import User from "../../database/userDatabase";
-import USER_ROLES from "../../roles/roles";
+import { UserRole } from "../../constants/player";
 import { sendMessageToOneOrMoreRecipients } from "../../utils";
 import IPlayer from "../../interfaces/IPlayer";
 
@@ -47,7 +47,7 @@ async function handlerTowerDoor(cardId: string) {
 async function sendAcolyteEnteredExitedNotification(
   acolyte: HydratedDocument<IPlayer>
 ) {
-  const fieldToFilterBy = { rol: USER_ROLES.MORTIMER };
+  const fieldToFilterBy = { rol: UserRole.MORTIMER };
   const fieldsToIncludeOrExclude = "pushToken";
 
   const mortimer = (await User.getUserByField(

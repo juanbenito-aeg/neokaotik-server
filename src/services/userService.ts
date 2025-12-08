@@ -1,7 +1,6 @@
 import User from "../database/userDatabase";
-import USER_ROLES from "../roles/roles";
+import { UserRole, Email } from "../constants/player";
 import { Methods } from "../constants/general";
-import EMAIL from "../roles/emails";
 import { Fields } from "../interfaces/generics";
 import IPlayer from "../interfaces/IPlayer";
 
@@ -110,14 +109,14 @@ const loginUser = async (userEmail: string, fcmToken: string) => {
 };
 
 const assignRoleByEmail = (email: string) => {
-  if (email.includes(EMAIL.ACOLYTE)) {
-    return USER_ROLES.ACOLYTE;
-  } else if (email === EMAIL.ISTVAN) {
-    return USER_ROLES.ISTVAN;
-  } else if (email === EMAIL.MORTIMER) {
-    return USER_ROLES.MORTIMER;
-  } else if (email === EMAIL.VILLAIN) {
-    return USER_ROLES.VILLAIN;
+  if (email.includes(Email.ACOLYTE)) {
+    return UserRole.ACOLYTE;
+  } else if (email === Email.ISTVAN) {
+    return UserRole.ISTVAN;
+  } else if (email === Email.MORTIMER) {
+    return UserRole.MORTIMER;
+  } else if (email === Email.VILLAIN) {
+    return UserRole.VILLAIN;
   }
 };
 

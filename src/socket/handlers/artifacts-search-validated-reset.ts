@@ -3,7 +3,7 @@ import { SocketServerToClientEvents } from "../../constants/socket";
 import artifactDatabase from "../../database/artifactDatabase";
 import userDatabase from "../../database/userDatabase";
 import { Fields } from "../../interfaces/generics";
-import USER_ROLES from "../../roles/roles";
+import { UserRole } from "../../constants/player";
 import { io } from "../..";
 import { getAcolytesSocketId } from "../../helpers/socket.helpers";
 
@@ -48,7 +48,7 @@ async function updateAcolytesAndArtifactsFields(isSearchValidated: boolean) {
 
   // Update acolytes' "found_artifacts" & "has_completed_artifacts_search" fields (the latter just when the search has been validated)
   await userDatabase.updateUsersByField(
-    { rol: USER_ROLES.ACOLYTE },
+    { rol: UserRole.ACOLYTE },
     changesToApplyToAcolytes
   );
 }

@@ -1,4 +1,4 @@
-import USER_ROLES from "../../roles/roles";
+import { UserRole } from "../../constants/player";
 import User from "../../database/userDatabase";
 import {
   NotificationTypes,
@@ -9,7 +9,7 @@ import { sendMessageToOneOrMoreRecipients } from "../../utils";
 async function handleAcolyteScrollPress(isPressed: boolean) {
   if (!isPressed) return;
 
-  const fieldToFilterBy = { rol: USER_ROLES.MORTIMER };
+  const fieldToFilterBy = { rol: UserRole.MORTIMER };
   const fieldsToIncludeOrExclude = "pushToken";
 
   const mortimer = (await User.getUserByField(

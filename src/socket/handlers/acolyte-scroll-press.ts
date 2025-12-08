@@ -3,7 +3,7 @@ import User from "../../database/userDatabase";
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
-} from "../../constants";
+} from "../../constants/fcm";
 import { sendMessageToOneOrMoreRecipients } from "../../utils";
 
 async function handleAcolyteScrollPress(isPressed: boolean) {

@@ -17,7 +17,6 @@ import handleRemoveSpellPress from "./remove-spell-press";
 import handleAcolyteMoved from "./acolyte-moved";
 import handleArtifactPressed from "./artifact-pressed";
 import { handleAcolyteOrMortimerEnteredOrExitedHS } from "./entered-exited-hs";
-import { VoidFunction } from "../../interfaces/generics";
 import handleRequestedToShowArtifacts from "./requested-to-show-artifacts";
 import handleArtifactsSearchValidatedReset from "./artifacts-search-validated-reset";
 import { io } from "../..";

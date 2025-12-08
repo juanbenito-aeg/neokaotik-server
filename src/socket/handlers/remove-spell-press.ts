@@ -1,7 +1,7 @@
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
-} from "../../constants";
+} from "../../constants/fcm";
 import User from "../../database/userDatabase";
 import USER_ROLES from "../../roles/roles";
 import { sendMessageToOneOrMoreRecipients } from "../../utils";

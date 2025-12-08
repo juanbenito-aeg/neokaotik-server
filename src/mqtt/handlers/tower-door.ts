@@ -3,7 +3,7 @@ import { client, io } from "../..";
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
-} from "../../constants";
+} from "../../constants/fcm";
 import { MqttTopics } from "../../constants/mqtt";
 import { SocketServerToClientEvents } from "../../constants/socket";
 import User from "../../database/userDatabase";

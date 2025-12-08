@@ -2,7 +2,7 @@ import { client } from "../..";
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
-} from "../../constants";
+} from "../../constants/fcm";
 import { MqttTopics } from "../../constants/mqtt";
 import User from "../../database/userDatabase";
 import USER_ROLES from "../../roles/roles";

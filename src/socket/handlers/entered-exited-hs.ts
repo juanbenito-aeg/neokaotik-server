@@ -4,7 +4,7 @@ import USER_ROLES from "../../roles/roles";
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
-} from "../../constants";
+} from "../../constants/fcm";
 import { SocketServerToClientEvents } from "../../constants/socket";
 import { sendMessageToOneOrMoreRecipients } from "../../utils";
 import { VoidFunction } from "../../interfaces/generics";

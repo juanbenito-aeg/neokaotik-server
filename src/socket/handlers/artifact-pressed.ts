@@ -16,8 +16,8 @@ async function handleArtifactPressed(
     `Handling tap of acolyte with _id "${acolyteId}" on artifact with _id "${artifactId}"...`
   );
 
-  await isArtifactAvailable(artifactId);
-  if (!isArtifactAvailable(artifactId)) {
+  const artifactAvailable = await isArtifactAvailable(artifactId);
+  if (!artifactAvailable) {
     console.log(`Artifact with ID "${artifactId}" cannot be collected.`);
     return;
   }

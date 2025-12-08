@@ -64,26 +64,22 @@ const updateUser = async (userEmail: string, changes: Fields) => {
 const loginUser = async (userEmail: string, fcmToken: string) => {
   try {
     const kaotikaUser = await getKaotikaUser(userEmail);
+
     if (!kaotikaUser) {
       throw new Error(`User not found in Kaotika with email: ${userEmail}`);
     }
 
     const mongoUser = await getUser(userEmail);
 
-    let putOrPost = [];
+    const putOrPost = [];
 
     if (!mongoUser) {
-      const newUser = {
-        active: false,
-        rol: assignRoleByEmail(userEmail),
-        socketId: "",
-        isInside: false,
-        card_id: "",
-        pushToken: fcmToken,
-        is_in_tower_entrance: false,
-        is_inside_tower: false,
-        ...kaotikaUser,
-      };
+      const newDbUserAdditionalFields = getNewDbUserAdditionalFields(
+        userEmail,
+        fcmToken
+      );
+
+      const newUser = { ...kaotikaUser, ...newDbUserAdditionalFields };
 
       const createdUser = await createUser(newUser);
 
@@ -106,6 +102,38 @@ const loginUser = async (userEmail: string, fcmToken: string) => {
   } catch (error) {
     throw error;
   }
+};
+
+const getNewDbUserAdditionalFields = (userEmail: string, fcmToken: string) => {
+  const newDbUserAdditionalFields = {
+    active: false,
+    rol: assignRoleByEmail(userEmail),
+    socketId: "",
+    pushToken: fcmToken,
+  };
+
+  switch (newDbUserAdditionalFields.rol) {
+    case UserRole.ACOLYTE: {
+      Object.assign(newDbUserAdditionalFields, {
+        isInside: false,
+        is_in_tower_entrance: false,
+        is_inside_tower: false,
+        card_id: "",
+        has_been_summoned_to_hos: false,
+        found_artifacts: [],
+        has_completed_artifacts_search: false,
+        is_inside_hs: false,
+      });
+      break;
+    }
+
+    case UserRole.MORTIMER: {
+      Object.assign(newDbUserAdditionalFields, { is_inside_hs: false });
+      break;
+    }
+  }
+
+  return newDbUserAdditionalFields;
 };
 
 const assignRoleByEmail = (email: string) => {

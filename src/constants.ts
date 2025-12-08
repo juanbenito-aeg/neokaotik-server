@@ -9,17 +9,6 @@ enum Methods {
   PUT = 1,
 }
 
-enum MqttEvents {
-  CONNECT = "connect",
-  MESSAGE = "message",
-}
-
-enum MqttTopics {
-  TOWER_CARDID = "tower/cardid",
-  TOWER_ACCESS = "tower/access",
-  TOWER_DOOR = "tower/door",
-}
-
 enum NotificationTypes {
   SUCCESS = "success",
   ERROR = "error",
@@ -40,8 +29,6 @@ enum ArtifactState {
 export {
   Environment,
   Methods,
-  MqttEvents,
-  MqttTopics,
   NotificationTypes,
   ScreenChangingNotificationDestinations,
   ArtifactState,

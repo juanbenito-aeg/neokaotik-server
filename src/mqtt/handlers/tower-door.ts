@@ -1,10 +1,10 @@
 import { HydratedDocument } from "mongoose";
 import { client, io } from "../..";
 import {
-  MqttTopics,
   NotificationTypes,
   ScreenChangingNotificationDestinations,
 } from "../../constants";
+import { MqttTopics } from "../../constants/mqtt";
 import { SocketServerToClientEvents } from "../../constants/socket";
 import User from "../../database/userDatabase";
 import USER_ROLES from "../../roles/roles";

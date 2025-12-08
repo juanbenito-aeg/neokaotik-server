@@ -1,4 +1,5 @@
-import { ArtifactState, SocketServerToClientEvents } from "../../constants";
+import { ArtifactState } from "../../constants";
+import { SocketServerToClientEvents } from "../../constants/socket";
 import artifactDatabase from "../../database/artifactDatabase";
 import userDatabase from "../../database/userDatabase";
 import { Fields } from "../../interfaces/generics";

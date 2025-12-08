@@ -1,7 +1,7 @@
 import {
   SocketServerToClientEvents,
   SocketClientToServerEvents,
-} from "../constants";
+} from "../constants/socket";
 import { Types } from "mongoose";
 import { Location } from "./geolocalization";
 import { VoidFunction } from "./generics";

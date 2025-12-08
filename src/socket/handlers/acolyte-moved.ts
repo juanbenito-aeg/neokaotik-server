@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { Location } from "../../interfaces/geolocalization";
 import { io } from "../..";
-import { SocketServerToClientEvents } from "../../constants";
+import { SocketServerToClientEvents } from "../../constants/socket";
 import { getNonAcolytePlayersSocketId } from "../../helpers/socket.helpers";
 
 async function handleAcolyteMoved(

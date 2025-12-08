@@ -2,7 +2,7 @@ import { Types } from "mongoose";
 import { io } from "../..";
 import handleAcolyteMoved from "../../socket/handlers/acolyte-moved";
 import { Location } from "../../interfaces/geolocalization";
-import { SocketServerToClientEvents } from "../../constants";
+import { SocketServerToClientEvents } from "../../constants/socket";
 
 describe("handleAcolyteMoved", () => {
   let mockEmit: any;

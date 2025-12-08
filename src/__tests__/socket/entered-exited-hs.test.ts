@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { handleAcolyteOrMortimerEnteredOrExitedHS } from "../../socket/handlers/entered-exited-hs";
 import User from "../../database/userDatabase";
-import { SocketServerToClientEvents } from "../../constants";
+import { SocketServerToClientEvents } from "../../constants/socket";
 import { sendMessageToOneOrMoreRecipients } from "../../utils";
 import { io } from "../../index";
 

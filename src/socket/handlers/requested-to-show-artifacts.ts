@@ -1,4 +1,4 @@
-import { SocketServerToClientEvents } from "../../constants";
+import { SocketServerToClientEvents } from "../../constants/socket";
 import User from "../../database/userDatabase";
 import USER_ROLES from "../../roles/roles";
 import { io } from "../..";

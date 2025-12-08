@@ -11,7 +11,8 @@ import type {
   ClientToServerEvents,
   ServerToClientEvents,
 } from "./interfaces/socket";
-import { SocketGeneralEvents, MqttEvents, Environment } from "./constants";
+import { MqttEvents, Environment } from "./constants";
+import { SocketGeneralEvents } from "./constants/socket";
 import handleConnection from "./socket/handlers/connection";
 import mqtt from "mqtt";
 import { handleConnect, handleMessage } from "./mqtt/handlers/generics";

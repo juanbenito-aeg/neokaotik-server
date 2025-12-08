@@ -1,4 +1,4 @@
-import { SocketServerToClientEvents } from "../../constants";
+import { SocketServerToClientEvents } from "../../constants/socket";
 import User from "../../database/userDatabase";
 import { AcolyteDataToBroadcast } from "../../interfaces/socket";
 import USER_ROLES from "../../roles/roles";
@@ -20,7 +20,9 @@ async function handleAccessToExitFromLab(
   const acolyteNickname: string = updatedAcolyte?.nickname!;
 
   console.log(
-    `${acolyteNickname} is now ${updatedIsInside ? "inside" : "outside"} Angelo's laboratory.`
+    `${acolyteNickname} is now ${
+      updatedIsInside ? "inside" : "outside"
+    } Angelo's laboratory.`
   );
 
   const updatedAcolyteData: AcolyteDataToBroadcast = {

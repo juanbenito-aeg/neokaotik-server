@@ -6,7 +6,7 @@ import {
   SocketServerToClientEvents,
   SocketClientToServerEvents,
   SocketGeneralEvents,
-} from "../../constants";
+} from "../../constants/socket";
 import { handleAccessToExitFromLab } from "./angelo-lab";
 import { handleAcolyteTowerEntranceStatus } from "./acolyte-tower";
 import { sendAcolyteEnteredExitedNotification } from "../../mqtt/handlers/tower-door";

@@ -1,4 +1,4 @@
-import { ArtifactState } from "../../constants";
+import { ArtifactState } from "../../constants/general";
 import { SocketServerToClientEvents } from "../../constants/socket";
 import artifactDatabase from "../../database/artifactDatabase";
 import userDatabase from "../../database/userDatabase";

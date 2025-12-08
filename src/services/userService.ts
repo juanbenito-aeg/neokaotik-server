@@ -1,6 +1,6 @@
 import User from "../database/userDatabase";
 import USER_ROLES from "../roles/roles";
-import { Methods } from "../constants";
+import { Methods } from "../constants/general";
 import EMAIL from "../roles/emails";
 import { Fields } from "../interfaces/generics";
 import IPlayer from "../interfaces/IPlayer";

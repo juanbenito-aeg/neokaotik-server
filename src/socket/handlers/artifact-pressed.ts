@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import artifactDatabase from "../../database/artifactDatabase";
-import { ArtifactState } from "../../constants";
+import { ArtifactState } from "../../constants/general";
 import { SocketServerToClientEvents } from "../../constants/socket";
 import userDatabase from "../../database/userDatabase";
 import USER_ROLES from "../../roles/roles";

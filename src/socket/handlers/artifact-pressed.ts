@@ -70,10 +70,6 @@ async function handleArtifactPressed(
         `Distance between acolyte with _id "${acolyteId}" & artifact with _id "${artifactId}" is of 1 m or more, so the tap has had no effect.`
       );
     }
-  } else {
-    console.log(
-      `Artifact with _id "${artifactId}" cannot be collected as an acolyte already owns it.`
-    );
   }
 
   io.to(relevantSocketIds).emit(
@@ -95,7 +91,7 @@ async function isArtifactAvailable(artifactId: Types.ObjectId) {
   const isArtifactAvailable = artifact?.state === ArtifactState.ACTIVE;
 
   if (!isArtifactAvailable) {
-    console.log(`Artifact with ID ${artifactId} is not available`);
+    console.log(`Artifact with _id "${artifactId}" is not available.`);
     return false;
   }
 
@@ -104,11 +100,13 @@ async function isArtifactAvailable(artifactId: Types.ObjectId) {
   );
 
   if (artifactHasBeenCollected) {
-    console.log(`Artifact with ID ${artifactId} has already been collected.`);
+    console.log(
+      `Artifact with _id "${artifactId}" has already been collected.`
+    );
     return false;
   }
 
-  console.log(`Artifact with ID ${artifactId} is available for collection.`);
+  console.log(`Artifact with _id "${artifactId}" is available for collection.`);
   return true;
 }
 

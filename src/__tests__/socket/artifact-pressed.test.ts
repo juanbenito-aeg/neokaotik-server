@@ -27,6 +27,7 @@ describe("'handleArtifactPressed' socket event handler", () => {
   };
   const artifactId = new Types.ObjectId();
   const acknowledgeEvent = () => {};
+  const acolyteSocketId = "acolyte's socket ID";
 
   it("should inform just the acolyte that has pressed the artifact about a failed collection", async () => {
     (artifactDatabase.getArtifactById as jest.Mock).mockResolvedValue({
@@ -39,9 +40,10 @@ describe("'handleArtifactPressed' socket event handler", () => {
       acolyteId,
       acolyteLocation,
       artifactId,
-      acknowledgeEvent
+      acknowledgeEvent,
+      acolyteSocketId
     );
 
-    expect(mockTo).toHaveBeenCalledWith([acolyteId]);
+    expect(mockTo).toHaveBeenCalledWith([acolyteSocketId]);
   });
 });

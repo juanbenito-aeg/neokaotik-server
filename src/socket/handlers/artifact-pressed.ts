@@ -13,7 +13,8 @@ async function handleArtifactPressed(
   acolyteId: Types.ObjectId,
   acolyteLocation: Location,
   artifactId: Types.ObjectId,
-  acknowledgeEvent: VoidFunction
+  acknowledgeEvent: VoidFunction,
+  acolyteSocketId: string
 ) {
   // Make the client know the event has been received, so that it does not have to emit it again
   acknowledgeEvent();
@@ -22,7 +23,7 @@ async function handleArtifactPressed(
     `Handling tap of acolyte with _id "${acolyteId}" on artifact with _id "${artifactId}"...`
   );
 
-  let relevantSocketIds = [acolyteId as unknown as string];
+  let relevantSocketIds = [acolyteSocketId];
   let isArtifactCollected = true;
 
   const artifactAvailable = await isArtifactAvailable(artifactId);

@@ -1,7 +1,7 @@
-import { SocketServerToClientEvents } from "../../constants";
+import { SocketServerToClientEvents } from "../../constants/socket";
 import User from "../../database/userDatabase";
 import { AcolyteDataToBroadcast } from "../../interfaces/socket";
-import USER_ROLES from "../../roles/roles";
+import { UserRole } from "../../constants/player";
 import { io } from "../..";
 
 async function handleAccessToExitFromLab(
@@ -20,7 +20,9 @@ async function handleAccessToExitFromLab(
   const acolyteNickname: string = updatedAcolyte?.nickname!;
 
   console.log(
-    `${acolyteNickname} is now ${updatedIsInside ? "inside" : "outside"} Angelo's laboratory.`
+    `${acolyteNickname} is now ${
+      updatedIsInside ? "inside" : "outside"
+    } Angelo's laboratory.`
   );
 
   const updatedAcolyteData: AcolyteDataToBroadcast = {
@@ -35,7 +37,7 @@ async function handleAccessToExitFromLab(
   const acolyteSocketId: string = updatedAcolyte?.socketId!;
 
   const mortimer = await User.getUserByField({
-    rol: USER_ROLES.MORTIMER,
+    rol: UserRole.MORTIMER,
   });
   const mortimerSocketId: string = mortimer?.socketId!;
 

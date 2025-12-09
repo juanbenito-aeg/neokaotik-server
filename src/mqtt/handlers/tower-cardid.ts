@@ -1,11 +1,11 @@
 import { client } from "../..";
 import {
-  MqttTopics,
   NotificationTypes,
   ScreenChangingNotificationDestinations,
-} from "../../constants";
+} from "../../constants/fcm";
+import { MqttTopics } from "../../constants/mqtt";
 import User from "../../database/userDatabase";
-import USER_ROLES from "../../roles/roles";
+import { UserRole } from "../../constants/player";
 import { sendMessageToOneOrMoreRecipients } from "../../utils";
 
 async function handleTowerCardid(cardId: string) {
@@ -54,7 +54,7 @@ async function getAcolyteWithReceivedCardId(cardId: string) {
 }
 
 async function sendUnauthorizedAccessMessageToMortimer() {
-  const fieldToFilterBy = { rol: USER_ROLES.MORTIMER };
+  const fieldToFilterBy = { rol: UserRole.MORTIMER };
   const fieldsToIncludeOrExclude = "pushToken";
 
   const mortimer = (await User.getUserByField(

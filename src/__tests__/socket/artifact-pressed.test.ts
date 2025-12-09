@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import { io } from "../..";
-import { ArtifactState } from "../../constants";
+import { ArtifactState } from "../../constants/general";
 import artifactDatabase from "../../database/artifactDatabase";
 import handleArtifactPressed from "../../socket/handlers/artifact-pressed";
 import { Location } from "../../interfaces/geolocalization";

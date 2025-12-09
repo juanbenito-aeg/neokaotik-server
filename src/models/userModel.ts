@@ -203,14 +203,10 @@ const inventorySchema = new Schema(
 );
 
 const playerSchema = new Schema<IPlayer>({
-  card_id: String,
   pushToken: String,
-  is_in_tower_entrance: Boolean,
-  is_inside_tower: Boolean,
   active: Boolean,
   rol: String,
   socketId: String,
-  isInside: Boolean,
   attributes: commonAttributesAndModifiersSchema,
   equipment: equipmentSchema,
   inventory: inventorySchema,
@@ -228,12 +224,14 @@ const playerSchema = new Schema<IPlayer>({
   created_date: String,
   isBetrayer: Boolean,
   skills: [skillSchema],
+  isInside: { type: Boolean, required: false },
+  is_in_tower_entrance: { type: Boolean, required: false },
+  is_inside_tower: { type: Boolean, required: false },
+  card_id: { type: String, required: false },
   has_been_summoned_to_hos: { type: Boolean, required: false },
+  found_artifacts: [{ type: ObjectId, ref: "Artifact", required: false }],
   has_completed_artifacts_search: { type: Boolean, required: false },
   is_inside_hs: { type: Boolean, required: false },
-  found_artifacts: [
-    { type: mongoose.Schema.Types.ObjectId, ref: "Artifact", required: false },
-  ],
 });
 
 const Player = model<IPlayer>("Player", playerSchema);

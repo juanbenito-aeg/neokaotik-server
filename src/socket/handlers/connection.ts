@@ -1,12 +1,12 @@
 import { Socket } from "socket.io";
 import User from "../../database/userDatabase";
-import USER_ROLES from "../../roles/roles";
+import { UserRole } from "../../constants/player";
 import { FieldsToUseInDisconnection } from "../../interfaces/socket";
 import {
   SocketServerToClientEvents,
   SocketClientToServerEvents,
   SocketGeneralEvents,
-} from "../../constants";
+} from "../../constants/socket";
 import { handleAccessToExitFromLab } from "./angelo-lab";
 import { handleAcolyteTowerEntranceStatus } from "./acolyte-tower";
 import { sendAcolyteEnteredExitedNotification } from "../../mqtt/handlers/tower-door";
@@ -17,7 +17,6 @@ import handleRemoveSpellPress from "./remove-spell-press";
 import handleAcolyteMoved from "./acolyte-moved";
 import handleArtifactPressed from "./artifact-pressed";
 import { handleAcolyteOrMortimerEnteredOrExitedHS } from "./entered-exited-hs";
-import { VoidFunction } from "../../interfaces/generics";
 import handleRequestedToShowArtifacts from "./requested-to-show-artifacts";
 import handleArtifactsSearchValidatedReset from "./artifacts-search-validated-reset";
 import { io } from "../..";
@@ -115,7 +114,7 @@ async function handleDisconnection(socket: Socket) {
       socketUser._id,
       false
     );
-  } else if (socketUser?.rol === USER_ROLES.ACOLYTE) {
+  } else if (socketUser?.rol === UserRole.ACOLYTE) {
     await informNonAcolytesAboutAcolyteExitFromSwamp(socketUser._id);
   }
 
@@ -134,7 +133,7 @@ async function notifyMortimerAboutAcolyteDisconnection(
   acolyte: HydratedDocument<IPlayer>
 ) {
   const mortimer = await User.getUserByField({
-    rol: USER_ROLES.MORTIMER,
+    rol: UserRole.MORTIMER,
   });
   const mortimerSocketId = mortimer?.socketId;
 

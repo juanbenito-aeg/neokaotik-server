@@ -1,7 +1,6 @@
 import User from "../database/userDatabase";
-import USER_ROLES from "../roles/roles";
-import { Methods } from "../constants";
-import EMAIL from "../roles/emails";
+import { UserRole, Email } from "../constants/player";
+import { Methods } from "../constants/general";
 import { Fields } from "../interfaces/generics";
 import IPlayer from "../interfaces/IPlayer";
 
@@ -65,26 +64,22 @@ const updateUser = async (userEmail: string, changes: Fields) => {
 const loginUser = async (userEmail: string, fcmToken: string) => {
   try {
     const kaotikaUser = await getKaotikaUser(userEmail);
+
     if (!kaotikaUser) {
       throw new Error(`User not found in Kaotika with email: ${userEmail}`);
     }
 
     const mongoUser = await getUser(userEmail);
 
-    let putOrPost = [];
+    const putOrPost = [];
 
     if (!mongoUser) {
-      const newUser = {
-        active: false,
-        rol: assignRoleByEmail(userEmail),
-        socketId: "",
-        isInside: false,
-        card_id: "",
-        pushToken: fcmToken,
-        is_in_tower_entrance: false,
-        is_inside_tower: false,
-        ...kaotikaUser,
-      };
+      const newDbUserAdditionalFields = getNewDbUserAdditionalFields(
+        userEmail,
+        fcmToken
+      );
+
+      const newUser = { ...kaotikaUser, ...newDbUserAdditionalFields };
 
       const createdUser = await createUser(newUser);
 
@@ -109,15 +104,47 @@ const loginUser = async (userEmail: string, fcmToken: string) => {
   }
 };
 
+const getNewDbUserAdditionalFields = (userEmail: string, fcmToken: string) => {
+  const newDbUserAdditionalFields = {
+    active: false,
+    rol: assignRoleByEmail(userEmail),
+    socketId: "",
+    pushToken: fcmToken,
+  };
+
+  switch (newDbUserAdditionalFields.rol) {
+    case UserRole.ACOLYTE: {
+      Object.assign(newDbUserAdditionalFields, {
+        isInside: false,
+        is_in_tower_entrance: false,
+        is_inside_tower: false,
+        card_id: "",
+        has_been_summoned_to_hos: false,
+        found_artifacts: [],
+        has_completed_artifacts_search: false,
+        is_inside_hs: false,
+      });
+      break;
+    }
+
+    case UserRole.MORTIMER: {
+      Object.assign(newDbUserAdditionalFields, { is_inside_hs: false });
+      break;
+    }
+  }
+
+  return newDbUserAdditionalFields;
+};
+
 const assignRoleByEmail = (email: string) => {
-  if (email.includes(EMAIL.ACOLYTE)) {
-    return USER_ROLES.ACOLYTE;
-  } else if (email === EMAIL.ISTVAN) {
-    return USER_ROLES.ISTVAN;
-  } else if (email === EMAIL.MORTIMER) {
-    return USER_ROLES.MORTIMER;
-  } else if (email === EMAIL.VILLAIN) {
-    return USER_ROLES.VILLAIN;
+  if (email.includes(Email.ACOLYTE)) {
+    return UserRole.ACOLYTE;
+  } else if (email === Email.ISTVAN) {
+    return UserRole.ISTVAN;
+  } else if (email === Email.MORTIMER) {
+    return UserRole.MORTIMER;
+  } else if (email === Email.VILLAIN) {
+    return UserRole.VILLAIN;
   }
 };
 

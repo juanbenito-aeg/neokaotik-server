@@ -1,9 +1,9 @@
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
-} from "../../constants";
+} from "../../constants/fcm";
 import User from "../../database/userDatabase";
-import USER_ROLES from "../../roles/roles";
+import { UserRole } from "../../constants/player";
 import { sendMessageToOneOrMoreRecipients } from "../../utils";
 
 async function handleRemoveSpellPress() {
@@ -21,7 +21,7 @@ async function handleRemoveSpellPress() {
 }
 
 async function updateAcolytesSummonedToHosField() {
-  const fieldToFilterBy = { rol: USER_ROLES.ACOLYTE };
+  const fieldToFilterBy = { rol: UserRole.ACOLYTE };
   const changeToApply = {
     has_been_summoned_to_hos: true,
   };

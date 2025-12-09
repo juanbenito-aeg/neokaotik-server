@@ -11,12 +11,9 @@ interface CommonAttributesAndModifiers {
 
 interface IPlayer {
   _id: Types.ObjectId;
-  is_in_tower_entrance: boolean;
-  is_inside_tower: boolean;
   active: boolean;
   rol: string;
   socketId: string;
-  isInside: boolean;
   attributes: CommonAttributesAndModifiers;
   equipment: Equipment;
   inventory: Inventory;
@@ -35,11 +32,14 @@ interface IPlayer {
   isBetrayer: boolean;
   skills: Skill[];
   pushToken: string;
-  card_id: string;
+  isInside?: boolean;
+  is_in_tower_entrance?: boolean;
+  is_inside_tower?: boolean;
+  card_id?: string;
   has_been_summoned_to_hos?: boolean;
+  found_artifacts?: Types.ObjectId[];
   has_completed_artifacts_search?: boolean;
   is_inside_hs?: boolean;
-  found_artifacts?: Types.ObjectId[];
 }
 
 interface CommonEquipmentFields {

@@ -7,73 +7,84 @@ import { UserRole } from "../../constants/player";
 import { io } from "../..";
 import { Location } from "../../interfaces/geolocalization";
 import { getAcolytesSocketId } from "../../helpers/socket.helpers";
+import { VoidFunction } from "../../interfaces/generics";
 
 async function handleArtifactPressed(
   acolyteId: Types.ObjectId,
   acolyteLocation: Location,
-  artifactId: Types.ObjectId
+  artifactId: Types.ObjectId,
+  acknowledgeEvent: VoidFunction
 ) {
+  // Make the client know the event has been received, so that it does not have to emit it again
+  acknowledgeEvent();
+
   console.log(
     `Handling tap of acolyte with _id "${acolyteId}" on artifact with _id "${artifactId}"...`
   );
 
+  let relevantSocketIds = [acolyteId as unknown as string];
+  let isArtifactCollected = true;
+
   const artifactAvailable = await isArtifactAvailable(artifactId);
-  if (!artifactAvailable) {
-    console.log(`Artifact with ID "${artifactId}" cannot be collected.`);
-    return;
-  }
 
-  const distanceBetweenUserAndArtifact =
-    await calculateDistanceBetweenUserAndArtifact(acolyteLocation, artifactId);
+  if (artifactAvailable) {
+    const distanceBetweenUserAndArtifact =
+      await calculateDistanceBetweenUserAndArtifact(
+        acolyteLocation,
+        artifactId
+      );
 
-  if (distanceBetweenUserAndArtifact < 1) {
-    // Update pressed artifact's "state" field
+    if (distanceBetweenUserAndArtifact < 1) {
+      // Update pressed artifact's "state" field
 
-    await artifactDatabase.updateArtifactsByField(
-      { _id: artifactId },
-      { state: ArtifactState.COLLECTED }
-    );
+      await artifactDatabase.updateArtifactsByField(
+        { _id: artifactId },
+        { state: ArtifactState.COLLECTED }
+      );
 
-    // Update collector's "found_artifacts" field
+      // Update collector's "found_artifacts" field
 
-    const { found_artifacts } = (await userDatabase.getUserByField(
-      { _id: acolyteId },
-      "found_artifacts"
-    ))!;
+      const { found_artifacts } = (await userDatabase.getUserByField(
+        { _id: acolyteId },
+        "found_artifacts"
+      ))!;
 
-    await userDatabase.updateUserByField(
-      { _id: acolyteId },
-      { found_artifacts: [...found_artifacts!, artifactId] }
-    );
+      await userDatabase.updateUserByField(
+        { _id: acolyteId },
+        { found_artifacts: [...found_artifacts!, artifactId] }
+      );
 
-    // Emit "artifact collected" to acolytes & Mortimer
+      const acolytesSocketIds = await getAcolytesSocketId();
 
-    const acolytesSocketIds = await getAcolytesSocketId();
+      const { socketId: mortimerSocketId } = (await userDatabase.getUserByField(
+        { rol: UserRole.MORTIMER },
+        "socketId"
+      ))!;
 
-    const { socketId: mortimerSocketId } = (await userDatabase.getUserByField(
-      { rol: UserRole.MORTIMER },
-      "socketId"
-    ))!;
+      relevantSocketIds = [...acolytesSocketIds, mortimerSocketId];
+    } else {
+      isArtifactCollected = false;
 
-    const acolytesAndMortimerSocketIds = [
-      ...acolytesSocketIds,
-      mortimerSocketId,
-    ];
-
-    io.to(acolytesAndMortimerSocketIds).emit(
-      SocketServerToClientEvents.ARTIFACT_COLLECTED,
-      acolyteId,
-      artifactId
-    );
-
-    console.log(
-      `Acolytes & Mortimer have been informed about artifact's (with _id "${artifactId}") collection.`
-    );
+      console.log(
+        `Distance between acolyte with _id "${acolyteId}" & artifact with _id "${artifactId}" is of 1 m or more, so the tap has had no effect.`
+      );
+    }
   } else {
     console.log(
-      `Distance between acolyte with _id "${acolyteId}" & artifact with _id "${artifactId}" is of 1 m or more, so the tap has had no effect`
+      `Artifact with _id "${artifactId}" cannot be collected as an acolyte already owns it.`
     );
   }
+
+  io.to(relevantSocketIds).emit(
+    SocketServerToClientEvents.ARTIFACT_PRESS_MANAGED,
+    isArtifactCollected,
+    isArtifactCollected ? acolyteId : undefined,
+    isArtifactCollected ? artifactId : undefined
+  );
+
+  console.log(
+    `Relevant players have been informed about artifact's (with _id "${artifactId}") successful/failed collection.`
+  );
 }
 
 async function isArtifactAvailable(artifactId: Types.ObjectId) {

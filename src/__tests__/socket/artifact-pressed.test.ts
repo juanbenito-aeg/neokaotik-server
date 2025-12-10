@@ -9,7 +9,7 @@ jest.mock("../../database/userDatabase");
 jest.mock("../../database/artifactDatabase");
 jest.mock("../../helpers/socket.helpers");
 
-describe("handleArtifactPressed", () => {
+describe("'handleArtifactPressed' socket event handler", () => {
   let mockEmit: jest.Mock;
   let mockTo: jest.Mock;
 
@@ -20,18 +20,30 @@ describe("handleArtifactPressed", () => {
     jest.spyOn(io, "to").mockImplementation(mockTo);
   });
 
-  const location: Location = { type: "Point", coordinates: [-34567, 323443] };
   const acolyteId = new Types.ObjectId();
+  const acolyteLocation: Location = {
+    type: "Point",
+    coordinates: [-34567, 323443],
+  };
   const artifactId = new Types.ObjectId();
+  const acknowledgeEvent = () => {};
+  const acolyteSocketId = "acolyte's socket ID";
 
-  it("should not collect artifact if it is already collected", async () => {
+  it("should inform just the acolyte that has pressed the artifact about a failed collection", async () => {
     (artifactDatabase.getArtifactById as jest.Mock).mockResolvedValue({
-      state: ArtifactState.COLLECTED,
+      state:
+        ArtifactState.COLLECTED /* An acolyte already owns the artifact, so trying to take it again is considered a failed collection */,
       location: { type: "Point", coordinates: [-34567, 323444] },
     });
 
-    await handleArtifactPressed(acolyteId, location, artifactId);
+    await handleArtifactPressed(
+      acolyteId,
+      acolyteLocation,
+      artifactId,
+      acknowledgeEvent,
+      acolyteSocketId
+    );
 
-    expect(mockEmit).not.toHaveBeenCalled();
+    expect(mockTo).toHaveBeenCalledWith([acolyteSocketId]);
   });
 });

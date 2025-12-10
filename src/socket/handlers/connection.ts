@@ -22,6 +22,7 @@ import handleArtifactsSearchValidatedReset from "./artifacts-search-validated-re
 import { io } from "../..";
 import { getNonAcolytePlayersSocketId } from "../../helpers/socket.helpers";
 import { Location } from "../../interfaces/geolocalization";
+import { VoidFunction } from "../../interfaces/generics";
 
 function handleConnection(socket: Socket) {
   console.log("Client connected to the server socket.");
@@ -64,7 +65,23 @@ function handleConnection(socket: Socket) {
 
   socket.on(SocketClientToServerEvents.ACOLYTE_MOVED, handleAcolyteMoved);
 
-  socket.on(SocketClientToServerEvents.ARTIFACT_PRESSED, handleArtifactPressed);
+  socket.on(
+    SocketClientToServerEvents.ARTIFACT_PRESSED,
+    (
+      acolyteId: Types.ObjectId,
+      acolyteLocation: Location,
+      artifactId: Types.ObjectId,
+      acknowledgeEvent: VoidFunction
+    ) => {
+      handleArtifactPressed(
+        acolyteId,
+        acolyteLocation,
+        artifactId,
+        acknowledgeEvent,
+        socket.id
+      );
+    }
+  );
 
   socket.on(
     SocketClientToServerEvents.ARTIFACTS_SEARCH_VALIDATED_RESET,

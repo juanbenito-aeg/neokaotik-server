@@ -1,5 +1,5 @@
 import { SocketServerToClientEvents } from "../../constants/socket";
-import User from "../../database/userDatabase";
+import playerDb from "../../db/player.db";
 import { AcolyteDataToBroadcast } from "../../interfaces/socket";
 import { PlayerRole } from "../../constants/player";
 import { io } from "../..";
@@ -12,7 +12,7 @@ async function handleAccessToExitFromLab(
   const updatedIsInside: boolean = !isInside;
 
   // Toggle the acolyte's "isInside" field
-  const updatedAcolyte = await User.updateUserByField(
+  const updatedAcolyte = await playerDb.updatePlayerByField(
     { email: acolyteEmail },
     { isInside: updatedIsInside }
   );
@@ -36,7 +36,7 @@ async function handleAccessToExitFromLab(
 
   const acolyteSocketId: string = updatedAcolyte?.socketId!;
 
-  const mortimer = await User.getUserByField({
+  const mortimer = await playerDb.getPlayerByField({
     rol: PlayerRole.MORTIMER,
   });
   const mortimerSocketId: string = mortimer?.socketId!;

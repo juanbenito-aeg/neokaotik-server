@@ -1,4 +1,4 @@
-import User from "../database/userDatabase";
+import playerDb from "../db/player.db";
 import { PlayerRole, Email } from "../constants/player";
 import { Methods } from "../constants/general";
 import { Fields } from "../interfaces/generics";
@@ -8,8 +8,8 @@ const getUser = async (userEmail: string) => {
   try {
     console.log("Fetching user from MongoDB...");
 
-    const user = await User.getUserByField({ email: userEmail });
-    return user;
+    const player = await playerDb.getPlayerByField({ email: userEmail });
+    return player;
   } catch (error) {
     throw error;
   }
@@ -40,7 +40,7 @@ const createUser = async (newUser: IPlayer) => {
     console.log("User not found in MongoDB.");
     console.log("Creating user...");
 
-    const createdUser = await User.createUser(newUser);
+    const createdUser = await playerDb.createPlayer(newUser);
     return createdUser;
   } catch (error) {
     throw error;
@@ -51,7 +51,7 @@ const updateUser = async (userEmail: string, changes: Fields) => {
   try {
     console.log("Updating user...");
 
-    const updatedUser = await User.updateUserByField(
+    const updatedUser = await playerDb.updatePlayerByField(
       { email: userEmail },
       changes
     );
@@ -169,7 +169,7 @@ const logedUser = async (userEmail: string, fcmToken: string) => {
 
 const getAcolytes = async () => {
   try {
-    const acolytes = await User.getAcolytes();
+    const acolytes = await playerDb.getAcolytes();
     return acolytes;
   } catch (error: any) {
     throw error;
@@ -177,7 +177,7 @@ const getAcolytes = async () => {
 };
 
 const getNonAcolytePlayers = async () => {
-  const nonAcolytePlayers = await User.getNonAcolytePlayers();
+  const nonAcolytePlayers = await playerDb.getNonAcolytePlayers();
   return nonAcolytePlayers;
 };
 

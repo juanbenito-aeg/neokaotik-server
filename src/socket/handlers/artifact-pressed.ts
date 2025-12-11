@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
-import artifactDatabase from "../../database/artifactDatabase";
+import artifactDatabase from "../../db/artifactDatabase";
 import { ArtifactState } from "../../constants/general";
 import { SocketServerToClientEvents } from "../../constants/socket";
-import userDatabase from "../../database/userDatabase";
+import playerDb from "../../db/player.db";
 import { PlayerRole } from "../../constants/player";
 import { io } from "../..";
 import { Location } from "../../interfaces/geolocalization";
@@ -45,19 +45,19 @@ async function handleArtifactPressed(
 
       // Update collector's "found_artifacts" field
 
-      const { found_artifacts } = (await userDatabase.getUserByField(
+      const { found_artifacts } = (await playerDb.getPlayerByField(
         { _id: acolyteId },
         "found_artifacts"
       ))!;
 
-      await userDatabase.updateUserByField(
+      await playerDb.updatePlayerByField(
         { _id: acolyteId },
         { found_artifacts: [...found_artifacts!, artifactId] }
       );
 
       const acolytesSocketIds = await getAcolytesSocketId();
 
-      const { socketId: mortimerSocketId } = (await userDatabase.getUserByField(
+      const { socketId: mortimerSocketId } = (await playerDb.getPlayerByField(
         { rol: PlayerRole.MORTIMER },
         "socketId"
       ))!;
@@ -85,7 +85,7 @@ async function handleArtifactPressed(
 }
 
 async function isArtifactAvailable(artifactId: Types.ObjectId) {
-  const acolytes = await userDatabase.getAcolytes();
+  const acolytes = await playerDb.getAcolytes();
   const artifact = await artifactDatabase.getArtifactById(artifactId, "state");
 
   const isArtifactAvailable = artifact?.state === ArtifactState.ACTIVE;

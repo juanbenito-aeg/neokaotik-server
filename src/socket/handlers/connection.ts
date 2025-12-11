@@ -1,5 +1,5 @@
 import { Socket } from "socket.io";
-import User from "../../database/userDatabase";
+import playerDb from "../../db/player.db";
 import { PlayerRole } from "../../constants/player";
 import { FieldsToUseInDisconnection } from "../../interfaces/socket";
 import {
@@ -98,7 +98,10 @@ function handleConnection(socket: Socket) {
 async function handleConnectionOpening(socket: Socket, userEmail: string) {
   console.log(`The user with the email "${userEmail}" opened a connection.`);
 
-  await User.updateUserByField({ email: userEmail }, { socketId: socket.id });
+  await playerDb.updatePlayerByField(
+    { email: userEmail },
+    { socketId: socket.id }
+  );
 }
 
 async function handleDisconnection(socket: Socket) {
@@ -112,7 +115,7 @@ async function handleDisconnection(socket: Socket) {
     socketId: "",
   };
 
-  const socketUser = await User.getUserByField(fieldToFilterBy);
+  const socketUser = await playerDb.getPlayerByField(fieldToFilterBy);
 
   if (socketUser?.isInside) {
     changesToApply.isInside = false;
@@ -135,7 +138,7 @@ async function handleDisconnection(socket: Socket) {
     await informNonAcolytesAboutAcolyteExitFromSwamp(socketUser._id);
   }
 
-  const updatedUser = (await User.updateUserByField(
+  const updatedUser = (await playerDb.updatePlayerByField(
     fieldToFilterBy,
     changesToApply
   ))!;
@@ -149,7 +152,7 @@ async function notifyMortimerAboutAcolyteDisconnection(
   socket: Socket,
   acolyte: HydratedDocument<IPlayer>
 ) {
-  const mortimer = await User.getUserByField({
+  const mortimer = await playerDb.getPlayerByField({
     rol: PlayerRole.MORTIMER,
   });
   const mortimerSocketId = mortimer?.socketId;

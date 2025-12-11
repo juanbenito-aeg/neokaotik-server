@@ -6,18 +6,18 @@ import {
 } from "../../../../constants/fcm";
 import { MqttTopics } from "../../../../constants/mqtt";
 import { SocketServerToClientEvents } from "../../../../constants/socket";
-import User from "../../../../database/userDatabase";
+import playerDb from "../../../../db/player.db";
 import { PlayerRole } from "../../../../constants/player";
 import { sendMessageToOneOrMoreRecipients } from "../../../../utils";
 import IPlayer from "../../../../interfaces/IPlayer";
 
 async function handlerTowerDoor(cardId: string) {
-  const acolyte = await User.getUserByField({ card_id: cardId });
+  const acolyte = await playerDb.getPlayerByField({ card_id: cardId });
   const newStatus = {
     is_in_tower_entrance: !acolyte!.is_in_tower_entrance,
     is_inside_tower: !acolyte!.is_inside_tower,
   };
-  const updatedAcolyte = await User.updateUserByField(
+  const updatedAcolyte = await playerDb.updatePlayerByField(
     { card_id: cardId },
     newStatus
   );
@@ -50,7 +50,7 @@ async function sendAcolyteEnteredExitedNotification(
   const fieldToFilterBy = { rol: PlayerRole.MORTIMER };
   const fieldsToIncludeOrExclude = "pushToken";
 
-  const mortimer = (await User.getUserByField(
+  const mortimer = (await playerDb.getPlayerByField(
     fieldToFilterBy,
     fieldsToIncludeOrExclude
   ))!;

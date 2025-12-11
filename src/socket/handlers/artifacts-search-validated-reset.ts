@@ -1,7 +1,7 @@
 import { ArtifactState } from "../../constants/general";
 import { SocketServerToClientEvents } from "../../constants/socket";
-import artifactDatabase from "../../database/artifactDatabase";
-import userDatabase from "../../database/userDatabase";
+import artifactDatabase from "../../db/artifactDatabase";
+import playerDb from "../../db/player.db";
 import { Fields } from "../../interfaces/generics";
 import { PlayerRole } from "../../constants/player";
 import { io } from "../..";
@@ -47,7 +47,7 @@ async function updateAcolytesAndArtifactsFields(isSearchValidated: boolean) {
   }
 
   // Update acolytes' "found_artifacts" & "has_completed_artifacts_search" fields (the latter just when the search has been validated)
-  await userDatabase.updateUsersByField(
+  await playerDb.updatePlayersByField(
     { rol: PlayerRole.ACOLYTE },
     changesToApplyToAcolytes
   );

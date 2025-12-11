@@ -1,5 +1,5 @@
 import { PlayerRole } from "../../constants/player";
-import User from "../../database/userDatabase";
+import playerDb from "../../db/player.db";
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
@@ -12,7 +12,7 @@ async function handleAcolyteScrollPress(isPressed: boolean) {
   const fieldToFilterBy = { rol: PlayerRole.MORTIMER };
   const fieldsToIncludeOrExclude = "pushToken";
 
-  const mortimer = (await User.getUserByField(
+  const mortimer = (await playerDb.getPlayerByField(
     fieldToFilterBy,
     fieldsToIncludeOrExclude
   ))!;

@@ -1,12 +1,12 @@
 import { Types } from "mongoose";
 import { io } from "../..";
 import { ArtifactState } from "../../constants/general";
-import artifactDatabase from "../../database/artifactDatabase";
+import artifactDatabase from "../../db/artifactDatabase";
 import handleArtifactPressed from "../../socket/handlers/artifact-pressed";
 import { Location } from "../../interfaces/geolocalization";
 
-jest.mock("../../database/userDatabase");
-jest.mock("../../database/artifactDatabase");
+jest.mock("../../db/player.db");
+jest.mock("../../db/artifactDatabase");
 jest.mock("../../helpers/socket.helpers");
 
 describe("'handleArtifactPressed' socket event handler", () => {

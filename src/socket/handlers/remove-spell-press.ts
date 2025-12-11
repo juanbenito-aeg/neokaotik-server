@@ -2,7 +2,7 @@ import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
 } from "../../constants/fcm";
-import User from "../../database/userDatabase";
+import playerDb from "../../db/player.db";
 import { PlayerRole } from "../../constants/player";
 import { sendMessageToOneOrMoreRecipients } from "../../utils";
 
@@ -26,11 +26,11 @@ async function updateAcolytesSummonedToHosField() {
     has_been_summoned_to_hos: true,
   };
 
-  await User.updateUsersByField(fieldToFilterBy, changeToApply);
+  await playerDb.updatePlayersByField(fieldToFilterBy, changeToApply);
 }
 
 async function sendSummonedToHosMessage() {
-  const acolytes = await User.getAcolytes();
+  const acolytes = await playerDb.getAcolytes();
   const acolytesPushToken = acolytes.map((acolyte) => acolyte.pushToken);
 
   const data = {

@@ -4,7 +4,7 @@ import {
   ScreenChangingNotificationDestinations,
 } from "../../../../constants/fcm";
 import { MqttTopics } from "../../../../constants/mqtt";
-import User from "../../../../database/userDatabase";
+import playerDb from "../../../../db/player.db";
 import { PlayerRole } from "../../../../constants/player";
 import { sendMessageToOneOrMoreRecipients } from "../../../../utils";
 
@@ -45,7 +45,7 @@ async function getAcolyteWithReceivedCardId(cardId: string) {
   const fieldToFilterBy = { card_id: cardId };
   const fieldsToIncludeOrExclude = "is_in_tower_entrance is_inside_tower";
 
-  const acolyteWithReceivedCardId = await User.getUserByField(
+  const acolyteWithReceivedCardId = await playerDb.getPlayerByField(
     fieldToFilterBy,
     fieldsToIncludeOrExclude
   );
@@ -57,7 +57,7 @@ async function sendUnauthorizedAccessMessageToMortimer() {
   const fieldToFilterBy = { rol: PlayerRole.MORTIMER };
   const fieldsToIncludeOrExclude = "pushToken";
 
-  const mortimer = (await User.getUserByField(
+  const mortimer = (await playerDb.getPlayerByField(
     fieldToFilterBy,
     fieldsToIncludeOrExclude
   ))!;

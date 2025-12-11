@@ -1,13 +1,13 @@
-import User from "../../database/userDatabase";
+import playerDB from "../../db/player.db";
 
 async function handleAcolyteTowerEntranceStatus(
   socketId: string,
   isInTowerEntrance: boolean
 ) {
-  const acolyte = await User.getUserByField({ socketId });
+  const acolyte = await playerDB.getPlayerByField({ socketId });
 
   if (acolyte) {
-    await User.updateUserByField(
+    await playerDB.updatePlayerByField(
       { socketId },
       { is_in_tower_entrance: isInTowerEntrance }
     );

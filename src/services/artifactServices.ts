@@ -1,4 +1,4 @@
-import artifactDatabase from "../database/artifactDatabase";
+import artifactDatabase from "../db/artifactDatabase";
 
 async function getArtifacts() {
   const artifacts = await artifactDatabase.getArtifacts();

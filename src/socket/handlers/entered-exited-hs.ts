@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import User from "../../database/userDatabase";
+import playerDb from "../../db/player.db";
 import { PlayerRole } from "../../constants/player";
 import {
   NotificationTypes,
@@ -18,7 +18,7 @@ async function handleAcolyteOrMortimerEnteredOrExitedHS(
   // Make the client know the event has been received, so that it does not have to emit it again
   acknowledgeEvent();
 
-  const updatedPlayer = await User.updateUserByField(
+  const updatedPlayer = await playerDb.updatePlayerByField(
     { _id: acolyteOrMortimerId },
     { is_inside_hs: isInsideHS }
   );
@@ -48,7 +48,7 @@ async function handleAcolyteOrMortimerEnteredOrExitedHS(
 }
 
 async function checkAcolytesStatus() {
-  const acolytes = await User.getAcolytes();
+  const acolytes = await playerDb.getAcolytes();
 
   const allFoundArtifacts = acolytes.reduce((acc, acolyte) => {
     if (acolyte.found_artifacts) {
@@ -75,7 +75,7 @@ async function sendAcolytesAreInsideHSNotification() {
   const fieldToFilterBy = { rol: PlayerRole.MORTIMER };
   const fieldsToIncludeOrExclude = "pushToken";
 
-  const mortimer = (await User.getUserByField(
+  const mortimer = (await playerDb.getPlayerByField(
     fieldToFilterBy,
     fieldsToIncludeOrExclude
   ))!;

@@ -1,4 +1,5 @@
 import userService from "../services/userService";
+import authServices from "../services/auth.services";
 import { Methods } from "../constants/general";
 import { Request, Response } from "express";
 
@@ -44,7 +45,7 @@ const loginUser = async (req: Request, res: Response) => {
   }
 
   try {
-    const putOrPost = await userService.loginUser(userEmail, fcmToken);
+    const putOrPost = await authServices.loginPlayer(userEmail, fcmToken);
 
     const user = putOrPost[1];
 
@@ -85,7 +86,7 @@ const loggedUser = async (req: Request, res: Response) => {
   }
 
   try {
-    const updatedUser = await userService.logedUser(userEmail, fcmToken);
+    const updatedUser = await authServices.logedPlayer(userEmail, fcmToken);
     console.log("User updated successfully.\n");
     return res.status(200).send({
       status: "OK",

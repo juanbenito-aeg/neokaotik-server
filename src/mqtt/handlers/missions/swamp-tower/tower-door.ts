@@ -1,5 +1,6 @@
 import { HydratedDocument } from "mongoose";
-import { client, io } from "../../../..";
+import io from "../../../../config/sockets";
+import client from "../../../../config/mqtt";
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,

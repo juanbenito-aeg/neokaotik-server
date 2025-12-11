@@ -1,4 +1,4 @@
-import { client } from "..";
+import client from "../config/mqtt";
 import { MqttTopics } from "../constants/mqtt";
 
 function subscribeToTopics() {

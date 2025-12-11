@@ -7,7 +7,7 @@ import { sendAcolyteEnteredExitedNotification } from "../../../mqtt/handlers/mis
 import { HydratedDocument, Types } from "mongoose";
 import IPlayer from "../../../interfaces/IPlayer";
 import { getNonAcolytePlayersSocketId } from "../../../helpers/socket.helpers";
-import { io } from "../../..";
+import io from "../../../config/sockets";
 import { Location } from "../../../interfaces/geolocalization";
 
 async function handleDisconnection(socket: Socket) {

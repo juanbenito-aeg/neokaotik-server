@@ -8,7 +8,7 @@ import {
 import { SocketServerToClientEvents } from "../../../../constants/socket";
 import { sendMessageToOneOrMoreRecipients } from "../../../../services/fcm.services";
 import { VoidFunction } from "../../../../interfaces/generics";
-import { io } from "../../../..";
+import io from "../../../../config/sockets";
 
 async function handlePlayerEnteredExitedHS(
   playerId: Types.ObjectId,

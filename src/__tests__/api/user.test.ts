@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
+import "dotenv/config";
 import request from "supertest";
-import { app } from "../../index";
-import { PlayerRole } from "../../constants/player";
+import { app } from "../../config/server";
 import IPlayer from "../../interfaces/IPlayer";
+import { PlayerRole } from "../../constants/player";
 
 beforeAll(async () => {
   await mongoose.connect(process.env.MONGODB_URI_TEST!);

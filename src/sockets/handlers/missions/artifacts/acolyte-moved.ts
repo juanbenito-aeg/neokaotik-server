@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import { Location } from "../../../../interfaces/geolocalization";
-import { io } from "../../../..";
+import io from "../../../../config/sockets";
 import { SocketServerToClientEvents } from "../../../../constants/socket";
 import { getNonAcolytePlayersSocketId } from "../../../../helpers/socket.helpers";
 

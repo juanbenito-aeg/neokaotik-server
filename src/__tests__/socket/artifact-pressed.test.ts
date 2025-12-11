@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { io } from "../..";
+import io from "../../config/sockets";
 import { ArtifactState } from "../../constants/general";
 import artifactDb from "../../db/artifact.db";
 import handleArtifactPressed from "../../sockets/handlers/missions/artifacts/artifact-pressed";

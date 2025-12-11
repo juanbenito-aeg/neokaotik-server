@@ -1,6 +1,6 @@
 import handleRequestedToShowArtifacts from "../../sockets/handlers/missions/artifacts/requested-to-show-artifacts";
 import { SocketServerToClientEvents } from "../../constants/socket";
-import { io } from "../..";
+import io from "../../config/sockets";
 
 jest.clearAllMocks();
 

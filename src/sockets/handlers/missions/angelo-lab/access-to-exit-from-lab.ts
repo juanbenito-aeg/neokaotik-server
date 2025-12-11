@@ -2,7 +2,7 @@ import { SocketServerToClientEvents } from "../../../../constants/socket";
 import playerDb from "../../../../db/player.db";
 import { AcolyteDataToBroadcast } from "../../../../interfaces/socket";
 import { PlayerRole } from "../../../../constants/player";
-import { io } from "../../../..";
+import io from "../../../../config/sockets";
 
 async function handleAccessToExitFromLab(
   istvanSocketId: string,

@@ -4,7 +4,7 @@ import { ArtifactState } from "../../../../constants/general";
 import { SocketServerToClientEvents } from "../../../../constants/socket";
 import playerDb from "../../../../db/player.db";
 import { PlayerRole } from "../../../../constants/player";
-import { io } from "../../../..";
+import io from "../../../../config/sockets";
 import { Location } from "../../../../interfaces/geolocalization";
 import { getAcolytesSocketId } from "../../../../helpers/socket.helpers";
 import { VoidFunction } from "../../../../interfaces/generics";

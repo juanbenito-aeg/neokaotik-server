@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { io } from "../..";
+import io from "../../config/sockets";
 import handleAcolyteMoved from "../../sockets/handlers/missions/artifacts/acolyte-moved";
 import { Location } from "../../interfaces/geolocalization";
 import { SocketServerToClientEvents } from "../../constants/socket";

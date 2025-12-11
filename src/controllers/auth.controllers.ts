@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { Methods } from "../constants/general";
 
 const loginPlayer = async (req: Request, res: Response) => {
-  const playerEmail = res.locals.userEmail;
+  const playerEmail = res.locals.playerEmail;
   const fcmToken = res.locals.fcmToken;
   console.log(`Logging in with Email: ${playerEmail}.`);
   if (!playerEmail) {
@@ -24,14 +24,14 @@ const loginPlayer = async (req: Request, res: Response) => {
       return res.status(201).send({
         status: "OK",
         message: "Player created successfully",
-        player,
+        user: player,
       });
     } else {
       console.log("Player updated successfully.\n");
       return res.status(200).send({
         status: "OK",
         message: "Player updated successfully",
-        player,
+        user: player,
       });
     }
   } catch (error) {
@@ -44,7 +44,7 @@ const loginPlayer = async (req: Request, res: Response) => {
 };
 
 const loggedPlayer = async (req: Request, res: Response) => {
-  const playerEmail = res.locals.userEmail;
+  const playerEmail = res.locals.playerEmail;
   const fcmToken = res.locals.fcmToken;
   console.log(`Player with email: ${playerEmail} already logged in.`);
   if (!playerEmail) {

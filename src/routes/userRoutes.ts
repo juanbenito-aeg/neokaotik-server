@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 const router = express.Router();
 
-import middleware from "../middlewares/verifyData";
+import middleware from "../middlewares/auth.middleware";
 import userController from "../controllers/userController";
 
 // TESTING

@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import Artifact from "../models/artifactModel";
+import Artifact from "../models/artifact.model";
 import { Fields } from "../interfaces/generics";
 
 async function getArtifactById(

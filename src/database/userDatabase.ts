@@ -1,5 +1,5 @@
 import { Fields } from "../interfaces/generics";
-import userModel from "../models/userModel";
+import Player from "../models/player.model";
 import IPlayer from "../interfaces/IPlayer";
 
 const getUserByField = async (
@@ -7,7 +7,7 @@ const getUserByField = async (
   fieldsToIncludeOrExclude = ""
 ) => {
   try {
-    const user = await userModel.findOne(
+    const user = await Player.findOne(
       fieldToFilterBy,
       fieldsToIncludeOrExclude
     );
@@ -19,7 +19,7 @@ const getUserByField = async (
 
 const createUser = async (newUser: IPlayer) => {
   try {
-    const userToInsert = new userModel(newUser);
+    const userToInsert = new Player(newUser);
     const createdUser = await userToInsert.save();
     return createdUser;
   } catch (error) {
@@ -32,7 +32,7 @@ const updateUserByField = async (
   changesToApply: Fields
 ) => {
   try {
-    const updatedUser = await userModel.findOneAndUpdate(
+    const updatedUser = await Player.findOneAndUpdate(
       fieldToFilterBy,
       changesToApply,
       { new: true }
@@ -48,7 +48,7 @@ const updateUsersByField = async (
   changesToApply: Fields
 ) => {
   try {
-    await userModel.updateMany(fieldToFilterBy, changesToApply);
+    await Player.updateMany(fieldToFilterBy, changesToApply);
   } catch (error: any) {
     throw error;
   }
@@ -56,7 +56,7 @@ const updateUsersByField = async (
 
 const getAcolytes = async (fieldsToIncludeOrExclude = "") => {
   try {
-    const acolytes = await userModel.find(
+    const acolytes = await Player.find(
       { rol: "acolyte" },
       fieldsToIncludeOrExclude
     );
@@ -67,7 +67,7 @@ const getAcolytes = async (fieldsToIncludeOrExclude = "") => {
 };
 
 const getNonAcolytePlayers = async () => {
-  const nonAcolytePlayers = await userModel.find({ rol: { $ne: "acolyte" } });
+  const nonAcolytePlayers = await Player.find({ rol: { $ne: "acolyte" } });
   return nonAcolytePlayers;
 };
 

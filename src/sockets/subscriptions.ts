@@ -17,7 +17,7 @@ import handleRemoveSpellPress from "./handlers/missions/swamp-tower/remove-spell
 import handleAcolyteMoved from "./handlers/missions/artifacts/acolyte-moved";
 import handleArtifactPressed from "./handlers/missions/artifacts/artifact-pressed";
 import handleRequestedToShowArtifacts from "./handlers/missions/artifacts/requested-to-show-artifacts";
-import handleArtifactsSearchValidatedReset from "../socket/handlers/artifacts-search-validated-reset";
+import handleArtifactsSearchValidatedReset from "./handlers/missions/artifacts/artifacts-search-validated-reset";
 import { io } from "../";
 import { getNonAcolytePlayersSocketId } from "../helpers/socket.helpers";
 import { Location } from "../interfaces/geolocalization";

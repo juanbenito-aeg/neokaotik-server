@@ -1,11 +1,11 @@
-import { ArtifactState } from "../../constants/general";
-import { SocketServerToClientEvents } from "../../constants/socket";
-import artifactDatabase from "../../database/artifactDatabase";
-import userDatabase from "../../database/userDatabase";
-import { Fields } from "../../interfaces/generics";
-import { UserRole } from "../../constants/player";
-import { io } from "../..";
-import { getAcolytesSocketId } from "../../helpers/socket.helpers";
+import { ArtifactState } from "../../../../constants/general";
+import { SocketServerToClientEvents } from "../../../../constants/socket";
+import artifactDb from "../../../../database/artifactDatabase";
+import playerDb from "../../../../database/userDatabase";
+import { Fields } from "../../../../interfaces/generics";
+import { UserRole } from "../../../../constants/player";
+import { io } from "../../../..";
+import { getAcolytesSocketId } from "../../../../helpers/socket.helpers";
 
 async function handleArtifactsSearchValidatedReset(
   isSearchValidated: boolean,
@@ -40,14 +40,14 @@ async function updateAcolytesAndArtifactsFields(isSearchValidated: boolean) {
     changesToApplyToAcolytes.has_completed_artifacts_search = true;
   } else {
     // If the search has been reset, set artifacts' "state" field to "active"
-    await artifactDatabase.updateArtifactsByField(
+    await artifactDb.updateArtifactsByField(
       {},
       { state: ArtifactState.ACTIVE }
     );
   }
 
   // Update acolytes' "found_artifacts" & "has_completed_artifacts_search" fields (the latter just when the search has been validated)
-  await userDatabase.updateUsersByField(
+  await playerDb.updateUsersByField(
     { rol: UserRole.ACOLYTE },
     changesToApplyToAcolytes
   );

@@ -2,12 +2,16 @@ import "./config/firebase-admin";
 import "./config/server";
 import "./config/sockets";
 import "./config/mqtt";
+import mongoose from "mongoose";
 import "dotenv/config";
-import "./config/db";
 import { httpServer } from "./config/server";
 
-const PORT = +(process.env.PORT || 3000);
+(async () => {
+  await mongoose.connect(process.env.MONGODB_URI_PRODUCTION!);
+  console.log("You are now connected to MongoDB.");
 
-httpServer.listen(PORT, () => {
-  console.log(`API is listening on port ${PORT}.`);
-});
+  const port = +(process.env.PORT || 3000);
+  httpServer.listen(port, () => {
+    console.log(`API is listening on port ${port}.`);
+  });
+})();

@@ -1,6 +1,5 @@
 import playerServices from "../services/player.services";
 import authServices from "../services/auth.services";
-import { Methods } from "../constants/general";
 import { Request, Response } from "express";
 
 // TESTING
@@ -28,75 +27,6 @@ const getMongoUser = async (req: Request, res: Response) => {
       status: "FAILED",
       message: "Error fetching user from Mongo",
       data: { error: error?.message || error },
-    });
-  }
-};
-
-const loginUser = async (req: Request, res: Response) => {
-  const userEmail = res.locals.userEmail;
-  const fcmToken = res.locals.fcmToken;
-  console.log(`Logging in with Email: ${userEmail}.`);
-  if (!userEmail) {
-    console.log(`Email not available: ${userEmail}.`);
-    return res.status(400).send({
-      status: "FAILED",
-      data: { error: "userEmail not available" },
-    });
-  }
-
-  try {
-    const putOrPost = await authServices.loginPlayer(userEmail, fcmToken);
-
-    const user = putOrPost[1];
-
-    if (putOrPost[0] === Methods.POST) {
-      console.log("User created successfully.\n");
-      return res.status(201).send({
-        status: "OK",
-        message: "User created successfully",
-        user,
-      });
-    } else {
-      console.log("User updated successfully.\n");
-      return res.status(200).send({
-        status: "OK",
-        message: "User updated successfully",
-        user,
-      });
-    }
-  } catch (error) {
-    console.log(`User not found in Kaotika with Email: ${userEmail}`);
-    res.status(403).send({
-      status: "FAILED",
-      message: "User not found on kaotika",
-    });
-  }
-};
-
-const loggedUser = async (req: Request, res: Response) => {
-  const userEmail = res.locals.userEmail;
-  const fcmToken = res.locals.fcmToken;
-  console.log(`User with email: ${userEmail} already logged in.`);
-  if (!userEmail) {
-    console.log(`Email not available: ${userEmail}.`);
-    return res.status(400).send({
-      status: "FAILED",
-      data: { error: "userEmail not available" },
-    });
-  }
-
-  try {
-    const updatedUser = await authServices.logedPlayer(userEmail, fcmToken);
-    console.log("User updated successfully.\n");
-    return res.status(200).send({
-      status: "OK",
-      message: "User updated successfully",
-      user: updatedUser,
-    });
-  } catch (error) {
-    return res.status(400).send({
-      status: "FAILED",
-      data: { error: "userEmail not available" },
     });
   }
 };
@@ -191,8 +121,6 @@ const getNonAcolytePlayers = async (req: Request, res: Response) => {
 
 const userController = {
   getMongoUser,
-  loginUser,
-  loggedUser,
   getUser,
   updateUser,
   getAcolytes,

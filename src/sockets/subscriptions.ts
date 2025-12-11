@@ -7,7 +7,7 @@ import {
   SocketClientToServerEvents,
   SocketGeneralEvents,
 } from "../constants/socket";
-import { handleAccessToExitFromLab } from "../socket/handlers/angelo-lab";
+import handleAccessToExitFromLab from "./handlers/missions/angelo-lab/access-to-exit-from-lab";
 import handleAcolyteInsideOutsideTower from "./handlers/missions/swamp-tower/acolyte-inside-outside-tower";
 import { sendAcolyteEnteredExitedNotification } from "../mqtt/handlers/tower-door";
 import { HydratedDocument, Types } from "mongoose";

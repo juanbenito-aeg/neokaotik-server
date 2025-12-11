@@ -1,18 +1,18 @@
-import { SocketServerToClientEvents } from "../../constants/socket";
-import User from "../../database/userDatabase";
-import { AcolyteDataToBroadcast } from "../../interfaces/socket";
-import { UserRole } from "../../constants/player";
-import { io } from "../..";
+import { SocketServerToClientEvents } from "../../../../constants/socket";
+import playerDb from "../../../../database/userDatabase";
+import { AcolyteDataToBroadcast } from "../../../../interfaces/socket";
+import { UserRole } from "../../../../constants/player";
+import { io } from "../../../..";
 
 async function handleAccessToExitFromLab(
   istvanSocketId: string,
   acolyteEmail: string,
   isInside: boolean
 ) {
-  const updatedIsInside: boolean = !isInside;
+  const updatedIsInside = !isInside;
 
   // Toggle the acolyte's "isInside" field
-  const updatedAcolyte = await User.updateUserByField(
+  const updatedAcolyte = await playerDb.updateUserByField(
     { email: acolyteEmail },
     { isInside: updatedIsInside }
   );
@@ -36,7 +36,7 @@ async function handleAccessToExitFromLab(
 
   const acolyteSocketId: string = updatedAcolyte?.socketId!;
 
-  const mortimer = await User.getUserByField({
+  const mortimer = await playerDb.getUserByField({
     rol: UserRole.MORTIMER,
   });
   const mortimerSocketId: string = mortimer?.socketId!;
@@ -53,4 +53,4 @@ async function handleAccessToExitFromLab(
   );
 }
 
-export { handleAccessToExitFromLab };
+export default handleAccessToExitFromLab;

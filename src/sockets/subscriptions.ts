@@ -16,8 +16,7 @@ import { handleAcolyteScrollPress } from "../socket/handlers/acolyte-scroll-pres
 import handleRemoveSpellPress from "../socket/handlers/remove-spell-press";
 import handleAcolyteMoved from "../socket/handlers/acolyte-moved";
 import handleArtifactPressed from "../socket/handlers/artifact-pressed";
-import { handleAcolyteOrMortimerEnteredOrExitedHS } from "../socket/handlers/entered-exited-hs";
-import handleRequestedToShowArtifacts from "../socket/handlers/requested-to-show-artifacts";
+import handleRequestedToShowArtifacts from "./handlers/missions/artifacts/requested-to-show-artifacts";
 import handleArtifactsSearchValidatedReset from "../socket/handlers/artifacts-search-validated-reset";
 import { io } from "../";
 import { getNonAcolytePlayersSocketId } from "../helpers/socket.helpers";
@@ -43,9 +42,10 @@ function subscribeToEvents(socket: Socket) {
     handlePlayerEnteredExitedHS
   );
 
-  socket.on(SocketClientToServerEvents.REQUESTED_TO_SHOW_ARTIFACTS, () => {
-    handleRequestedToShowArtifacts();
-  });
+  socket.on(
+    SocketClientToServerEvents.REQUESTED_TO_SHOW_ARTIFACTS,
+    handleRequestedToShowArtifacts
+  );
 
   socket.on(
     SocketClientToServerEvents.INSIDE_OUTSIDE_TOWER_ENTRANCE,

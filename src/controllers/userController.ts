@@ -1,4 +1,4 @@
-import userService from "../services/userService";
+import playerServices from "../services/player.services";
 import authServices from "../services/auth.services";
 import { Methods } from "../constants/general";
 import { Request, Response } from "express";
@@ -15,7 +15,7 @@ const getMongoUser = async (req: Request, res: Response) => {
   }
 
   try {
-    const user = await userService.getUser(userEmail);
+    const user = await playerServices.getPlayer(userEmail);
     if (!user) {
       return res.status(403).send({
         status: "FAILED",
@@ -114,7 +114,7 @@ const getUser = async (req: Request, res: Response) => {
   }
 
   try {
-    const user = await userService.getUser(userEmail);
+    const user = await playerServices.getPlayer(userEmail);
     if (!user) {
       return res.status(403).send({
         status: "FAILED",
@@ -145,7 +145,7 @@ const updateUser = async (req: Request, res: Response) => {
   }
 
   try {
-    const updatedUser = await userService.updateUser(userEmail, body);
+    const updatedUser = await playerServices.updatePlayer(userEmail, body);
 
     if (!updatedUser) {
       return res.status(403).send({
@@ -166,7 +166,7 @@ const updateUser = async (req: Request, res: Response) => {
 
 const getAcolytes = async (req: Request, res: Response) => {
   try {
-    const acolytes = await userService.getAcolytes();
+    const acolytes = await playerServices.getAcolytes();
     if (acolytes.length === 0) {
       return res.status(404).send({ message: "Acolytes not found" });
     }
@@ -182,7 +182,7 @@ const getAcolytes = async (req: Request, res: Response) => {
 
 const getNonAcolytePlayers = async (req: Request, res: Response) => {
   try {
-    const nonAcolytePlayers = await userService.getNonAcolytePlayers();
+    const nonAcolytePlayers = await playerServices.getNonAcolytePlayers();
     res.send(nonAcolytePlayers);
   } catch (error: any) {
     res.status(500).send(error.message);

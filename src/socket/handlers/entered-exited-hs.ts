@@ -6,7 +6,7 @@ import {
   ScreenChangingNotificationDestinations,
 } from "../../constants/fcm";
 import { SocketServerToClientEvents } from "../../constants/socket";
-import { sendMessageToOneOrMoreRecipients } from "../../utils";
+import { sendMessageToOneOrMoreRecipients } from "../../services/fcm.services";
 import { VoidFunction } from "../../interfaces/generics";
 import { io } from "../..";
 

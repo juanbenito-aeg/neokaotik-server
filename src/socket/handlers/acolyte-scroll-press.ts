@@ -4,7 +4,7 @@ import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
 } from "../../constants/fcm";
-import { sendMessageToOneOrMoreRecipients } from "../../utils";
+import { sendMessageToOneOrMoreRecipients } from "../../services/fcm.services";
 
 async function handleAcolyteScrollPress(isPressed: boolean) {
   if (!isPressed) return;

@@ -6,7 +6,7 @@ import {
 import { MqttTopics } from "../../../../constants/mqtt";
 import playerDb from "../../../../db/player.db";
 import { PlayerRole } from "../../../../constants/player";
-import { sendMessageToOneOrMoreRecipients } from "../../../../utils";
+import { sendMessageToOneOrMoreRecipients } from "../../../../services/fcm.services";
 
 async function handleTowerCardid(cardId: string) {
   const acolyteWithReceivedCardId = await getAcolyteWithReceivedCardId(cardId);

@@ -2,11 +2,11 @@ import { Types } from "mongoose";
 import { handleAcolyteOrMortimerEnteredOrExitedHS } from "../../socket/handlers/entered-exited-hs";
 import Player from "../../db/player.db";
 import { SocketServerToClientEvents } from "../../constants/socket";
-import { sendMessageToOneOrMoreRecipients } from "../../utils";
+import { sendMessageToOneOrMoreRecipients } from "../../services/fcm.services";
 import { io } from "../../index";
 
 jest.mock("../../db/player.db");
-jest.mock("../../utils");
+jest.mock("../../services/fcm.services");
 
 describe("entered-exited-hs socket event", () => {
   let mockEmit: any;

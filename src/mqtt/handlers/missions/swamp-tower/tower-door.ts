@@ -8,7 +8,7 @@ import { MqttTopics } from "../../../../constants/mqtt";
 import { SocketServerToClientEvents } from "../../../../constants/socket";
 import playerDb from "../../../../db/player.db";
 import { PlayerRole } from "../../../../constants/player";
-import { sendMessageToOneOrMoreRecipients } from "../../../../utils";
+import { sendMessageToOneOrMoreRecipients } from "../../../../services/fcm.services";
 import IPlayer from "../../../../interfaces/IPlayer";
 
 async function handlerTowerDoor(cardId: string) {

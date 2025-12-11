@@ -2,6 +2,7 @@ import playerDb from "../db/player.db";
 import { PlayerRole, Email } from "../constants/player";
 import { Methods } from "../constants/general";
 import { Fields } from "../interfaces/generics";
+import externalApiService from "./external-api.services";
 import IPlayer from "../interfaces/IPlayer";
 
 const getUser = async (userEmail: string) => {
@@ -10,26 +11,6 @@ const getUser = async (userEmail: string) => {
 
     const player = await playerDb.getPlayerByField({ email: userEmail });
     return player;
-  } catch (error) {
-    throw error;
-  }
-};
-
-const getKaotikaUser = async (userEmail: string) => {
-  try {
-    console.log("Fetching user from Kaotika...");
-
-    const response = await fetch(
-      `https://kaotika-server.fly.dev/players/email/${userEmail}`
-    );
-
-    if (!response.ok) {
-      throw new Error(`Kaotika API error: ${response.status}`);
-    }
-
-    const kaotikaUser: any = await response.json();
-    const userData = kaotikaUser.data;
-    return userData || null;
   } catch (error) {
     throw error;
   }
@@ -63,9 +44,9 @@ const updateUser = async (userEmail: string, changes: Fields) => {
 
 const loginUser = async (userEmail: string, fcmToken: string) => {
   try {
-    const kaotikaUser = await getKaotikaUser(userEmail);
+    const kaotikaPlayer = await externalApiService.getKaotikaPlayer(userEmail);
 
-    if (!kaotikaUser) {
+    if (!kaotikaPlayer) {
       throw new Error(`User not found in Kaotika with email: ${userEmail}`);
     }
 
@@ -79,7 +60,7 @@ const loginUser = async (userEmail: string, fcmToken: string) => {
         fcmToken
       );
 
-      const newUser = { ...kaotikaUser, ...newDbUserAdditionalFields };
+      const newUser = { ...kaotikaPlayer, ...newDbUserAdditionalFields };
 
       const createdUser = await createUser(newUser);
 
@@ -92,7 +73,7 @@ const loginUser = async (userEmail: string, fcmToken: string) => {
     const updatedUser = await updateUser(userEmail, {
       active: true,
       pushToken: fcmToken,
-      ...kaotikaUser,
+      ...kaotikaPlayer,
     });
 
     putOrPost.push(Methods.PUT);
@@ -150,15 +131,15 @@ const assignRoleByEmail = (email: string) => {
 
 const logedUser = async (userEmail: string, fcmToken: string) => {
   try {
-    const kaotikaUser = await getKaotikaUser(userEmail);
-    if (!kaotikaUser) {
+    const kaotikaPlayer = await externalApiService.getKaotikaPlayer(userEmail);
+    if (!kaotikaPlayer) {
       throw new Error(`User not found in Kaotika with email: ${userEmail}`);
     }
 
     const updatedUser = await updateUser(userEmail, {
       active: true,
       pushToken: fcmToken,
-      ...kaotikaUser,
+      ...kaotikaPlayer,
     });
 
     return updatedUser;
@@ -185,7 +166,6 @@ const userService = {
   getUser,
   createUser,
   updateUser,
-  getKaotikaUser,
   loginUser,
   logedUser,
   getAcolytes,

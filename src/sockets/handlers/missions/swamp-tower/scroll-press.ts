@@ -1,12 +1,12 @@
-import { PlayerRole } from "../../constants/player";
-import playerDb from "../../db/player.db";
+import { PlayerRole } from "../../../../constants/player";
+import playerDb from "../../../../db/player.db";
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
-} from "../../constants/fcm";
-import { sendMessageToOneOrMoreRecipients } from "../../services/fcm.services";
+} from "../../../../constants/fcm";
+import { sendMessageToOneOrMoreRecipients } from "../../../../services/fcm.services";
 
-async function handleAcolyteScrollPress(isPressed: boolean) {
+async function handleScrollPress(isPressed: boolean) {
   if (!isPressed) return;
 
   const fieldToFilterBy = { rol: PlayerRole.MORTIMER };
@@ -34,4 +34,4 @@ async function handleAcolyteScrollPress(isPressed: boolean) {
   }
 }
 
-export { handleAcolyteScrollPress };
+export default handleScrollPress;

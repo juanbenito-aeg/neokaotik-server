@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
-import { handleAcolyteOrMortimerEnteredOrExitedHS } from "../../socket/handlers/entered-exited-hs";
-import Player from "../../db/player.db";
+import playerDb from "../../db/player.db";
+import handlePlayerEnteredExitedHS from "../../sockets/handlers/missions/artifacts/player-entered-exited-hs";
 import { SocketServerToClientEvents } from "../../constants/socket";
 import { sendMessageToOneOrMoreRecipients } from "../../services/fcm.services";
-import { io } from "../../index";
+import { io } from "../..";
 
 jest.mock("../../db/player.db");
 jest.mock("../../services/fcm.services");
@@ -18,8 +18,8 @@ describe("entered-exited-hs socket event", () => {
 
     mockAcknowledgeEvent = jest.fn();
 
-    Player.getAcolytes = jest.fn();
-    (Player.updatePlayerByField as jest.Mock).mockResolvedValue({
+    playerDb.getAcolytes = jest.fn();
+    (playerDb.updatePlayerByField as jest.Mock).mockResolvedValue({
       _id: new Types.ObjectId(),
       is_inside_hs: true,
       rol: "Acolyte",
@@ -30,30 +30,30 @@ describe("entered-exited-hs socket event", () => {
     const acolyteOrMortimerId = new Types.ObjectId();
     const isInsideHS = true;
 
-    await handleAcolyteOrMortimerEnteredOrExitedHS(
+    await handlePlayerEnteredExitedHS(
       acolyteOrMortimerId,
       isInsideHS,
       mockAcknowledgeEvent
     );
 
-    expect(Player.updatePlayerByField).toHaveBeenCalledWith(
+    expect(playerDb.updatePlayerByField).toHaveBeenCalledWith(
       { _id: acolyteOrMortimerId },
       { is_inside_hs: isInsideHS }
     );
   });
 
-  it("should emit the ENTERED_EXITED_HS event", async () => {
+  it("should emit the PLAYER_ENTERED_EXITED_HS event", async () => {
     const acolyteOrMortimerId = new Types.ObjectId();
     const isInsideHS = true;
 
-    await handleAcolyteOrMortimerEnteredOrExitedHS(
+    await handlePlayerEnteredExitedHS(
       acolyteOrMortimerId,
       isInsideHS,
       mockAcknowledgeEvent
     );
 
     expect(io.emit).toHaveBeenCalledWith(
-      SocketServerToClientEvents.ENTERED_EXITED_HS,
+      SocketServerToClientEvents.PLAYER_ENTERED_EXITED_HS,
       acolyteOrMortimerId,
       isInsideHS
     );
@@ -63,7 +63,7 @@ describe("entered-exited-hs socket event", () => {
     const acolyteOrMortimerId = new Types.ObjectId();
     const isInsideHS = true;
 
-    (Player.getAcolytes as jest.Mock).mockResolvedValue([
+    (playerDb.getAcolytes as jest.Mock).mockResolvedValue([
       {
         found_artifacts: [],
         is_inside_hs: true,
@@ -78,7 +78,7 @@ describe("entered-exited-hs socket event", () => {
       },
     ]);
 
-    await handleAcolyteOrMortimerEnteredOrExitedHS(
+    await handlePlayerEnteredExitedHS(
       acolyteOrMortimerId,
       isInsideHS,
       mockAcknowledgeEvent

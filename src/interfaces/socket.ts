@@ -26,7 +26,7 @@ interface ServerToClientEvents {
     acolyteId?: Types.ObjectId,
     artifactId?: Types.ObjectId
   ) => void;
-  [SocketServerToClientEvents.ENTERED_EXITED_HS]: (
+  [SocketServerToClientEvents.PLAYER_ENTERED_EXITED_HS]: (
     acolyteOrMortimerId: Types.ObjectId,
     isInsideHS: boolean
   ) => void;
@@ -43,7 +43,7 @@ interface ClientToServerEvents {
     acolyteEmail: string,
     isInside: boolean
   ) => void;
-  [SocketClientToServerEvents.INSIDE_OUTSIDE_TOWER_ENTRANCE]: (
+  [SocketClientToServerEvents.ACOLYTE_INSIDE_OUTSIDE_TOWER]: (
     acolyteIsInEntranceTower: boolean
   ) => void;
   [SocketClientToServerEvents.REMOVE_SPELL_PRESS]: () => void;
@@ -57,7 +57,7 @@ interface ClientToServerEvents {
     artifactId: Types.ObjectId,
     acknowledgeEvent: VoidFunction
   ) => void;
-  [SocketClientToServerEvents.ENTERED_EXITED_HS]: (
+  [SocketClientToServerEvents.PLAYER_ENTERED_EXITED_HS]: (
     acolyteOrMortimerId: Types.ObjectId,
     isInsideHS: boolean,
     acknowledgeEvent: VoidFunction

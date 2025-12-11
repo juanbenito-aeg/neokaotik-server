@@ -1,11 +1,11 @@
-import { ArtifactState } from "../../constants/general";
-import { SocketServerToClientEvents } from "../../constants/socket";
-import artifactDb from "../../db/artifact.db";
-import playerDb from "../../db/player.db";
-import { Fields } from "../../interfaces/generics";
-import { PlayerRole } from "../../constants/player";
-import { io } from "../..";
-import { getAcolytesSocketId } from "../../helpers/socket.helpers";
+import { ArtifactState } from "../../../../constants/general";
+import { SocketServerToClientEvents } from "../../../../constants/socket";
+import artifactDb from "../../../../db/artifact.db";
+import playerDb from "../../../../db/player.db";
+import { Fields } from "../../../../interfaces/generics";
+import { PlayerRole } from "../../../../constants/player";
+import { io } from "../../../..";
+import { getAcolytesSocketId } from "../../../../helpers/socket.helpers";
 
 async function handleArtifactsSearchValidatedReset(
   isSearchValidated: boolean,

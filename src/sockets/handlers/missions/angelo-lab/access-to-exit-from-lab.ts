@@ -1,15 +1,15 @@
-import { SocketServerToClientEvents } from "../../constants/socket";
-import playerDb from "../../db/player.db";
-import { AcolyteDataToBroadcast } from "../../interfaces/socket";
-import { PlayerRole } from "../../constants/player";
-import { io } from "../..";
+import { SocketServerToClientEvents } from "../../../../constants/socket";
+import playerDb from "../../../../db/player.db";
+import { AcolyteDataToBroadcast } from "../../../../interfaces/socket";
+import { PlayerRole } from "../../../../constants/player";
+import { io } from "../../../..";
 
 async function handleAccessToExitFromLab(
   istvanSocketId: string,
   acolyteEmail: string,
   isInside: boolean
 ) {
-  const updatedIsInside: boolean = !isInside;
+  const updatedIsInside = !isInside;
 
   // Toggle the acolyte's "isInside" field
   const updatedAcolyte = await playerDb.updatePlayerByField(
@@ -53,4 +53,4 @@ async function handleAccessToExitFromLab(
   );
 }
 
-export { handleAccessToExitFromLab };
+export default handleAccessToExitFromLab;

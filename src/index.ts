@@ -14,7 +14,7 @@ import type {
 import { Environment } from "./constants/general";
 import { MqttEvents } from "./constants/mqtt";
 import { SocketGeneralEvents } from "./constants/socket";
-import handleConnection from "./socket/handlers/connection";
+import subscribeToEvents from "./sockets/subscriptions";
 import mqtt from "mqtt";
 import subscribeToTopics from "./mqtt/subscriptions";
 import handleMessage from "./mqtt/handlers/message";
@@ -32,7 +32,7 @@ app.use(bodyParser.json());
 app.use("/user", userRouter);
 app.use("/api/artifacts", artifactRoutes);
 
-io.on(SocketGeneralEvents.CONNECTION, handleConnection);
+io.on(SocketGeneralEvents.CONNECTION, subscribeToEvents);
 
 const client = mqtt.connect("mqtt://broker.hivemq.com");
 client.on(MqttEvents.CONNECT, subscribeToTopics);

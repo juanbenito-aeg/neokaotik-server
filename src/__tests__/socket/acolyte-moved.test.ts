@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import { io } from "../..";
-import handleAcolyteMoved from "../../socket/handlers/acolyte-moved";
+import handleAcolyteMoved from "../../sockets/handlers/missions/artifacts/acolyte-moved";
 import { Location } from "../../interfaces/geolocalization";
 import { SocketServerToClientEvents } from "../../constants/socket";
 

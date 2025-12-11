@@ -2,7 +2,7 @@ import { Types } from "mongoose";
 import { io } from "../..";
 import { ArtifactState } from "../../constants/general";
 import artifactDb from "../../db/artifact.db";
-import handleArtifactPressed from "../../socket/handlers/artifact-pressed";
+import handleArtifactPressed from "../../sockets/handlers/missions/artifacts/artifact-pressed";
 import { Location } from "../../interfaces/geolocalization";
 
 jest.mock("../../db/player.db");

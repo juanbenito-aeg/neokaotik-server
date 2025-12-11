@@ -1,10 +1,10 @@
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
-} from "../../constants/fcm";
-import playerDb from "../../db/player.db";
-import { PlayerRole } from "../../constants/player";
-import { sendMessageToOneOrMoreRecipients } from "../../services/fcm.services";
+} from "../../../../constants/fcm";
+import playerDb from "../../../../db/player.db";
+import { PlayerRole } from "../../../../constants/player";
+import { sendMessageToOneOrMoreRecipients } from "../../../../services/fcm.services";
 
 async function handleRemoveSpellPress() {
   console.log("Mortimer has pressed the 'Remove spell' button.");

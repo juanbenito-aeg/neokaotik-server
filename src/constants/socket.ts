@@ -1,15 +1,9 @@
-enum Environment {
-  TEST = "test",
-  DEVELOPMENT = "development",
-  PRODUCTION = "production",
-}
-
 enum SocketServerToClientEvents {
   ACOLYTE_INSIDE_OUTSIDE_LAB = "acolyte inside/outside lab",
   ACOLYTE_DISCONNECTED = "acolyte disconnected",
   ACOLYTE_TOWER_ACCESS = "acolyte tower access",
   ACOLYTE_POSITION_CHANGED = "acolyte's position changed",
-  ARTIFACT_COLLECTED = "artifact collected",
+  ARTIFACT_PRESS_MANAGED = "artifact press managed",
   ENTERED_EXITED_HS = "player entered/exited HS",
   REQUESTED_TO_SHOW_ARTIFACTS = "requested to show artifacts",
   ARTIFACTS_SEARCH_VALIDATION_RESET_MANAGED = "artifacts search validation/reset managed",
@@ -33,48 +27,8 @@ enum SocketGeneralEvents {
   DISCONNECT = "disconnect",
 }
 
-enum Methods {
-  POST = 0,
-  PUT = 1,
-}
-
-enum MqttEvents {
-  CONNECT = "connect",
-  MESSAGE = "message",
-}
-
-enum MqttTopics {
-  TOWER_CARDID = "tower/cardid",
-  TOWER_ACCESS = "tower/access",
-  TOWER_DOOR = "tower/door",
-}
-
-enum NotificationTypes {
-  SUCCESS = "success",
-  ERROR = "error",
-  INFO = "info",
-}
-
-enum ScreenChangingNotificationDestinations {
-  SWAMP_TOWER = "Swamp Tower",
-  REMOVE_SPEEL = "Remove spell",
-  HALL_SAGES = "The Hall of Sages",
-}
-
-enum ArtifactState {
-  ACTIVE = "active",
-  COLLECTED = "collected",
-}
-
 export {
-  Environment,
   SocketServerToClientEvents,
   SocketClientToServerEvents,
   SocketGeneralEvents,
-  Methods,
-  MqttEvents,
-  MqttTopics,
-  NotificationTypes,
-  ScreenChangingNotificationDestinations,
-  ArtifactState,
 };

@@ -1,5 +1,5 @@
 import userService from "../services/userService";
-import { Methods } from "../constants";
+import { Methods } from "../constants/general";
 import { Request, Response } from "express";
 
 // TESTING

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import request from "supertest";
 import { app } from "../../index";
-import USER_ROLES from "../../roles/roles";
+import { UserRole } from "../../constants/player";
 import IPlayer from "../../interfaces/IPlayer";
 
 beforeAll(async () => {
@@ -23,7 +23,7 @@ describe("GET /user/get-acolytes", () => {
     expect(acolytes.length).toBeGreaterThan(0);
 
     acolytes.forEach((acolyte) => {
-      expect(acolyte.rol).toBe(USER_ROLES.ACOLYTE);
+      expect(acolyte.rol).toBe(UserRole.ACOLYTE);
     });
   });
 });
@@ -56,5 +56,35 @@ describe("PATCH /user/update/:userEmail", () => {
     const errorMessage = `Cannot find user with the email "${invalidEmail}".`;
 
     expect(response.body.data.error).toBe(errorMessage);
+  });
+});
+
+describe("GET /user/non-acolyte-players", () => {
+  it("should return all players that are not acolytes", async () => {
+    const response = await request(app).get("/user/non-acolyte-players");
+
+    const nonAcolytes: IPlayer[] = response.body;
+
+    expect(response.statusCode).toBe(200);
+    expect(nonAcolytes).not.toBeNull();
+    expect(nonAcolytes.length).toBeGreaterThan(0);
+  });
+});
+
+describe("GET /user/get/:userEmail", () => {
+  it("should return player with the specified email", async () => {
+    const email = "oskar.calvo@aeg.eus";
+    const response = await request(app).get(`/user/get/${email}`);
+
+    expect.objectContaining({ email: email });
+    expect(response.statusCode).toBe(200);
+  });
+
+  it("should return an error if the email is invalid", async () => {
+    const email = "p.j@km.es";
+    const response = await request(app).get(`/user/get/${email}`);
+
+    expect(response.statusCode).toBe(403);
+    expect(response.body.errorMessage).not.toBeNull();
   });
 });

@@ -1,12 +1,12 @@
 import { Socket } from "socket.io";
 import User from "../../database/userDatabase";
-import USER_ROLES from "../../roles/roles";
+import { UserRole } from "../../constants/player";
 import { FieldsToUseInDisconnection } from "../../interfaces/socket";
 import {
   SocketServerToClientEvents,
   SocketClientToServerEvents,
   SocketGeneralEvents,
-} from "../../constants";
+} from "../../constants/socket";
 import { handleAccessToExitFromLab } from "./angelo-lab";
 import { handleAcolyteTowerEntranceStatus } from "./acolyte-tower";
 import { sendAcolyteEnteredExitedNotification } from "../../mqtt/handlers/tower-door";
@@ -17,12 +17,12 @@ import handleRemoveSpellPress from "./remove-spell-press";
 import handleAcolyteMoved from "./acolyte-moved";
 import handleArtifactPressed from "./artifact-pressed";
 import { handleAcolyteOrMortimerEnteredOrExitedHS } from "./entered-exited-hs";
-import { VoidFunction } from "../../interfaces/generics";
 import handleRequestedToShowArtifacts from "./requested-to-show-artifacts";
 import handleArtifactsSearchValidatedReset from "./artifacts-search-validated-reset";
 import { io } from "../..";
 import { getNonAcolytePlayersSocketId } from "../../helpers/socket.helpers";
 import { Location } from "../../interfaces/geolocalization";
+import { VoidFunction } from "../../interfaces/generics";
 
 function handleConnection(socket: Socket) {
   console.log("Client connected to the server socket.");
@@ -33,18 +33,7 @@ function handleConnection(socket: Socket) {
 
   socket.on(
     SocketClientToServerEvents.ENTERED_EXITED_HS,
-    (
-      acolyteOrMortimerId: Types.ObjectId,
-      isInsideHS: boolean,
-      acknowledgeEvent: VoidFunction
-    ) => {
-      handleAcolyteOrMortimerEnteredOrExitedHS(
-        acolyteOrMortimerId,
-        isInsideHS,
-        acknowledgeEvent,
-        socket
-      );
-    }
+    handleAcolyteOrMortimerEnteredOrExitedHS
   );
 
   socket.on(SocketClientToServerEvents.REQUESTED_TO_SHOW_ARTIFACTS, () => {
@@ -76,7 +65,23 @@ function handleConnection(socket: Socket) {
 
   socket.on(SocketClientToServerEvents.ACOLYTE_MOVED, handleAcolyteMoved);
 
-  socket.on(SocketClientToServerEvents.ARTIFACT_PRESSED, handleArtifactPressed);
+  socket.on(
+    SocketClientToServerEvents.ARTIFACT_PRESSED,
+    (
+      acolyteId: Types.ObjectId,
+      acolyteLocation: Location,
+      artifactId: Types.ObjectId,
+      acknowledgeEvent: VoidFunction
+    ) => {
+      handleArtifactPressed(
+        acolyteId,
+        acolyteLocation,
+        artifactId,
+        acknowledgeEvent,
+        socket.id
+      );
+    }
+  );
 
   socket.on(
     SocketClientToServerEvents.ARTIFACTS_SEARCH_VALIDATED_RESET,
@@ -126,7 +131,7 @@ async function handleDisconnection(socket: Socket) {
       socketUser._id,
       false
     );
-  } else if (socketUser?.rol === USER_ROLES.ACOLYTE) {
+  } else if (socketUser?.rol === UserRole.ACOLYTE) {
     await informNonAcolytesAboutAcolyteExitFromSwamp(socketUser._id);
   }
 
@@ -145,7 +150,7 @@ async function notifyMortimerAboutAcolyteDisconnection(
   acolyte: HydratedDocument<IPlayer>
 ) {
   const mortimer = await User.getUserByField({
-    rol: USER_ROLES.MORTIMER,
+    rol: UserRole.MORTIMER,
   });
   const mortimerSocketId = mortimer?.socketId;
 

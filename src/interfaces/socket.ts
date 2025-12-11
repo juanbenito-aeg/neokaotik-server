@@ -1,7 +1,7 @@
 import {
   SocketServerToClientEvents,
   SocketClientToServerEvents,
-} from "../constants";
+} from "../constants/socket";
 import { Types } from "mongoose";
 import { Location } from "./geolocalization";
 import { VoidFunction } from "./generics";
@@ -21,9 +21,10 @@ interface ServerToClientEvents {
     acolyteId: Types.ObjectId,
     acolyteLocation: Location
   ) => void;
-  [SocketServerToClientEvents.ARTIFACT_COLLECTED]: (
-    acolyteId: Types.ObjectId,
-    artifactId: Types.ObjectId
+  [SocketServerToClientEvents.ARTIFACT_PRESS_MANAGED]: (
+    isArtifactCollected: boolean,
+    acolyteId?: Types.ObjectId,
+    artifactId?: Types.ObjectId
   ) => void;
   [SocketServerToClientEvents.ENTERED_EXITED_HS]: (
     acolyteOrMortimerId: Types.ObjectId,
@@ -53,7 +54,8 @@ interface ClientToServerEvents {
   [SocketClientToServerEvents.ARTIFACT_PRESSED]: (
     acolyteId: Types.ObjectId,
     acolyteLocation: Location,
-    artifactId: Types.ObjectId
+    artifactId: Types.ObjectId,
+    acknowledgeEvent: VoidFunction
   ) => void;
   [SocketClientToServerEvents.ENTERED_EXITED_HS]: (
     acolyteOrMortimerId: Types.ObjectId,

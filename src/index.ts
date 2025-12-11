@@ -11,7 +11,9 @@ import type {
   ClientToServerEvents,
   ServerToClientEvents,
 } from "./interfaces/socket";
-import { SocketGeneralEvents, MqttEvents, Environment } from "./constants";
+import { Environment } from "./constants/general";
+import { MqttEvents } from "./constants/mqtt";
+import { SocketGeneralEvents } from "./constants/socket";
 import handleConnection from "./socket/handlers/connection";
 import mqtt from "mqtt";
 import fs from "node:fs";

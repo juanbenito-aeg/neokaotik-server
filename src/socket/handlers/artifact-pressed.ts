@@ -1,72 +1,113 @@
 import { Types } from "mongoose";
 import artifactDatabase from "../../database/artifactDatabase";
-import { ArtifactState, SocketServerToClientEvents } from "../../constants";
+import { ArtifactState } from "../../constants/general";
+import { SocketServerToClientEvents } from "../../constants/socket";
 import userDatabase from "../../database/userDatabase";
-import USER_ROLES from "../../roles/roles";
+import { UserRole } from "../../constants/player";
 import { io } from "../..";
 import { Location } from "../../interfaces/geolocalization";
 import { getAcolytesSocketId } from "../../helpers/socket.helpers";
+import { VoidFunction } from "../../interfaces/generics";
 
 async function handleArtifactPressed(
   acolyteId: Types.ObjectId,
   acolyteLocation: Location,
-  artifactId: Types.ObjectId
+  artifactId: Types.ObjectId,
+  acknowledgeEvent: VoidFunction,
+  acolyteSocketId: string
 ) {
+  // Make the client know the event has been received, so that it does not have to emit it again
+  acknowledgeEvent();
+
   console.log(
     `Handling tap of acolyte with _id "${acolyteId}" on artifact with _id "${artifactId}"...`
   );
 
-  const distanceBetweenUserAndArtifact =
-    await calculateDistanceBetweenUserAndArtifact(acolyteLocation, artifactId);
+  let relevantSocketIds = [acolyteSocketId];
+  let isArtifactCollected = true;
 
-  if (distanceBetweenUserAndArtifact < 1) {
-    // Update pressed artifact's "state" field
+  const artifactAvailable = await isArtifactAvailable(artifactId);
 
-    await artifactDatabase.updateArtifactsByField(
-      { _id: artifactId },
-      { state: ArtifactState.COLLECTED }
-    );
+  if (artifactAvailable) {
+    const distanceBetweenUserAndArtifact =
+      await calculateDistanceBetweenUserAndArtifact(
+        acolyteLocation,
+        artifactId
+      );
 
-    // Update collector's "found_artifacts" field
+    if (distanceBetweenUserAndArtifact < 1) {
+      // Update pressed artifact's "state" field
 
-    const { found_artifacts } = (await userDatabase.getUserByField(
-      { _id: acolyteId },
-      "found_artifacts"
-    ))!;
+      await artifactDatabase.updateArtifactsByField(
+        { _id: artifactId },
+        { state: ArtifactState.COLLECTED }
+      );
 
-    await userDatabase.updateUserByField(
-      { _id: acolyteId },
-      { found_artifacts: [...found_artifacts!, artifactId] }
-    );
+      // Update collector's "found_artifacts" field
 
-    // Emit "artifact collected" to acolytes & Mortimer
+      const { found_artifacts } = (await userDatabase.getUserByField(
+        { _id: acolyteId },
+        "found_artifacts"
+      ))!;
 
-    const acolytesSocketIds = await getAcolytesSocketId();
+      await userDatabase.updateUserByField(
+        { _id: acolyteId },
+        { found_artifacts: [...found_artifacts!, artifactId] }
+      );
 
-    const { socketId: mortimerSocketId } = (await userDatabase.getUserByField(
-      { rol: USER_ROLES.MORTIMER },
-      "socketId"
-    ))!;
+      const acolytesSocketIds = await getAcolytesSocketId();
 
-    const acolytesAndMortimerSocketIds = [
-      ...acolytesSocketIds,
-      mortimerSocketId,
-    ];
+      const { socketId: mortimerSocketId } = (await userDatabase.getUserByField(
+        { rol: UserRole.MORTIMER },
+        "socketId"
+      ))!;
 
-    io.to(acolytesAndMortimerSocketIds).emit(
-      SocketServerToClientEvents.ARTIFACT_COLLECTED,
-      acolyteId,
-      artifactId
-    );
+      relevantSocketIds = [...acolytesSocketIds, mortimerSocketId];
+    } else {
+      isArtifactCollected = false;
 
-    console.log(
-      `Acolytes & Mortimer have been informed about artifact's (with _id "${artifactId}") collection.`
-    );
-  } else {
-    console.log(
-      `Distance between acolyte with _id "${acolyteId}" & artifact with _id "${artifactId}" is of 1 m or more, so the tap has had no effect`
-    );
+      console.log(
+        `Distance between acolyte with _id "${acolyteId}" & artifact with _id "${artifactId}" is of 1 m or more, so the tap has had no effect.`
+      );
+    }
   }
+
+  io.to(relevantSocketIds).emit(
+    SocketServerToClientEvents.ARTIFACT_PRESS_MANAGED,
+    isArtifactCollected,
+    isArtifactCollected ? acolyteId : undefined,
+    isArtifactCollected ? artifactId : undefined
+  );
+
+  console.log(
+    `Relevant players have been informed about artifact's (with _id "${artifactId}") successful/failed collection.`
+  );
+}
+
+async function isArtifactAvailable(artifactId: Types.ObjectId) {
+  const acolytes = await userDatabase.getAcolytes();
+  const artifact = await artifactDatabase.getArtifactById(artifactId, "state");
+
+  const isArtifactAvailable = artifact?.state === ArtifactState.ACTIVE;
+
+  if (!isArtifactAvailable) {
+    console.log(`Artifact with _id "${artifactId}" is not available.`);
+    return false;
+  }
+
+  const artifactHasBeenCollected = acolytes.find((acolyte) =>
+    acolyte.found_artifacts?.includes(artifactId)
+  );
+
+  if (artifactHasBeenCollected) {
+    console.log(
+      `Artifact with _id "${artifactId}" has already been collected.`
+    );
+    return false;
+  }
+
+  console.log(`Artifact with _id "${artifactId}" is available for collection.`);
+  return true;
 }
 
 async function calculateDistanceBetweenUserAndArtifact(

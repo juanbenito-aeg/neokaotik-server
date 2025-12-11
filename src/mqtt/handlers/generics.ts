@@ -1,5 +1,5 @@
 import { client } from "../..";
-import { MqttTopics } from "../../constants";
+import { MqttTopics } from "../../constants/mqtt";
 import handleTowerCardid from "./tower-cardid";
 import { handlerTowerDoor } from "./tower-door";
 

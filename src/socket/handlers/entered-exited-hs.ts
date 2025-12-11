@@ -1,20 +1,19 @@
 import { Types } from "mongoose";
 import User from "../../database/userDatabase";
-import USER_ROLES from "../../roles/roles";
+import { UserRole } from "../../constants/player";
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
-  SocketServerToClientEvents,
-} from "../../constants";
+} from "../../constants/fcm";
+import { SocketServerToClientEvents } from "../../constants/socket";
 import { sendMessageToOneOrMoreRecipients } from "../../utils";
-import { Socket } from "socket.io";
 import { VoidFunction } from "../../interfaces/generics";
+import { io } from "../..";
 
 async function handleAcolyteOrMortimerEnteredOrExitedHS(
   acolyteOrMortimerId: Types.ObjectId,
   isInsideHS: boolean,
-  acknowledgeEvent: VoidFunction,
-  socket: Socket
+  acknowledgeEvent: VoidFunction
 ) {
   // Make the client know the event has been received, so that it does not have to emit it again
   acknowledgeEvent();
@@ -32,7 +31,7 @@ async function handleAcolyteOrMortimerEnteredOrExitedHS(
     } has ${enteredOrExitedHS} The Hall of Sages with great success.`
   );
 
-  if (updatedPlayer!.rol === USER_ROLES.ACOLYTE) {
+  if (updatedPlayer!.rol === UserRole.ACOLYTE) {
     const { allArtifactsCollected, allAcolytesInsideHS } =
       await checkAcolytesStatus();
 
@@ -41,7 +40,7 @@ async function handleAcolyteOrMortimerEnteredOrExitedHS(
     }
   }
 
-  socket.broadcast.emit(
+  io.emit(
     SocketServerToClientEvents.ENTERED_EXITED_HS,
     acolyteOrMortimerId,
     isInsideHS
@@ -73,7 +72,7 @@ async function checkAcolytesStatus() {
 }
 
 async function sendAcolytesAreInsideHSNotification() {
-  const fieldToFilterBy = { rol: USER_ROLES.MORTIMER };
+  const fieldToFilterBy = { rol: UserRole.MORTIMER };
   const fieldsToIncludeOrExclude = "pushToken";
 
   const mortimer = (await User.getUserByField(

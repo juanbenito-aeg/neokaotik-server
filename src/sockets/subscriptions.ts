@@ -24,6 +24,7 @@ import { getNonAcolytePlayersSocketId } from "../helpers/socket.helpers";
 import { Location } from "../interfaces/geolocalization";
 import { VoidFunction } from "../interfaces/generics";
 import handleConnectionOpen from "./handlers/connections/connection-open";
+import handlePlayerEnteredExitedHS from "./handlers/missions/artifacts/player-entered-exited-hs";
 
 function subscribeToEvents(socket: Socket) {
   console.log(
@@ -38,8 +39,8 @@ function subscribeToEvents(socket: Socket) {
   );
 
   socket.on(
-    SocketClientToServerEvents.ENTERED_EXITED_HS,
-    handleAcolyteOrMortimerEnteredOrExitedHS
+    SocketClientToServerEvents.PLAYER_ENTERED_EXITED_HS,
+    handlePlayerEnteredExitedHS
   );
 
   socket.on(SocketClientToServerEvents.REQUESTED_TO_SHOW_ARTIFACTS, () => {

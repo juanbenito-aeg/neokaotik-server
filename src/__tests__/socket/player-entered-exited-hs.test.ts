@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { handleAcolyteOrMortimerEnteredOrExitedHS } from "../../socket/handlers/entered-exited-hs";
+import handlePlayerEnteredExitedHS from "../../sockets/handlers/missions/artifacts/player-entered-exited-hs";
 import User from "../../database/userDatabase";
 import { SocketServerToClientEvents } from "../../constants/socket";
 import { sendMessageToOneOrMoreRecipients } from "../../utils";
@@ -30,7 +30,7 @@ describe("entered-exited-hs socket event", () => {
     const acolyteOrMortimerId = new Types.ObjectId();
     const isInsideHS = true;
 
-    await handleAcolyteOrMortimerEnteredOrExitedHS(
+    await handlePlayerEnteredExitedHS(
       acolyteOrMortimerId,
       isInsideHS,
       mockAcknowledgeEvent
@@ -42,18 +42,18 @@ describe("entered-exited-hs socket event", () => {
     );
   });
 
-  it("should emit the ENTERED_EXITED_HS event", async () => {
+  it("should emit the PLAYER_ENTERED_EXITED_HS event", async () => {
     const acolyteOrMortimerId = new Types.ObjectId();
     const isInsideHS = true;
 
-    await handleAcolyteOrMortimerEnteredOrExitedHS(
+    await handlePlayerEnteredExitedHS(
       acolyteOrMortimerId,
       isInsideHS,
       mockAcknowledgeEvent
     );
 
     expect(io.emit).toHaveBeenCalledWith(
-      SocketServerToClientEvents.ENTERED_EXITED_HS,
+      SocketServerToClientEvents.PLAYER_ENTERED_EXITED_HS,
       acolyteOrMortimerId,
       isInsideHS
     );
@@ -78,7 +78,7 @@ describe("entered-exited-hs socket event", () => {
       },
     ]);
 
-    await handleAcolyteOrMortimerEnteredOrExitedHS(
+    await handlePlayerEnteredExitedHS(
       acolyteOrMortimerId,
       isInsideHS,
       mockAcknowledgeEvent

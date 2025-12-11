@@ -3,16 +3,17 @@ const router = express.Router();
 
 import middleware from "../middlewares/auth.middleware";
 import userController from "../controllers/userController";
+import authController from "../controllers/auth.controllers";
 
 // TESTING
 router.get("/mongo", middleware.verifyIdToken, userController.getMongoUser);
 
-router.post("/log-in", middleware.verifyIdToken, userController.loginUser);
+router.post("/log-in", middleware.verifyIdToken, authController.loginPlayer);
 
 router.post(
   "/access-logged-in",
   middleware.verifyIdToken,
-  userController.loggedUser
+  authController.loggedPlayer
 );
 
 router.get("/get/:userEmail", userController.getUser);

@@ -23,15 +23,19 @@ import { io } from "../";
 import { getNonAcolytePlayersSocketId } from "../helpers/socket.helpers";
 import { Location } from "../interfaces/geolocalization";
 import { VoidFunction } from "../interfaces/generics";
+import handleConnectionOpen from "./handlers/connections/connection-open";
 
 function subscribeToEvents(socket: Socket) {
   console.log(
     `The client with the id "${socket.id}" connected to the server socket.`
   );
 
-  socket.on(SocketClientToServerEvents.CONNECTION_OPEN, (userEmail: string) => {
-    handleConnectionOpening(socket, userEmail);
-  });
+  socket.on(
+    SocketClientToServerEvents.CONNECTION_OPEN,
+    (playerEmail: string) => {
+      handleConnectionOpen(socket, playerEmail);
+    }
+  );
 
   socket.on(
     SocketClientToServerEvents.ENTERED_EXITED_HS,
@@ -95,12 +99,6 @@ function subscribeToEvents(socket: Socket) {
   socket.on(SocketGeneralEvents.DISCONNECT, () => {
     handleDisconnection(socket);
   });
-}
-
-async function handleConnectionOpening(socket: Socket, userEmail: string) {
-  console.log(`The user with the email "${userEmail}" opened a connection.`);
-
-  await User.updateUserByField({ email: userEmail }, { socketId: socket.id });
 }
 
 async function handleDisconnection(socket: Socket) {

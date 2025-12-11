@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import User from "../../database/userDatabase";
-import { UserRole } from "../../constants/player";
+import { PlayerRole } from "../../constants/player";
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
@@ -31,7 +31,7 @@ async function handleAcolyteOrMortimerEnteredOrExitedHS(
     } has ${enteredOrExitedHS} The Hall of Sages with great success.`
   );
 
-  if (updatedPlayer!.rol === UserRole.ACOLYTE) {
+  if (updatedPlayer!.rol === PlayerRole.ACOLYTE) {
     const { allArtifactsCollected, allAcolytesInsideHS } =
       await checkAcolytesStatus();
 
@@ -72,7 +72,7 @@ async function checkAcolytesStatus() {
 }
 
 async function sendAcolytesAreInsideHSNotification() {
-  const fieldToFilterBy = { rol: UserRole.MORTIMER };
+  const fieldToFilterBy = { rol: PlayerRole.MORTIMER };
   const fieldsToIncludeOrExclude = "pushToken";
 
   const mortimer = (await User.getUserByField(

@@ -1,11 +1,11 @@
 import { SocketServerToClientEvents } from "../../constants/socket";
 import User from "../../database/userDatabase";
-import { UserRole } from "../../constants/player";
+import { PlayerRole } from "../../constants/player";
 import { io } from "../..";
 
 async function handleRequestedToShowArtifacts() {
   const acolytes = await User.getAcolytes();
-  const mortimer = await User.getUserByField({ rol: UserRole.MORTIMER });
+  const mortimer = await User.getUserByField({ rol: PlayerRole.MORTIMER });
   let acolytesSocketId: string[] = [];
   acolytes.map((acolyte) => {
     acolytesSocketId.push(acolyte.socketId);

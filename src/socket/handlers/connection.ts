@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
 import User from "../../database/userDatabase";
-import { UserRole } from "../../constants/player";
+import { PlayerRole } from "../../constants/player";
 import { FieldsToUseInDisconnection } from "../../interfaces/socket";
 import {
   SocketServerToClientEvents,
@@ -131,7 +131,7 @@ async function handleDisconnection(socket: Socket) {
       socketUser._id,
       false
     );
-  } else if (socketUser?.rol === UserRole.ACOLYTE) {
+  } else if (socketUser?.rol === PlayerRole.ACOLYTE) {
     await informNonAcolytesAboutAcolyteExitFromSwamp(socketUser._id);
   }
 
@@ -150,7 +150,7 @@ async function notifyMortimerAboutAcolyteDisconnection(
   acolyte: HydratedDocument<IPlayer>
 ) {
   const mortimer = await User.getUserByField({
-    rol: UserRole.MORTIMER,
+    rol: PlayerRole.MORTIMER,
   });
   const mortimerSocketId = mortimer?.socketId;
 

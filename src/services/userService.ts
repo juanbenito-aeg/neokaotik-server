@@ -1,5 +1,5 @@
 import User from "../database/userDatabase";
-import { UserRole, Email } from "../constants/player";
+import { PlayerRole, Email } from "../constants/player";
 import { Methods } from "../constants/general";
 import { Fields } from "../interfaces/generics";
 import IPlayer from "../interfaces/IPlayer";
@@ -113,7 +113,7 @@ const getNewDbUserAdditionalFields = (userEmail: string, fcmToken: string) => {
   };
 
   switch (newDbUserAdditionalFields.rol) {
-    case UserRole.ACOLYTE: {
+    case PlayerRole.ACOLYTE: {
       Object.assign(newDbUserAdditionalFields, {
         isInside: false,
         is_in_tower_entrance: false,
@@ -127,7 +127,7 @@ const getNewDbUserAdditionalFields = (userEmail: string, fcmToken: string) => {
       break;
     }
 
-    case UserRole.MORTIMER: {
+    case PlayerRole.MORTIMER: {
       Object.assign(newDbUserAdditionalFields, { is_inside_hs: false });
       break;
     }
@@ -138,13 +138,13 @@ const getNewDbUserAdditionalFields = (userEmail: string, fcmToken: string) => {
 
 const assignRoleByEmail = (email: string) => {
   if (email.includes(Email.ACOLYTE)) {
-    return UserRole.ACOLYTE;
+    return PlayerRole.ACOLYTE;
   } else if (email === Email.ISTVAN) {
-    return UserRole.ISTVAN;
+    return PlayerRole.ISTVAN;
   } else if (email === Email.MORTIMER) {
-    return UserRole.MORTIMER;
+    return PlayerRole.MORTIMER;
   } else if (email === Email.VILLAIN) {
-    return UserRole.VILLAIN;
+    return PlayerRole.VILLAIN;
   }
 };
 

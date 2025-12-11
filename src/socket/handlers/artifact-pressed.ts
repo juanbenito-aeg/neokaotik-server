@@ -3,7 +3,7 @@ import artifactDatabase from "../../database/artifactDatabase";
 import { ArtifactState } from "../../constants/general";
 import { SocketServerToClientEvents } from "../../constants/socket";
 import userDatabase from "../../database/userDatabase";
-import { UserRole } from "../../constants/player";
+import { PlayerRole } from "../../constants/player";
 import { io } from "../..";
 import { Location } from "../../interfaces/geolocalization";
 import { getAcolytesSocketId } from "../../helpers/socket.helpers";
@@ -58,7 +58,7 @@ async function handleArtifactPressed(
       const acolytesSocketIds = await getAcolytesSocketId();
 
       const { socketId: mortimerSocketId } = (await userDatabase.getUserByField(
-        { rol: UserRole.MORTIMER },
+        { rol: PlayerRole.MORTIMER },
         "socketId"
       ))!;
 

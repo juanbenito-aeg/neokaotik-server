@@ -3,7 +3,7 @@ import {
   ScreenChangingNotificationDestinations,
 } from "../../constants/fcm";
 import User from "../../database/userDatabase";
-import { UserRole } from "../../constants/player";
+import { PlayerRole } from "../../constants/player";
 import { sendMessageToOneOrMoreRecipients } from "../../utils";
 
 async function handleRemoveSpellPress() {
@@ -21,7 +21,7 @@ async function handleRemoveSpellPress() {
 }
 
 async function updateAcolytesSummonedToHosField() {
-  const fieldToFilterBy = { rol: UserRole.ACOLYTE };
+  const fieldToFilterBy = { rol: PlayerRole.ACOLYTE };
   const changeToApply = {
     has_been_summoned_to_hos: true,
   };

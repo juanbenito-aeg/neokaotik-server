@@ -5,7 +5,7 @@ import {
 } from "../../../../constants/fcm";
 import { MqttTopics } from "../../../../constants/mqtt";
 import User from "../../../../database/userDatabase";
-import { UserRole } from "../../../../constants/player";
+import { PlayerRole } from "../../../../constants/player";
 import { sendMessageToOneOrMoreRecipients } from "../../../../utils";
 
 async function handleTowerCardid(cardId: string) {
@@ -54,7 +54,7 @@ async function getAcolyteWithReceivedCardId(cardId: string) {
 }
 
 async function sendUnauthorizedAccessMessageToMortimer() {
-  const fieldToFilterBy = { rol: UserRole.MORTIMER };
+  const fieldToFilterBy = { rol: PlayerRole.MORTIMER };
   const fieldsToIncludeOrExclude = "pushToken";
 
   const mortimer = (await User.getUserByField(

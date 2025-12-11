@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import request from "supertest";
 import { app } from "../../index";
-import { UserRole } from "../../constants/player";
+import { PlayerRole } from "../../constants/player";
 import IPlayer from "../../interfaces/IPlayer";
 
 beforeAll(async () => {
@@ -23,7 +23,7 @@ describe("GET /user/get-acolytes", () => {
     expect(acolytes.length).toBeGreaterThan(0);
 
     acolytes.forEach((acolyte) => {
-      expect(acolyte.rol).toBe(UserRole.ACOLYTE);
+      expect(acolyte.rol).toBe(PlayerRole.ACOLYTE);
     });
   });
 });

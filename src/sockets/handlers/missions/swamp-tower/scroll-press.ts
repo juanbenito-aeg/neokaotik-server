@@ -1,18 +1,18 @@
-import { UserRole } from "../../constants/player";
-import User from "../../database/userDatabase";
+import { UserRole } from "../../../../constants/player";
+import playerDb from "../../../../database/userDatabase";
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
-} from "../../constants/fcm";
-import { sendMessageToOneOrMoreRecipients } from "../../utils";
+} from "../../../../constants/fcm";
+import { sendMessageToOneOrMoreRecipients } from "../../../../utils";
 
-async function handleAcolyteScrollPress(isPressed: boolean) {
+async function handleScrollPress(isPressed: boolean) {
   if (!isPressed) return;
 
   const fieldToFilterBy = { rol: UserRole.MORTIMER };
   const fieldsToIncludeOrExclude = "pushToken";
 
-  const mortimer = (await User.getUserByField(
+  const mortimer = (await playerDb.getUserByField(
     fieldToFilterBy,
     fieldsToIncludeOrExclude
   ))!;
@@ -34,4 +34,4 @@ async function handleAcolyteScrollPress(isPressed: boolean) {
   }
 }
 
-export { handleAcolyteScrollPress };
+export default handleScrollPress;

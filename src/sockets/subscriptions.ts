@@ -12,7 +12,7 @@ import handleAcolyteInsideOutsideTower from "./handlers/missions/swamp-tower/aco
 import { sendAcolyteEnteredExitedNotification } from "../mqtt/handlers/tower-door";
 import { HydratedDocument, Types } from "mongoose";
 import IPlayer from "../interfaces/IPlayer";
-import { handleAcolyteScrollPress } from "../socket/handlers/acolyte-scroll-press";
+import handleScrollPress from "./handlers/missions/swamp-tower/scroll-press";
 import handleRemoveSpellPress from "../socket/handlers/remove-spell-press";
 import handleAcolyteMoved from "../socket/handlers/acolyte-moved";
 import handleArtifactPressed from "../socket/handlers/artifact-pressed";
@@ -61,9 +61,7 @@ function subscribeToEvents(socket: Socket) {
     }
   );
 
-  socket.on(SocketClientToServerEvents.SCROLL_PRESS, (isPressed: boolean) => {
-    handleAcolyteScrollPress(isPressed);
-  });
+  socket.on(SocketClientToServerEvents.SCROLL_PRESS, handleScrollPress);
 
   socket.on(
     SocketClientToServerEvents.REMOVE_SPELL_PRESS,

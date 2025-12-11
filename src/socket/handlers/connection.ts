@@ -9,7 +9,7 @@ import {
 } from "../../constants/socket";
 import { handleAccessToExitFromLab } from "./angelo-lab";
 import { handleAcolyteTowerEntranceStatus } from "./acolyte-tower";
-import { sendAcolyteEnteredExitedNotification } from "../../mqtt/handlers/tower-door";
+import { sendAcolyteEnteredExitedNotification } from "../../mqtt/handlers/missions/swamp-tower/tower-door";
 import { HydratedDocument, Types } from "mongoose";
 import IPlayer from "../../interfaces/IPlayer";
 import { handleAcolyteScrollPress } from "./acolyte-scroll-press";

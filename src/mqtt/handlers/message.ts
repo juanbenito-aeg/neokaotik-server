@@ -1,6 +1,6 @@
 import { MqttTopics } from "../../constants/mqtt";
-import handleTowerCardid from "./tower-cardid";
-import { handlerTowerDoor } from "./tower-door";
+import handleTowerCardid from "./missions/swamp-tower/tower-cardid";
+import { handlerTowerDoor } from "./missions/swamp-tower/tower-door";
 
 function handleMessage(topic: string, message: Buffer) {
   let informativeMessage = "";

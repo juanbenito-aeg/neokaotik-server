@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import artifactDatabase from "../../db/artifactDatabase";
+import artifactDb from "../../db/artifact.db";
 import { ArtifactState } from "../../constants/general";
 import { SocketServerToClientEvents } from "../../constants/socket";
 import playerDb from "../../db/player.db";
@@ -38,7 +38,7 @@ async function handleArtifactPressed(
     if (distanceBetweenUserAndArtifact < 1) {
       // Update pressed artifact's "state" field
 
-      await artifactDatabase.updateArtifactsByField(
+      await artifactDb.updateArtifactsByField(
         { _id: artifactId },
         { state: ArtifactState.COLLECTED }
       );
@@ -86,7 +86,7 @@ async function handleArtifactPressed(
 
 async function isArtifactAvailable(artifactId: Types.ObjectId) {
   const acolytes = await playerDb.getAcolytes();
-  const artifact = await artifactDatabase.getArtifactById(artifactId, "state");
+  const artifact = await artifactDb.getArtifactById(artifactId, "state");
 
   const isArtifactAvailable = artifact?.state === ArtifactState.ACTIVE;
 
@@ -116,10 +116,7 @@ async function calculateDistanceBetweenUserAndArtifact(
 ) {
   const [acolyteLongitude, acolyteLatitude] = acolyteLocation.coordinates;
 
-  const artifact = await artifactDatabase.getArtifactById(
-    artifactId,
-    "location"
-  );
+  const artifact = await artifactDb.getArtifactById(artifactId, "location");
   const [artifactLongitude, artifactLatitude] = artifact!.location.coordinates;
 
   // Calculate distance between latitude/longitude points (φ is latitude, λ is longitude, R is earth’s radius)

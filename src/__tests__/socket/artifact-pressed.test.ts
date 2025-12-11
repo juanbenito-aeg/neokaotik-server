@@ -1,12 +1,12 @@
 import { Types } from "mongoose";
 import { io } from "../..";
 import { ArtifactState } from "../../constants/general";
-import artifactDatabase from "../../db/artifactDatabase";
+import artifactDb from "../../db/artifact.db";
 import handleArtifactPressed from "../../socket/handlers/artifact-pressed";
 import { Location } from "../../interfaces/geolocalization";
 
 jest.mock("../../db/player.db");
-jest.mock("../../db/artifactDatabase");
+jest.mock("../../db/artifact.db");
 jest.mock("../../helpers/socket.helpers");
 
 describe("'handleArtifactPressed' socket event handler", () => {
@@ -30,7 +30,7 @@ describe("'handleArtifactPressed' socket event handler", () => {
   const acolyteSocketId = "acolyte's socket ID";
 
   it("should inform just the acolyte that has pressed the artifact about a failed collection", async () => {
-    (artifactDatabase.getArtifactById as jest.Mock).mockResolvedValue({
+    (artifactDb.getArtifactById as jest.Mock).mockResolvedValue({
       state:
         ArtifactState.COLLECTED /* An acolyte already owns the artifact, so trying to take it again is considered a failed collection */,
       location: { type: "Point", coordinates: [-34567, 323444] },

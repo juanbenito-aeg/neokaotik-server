@@ -1,6 +1,6 @@
 import { ArtifactState } from "../../constants/general";
 import { SocketServerToClientEvents } from "../../constants/socket";
-import artifactDatabase from "../../db/artifactDatabase";
+import artifactDb from "../../db/artifact.db";
 import playerDb from "../../db/player.db";
 import { Fields } from "../../interfaces/generics";
 import { PlayerRole } from "../../constants/player";
@@ -40,7 +40,7 @@ async function updateAcolytesAndArtifactsFields(isSearchValidated: boolean) {
     changesToApplyToAcolytes.has_completed_artifacts_search = true;
   } else {
     // If the search has been reset, set artifacts' "state" field to "active"
-    await artifactDatabase.updateArtifactsByField(
+    await artifactDb.updateArtifactsByField(
       {},
       { state: ArtifactState.ACTIVE }
     );

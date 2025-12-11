@@ -1,6 +1,6 @@
 import externalApiService from "./external-api.services";
 import { PlayerRole, Email } from "../constants/player";
-import playerService from "./player.services";
+import playerServices from "./player.services";
 import { Methods } from "../constants/general";
 
 const loginPlayer = async (playerEmail: string, fcmToken: string) => {
@@ -13,7 +13,7 @@ const loginPlayer = async (playerEmail: string, fcmToken: string) => {
       throw new Error(`Player not found in Kaotika with email: ${playerEmail}`);
     }
 
-    const mongoPlayer = await playerService.getPlayer(playerEmail);
+    const mongoPlayer = await playerServices.getPlayer(playerEmail);
 
     const putOrPost = [];
 
@@ -25,7 +25,7 @@ const loginPlayer = async (playerEmail: string, fcmToken: string) => {
 
       const newPlayer = { ...kaotikaPlayer, ...newDbUserAdditionalFields };
 
-      const createdUser = await playerService.createPlayer(newPlayer);
+      const createdUser = await playerServices.createPlayer(newPlayer);
 
       putOrPost.push(Methods.POST);
       putOrPost.push(createdUser);
@@ -33,7 +33,7 @@ const loginPlayer = async (playerEmail: string, fcmToken: string) => {
       return putOrPost;
     }
 
-    const updatedPlayer = await playerService.updatePlayer(playerEmail, {
+    const updatedPlayer = await playerServices.updatePlayer(playerEmail, {
       active: true,
       pushToken: fcmToken,
       ...kaotikaPlayer,
@@ -57,7 +57,7 @@ const logedPlayer = async (playerEmail: string, fcmToken: string) => {
       throw new Error(`Player not found in Kaotika with email: ${playerEmail}`);
     }
 
-    const updatedPlayer = await playerService.updatePlayer(playerEmail, {
+    const updatedPlayer = await playerServices.updatePlayer(playerEmail, {
       active: true,
       pushToken: fcmToken,
       ...kaotikaPlayer,

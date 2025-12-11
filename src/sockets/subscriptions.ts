@@ -1,31 +1,33 @@
 import { Socket } from "socket.io";
-import User from "../../database/userDatabase";
-import { UserRole } from "../../constants/player";
-import { FieldsToUseInDisconnection } from "../../interfaces/socket";
+import User from "../database/userDatabase";
+import { UserRole } from "../constants/player";
+import { FieldsToUseInDisconnection } from "../interfaces/socket";
 import {
   SocketServerToClientEvents,
   SocketClientToServerEvents,
   SocketGeneralEvents,
-} from "../../constants/socket";
-import { handleAccessToExitFromLab } from "./angelo-lab";
-import { handleAcolyteTowerEntranceStatus } from "./acolyte-tower";
-import { sendAcolyteEnteredExitedNotification } from "../../mqtt/handlers/tower-door";
+} from "../constants/socket";
+import { handleAccessToExitFromLab } from "../socket/handlers/angelo-lab";
+import { handleAcolyteTowerEntranceStatus } from "../socket/handlers/acolyte-tower";
+import { sendAcolyteEnteredExitedNotification } from "../mqtt/handlers/tower-door";
 import { HydratedDocument, Types } from "mongoose";
-import IPlayer from "../../interfaces/IPlayer";
-import { handleAcolyteScrollPress } from "./acolyte-scroll-press";
-import handleRemoveSpellPress from "./remove-spell-press";
-import handleAcolyteMoved from "./acolyte-moved";
-import handleArtifactPressed from "./artifact-pressed";
-import { handleAcolyteOrMortimerEnteredOrExitedHS } from "./entered-exited-hs";
-import handleRequestedToShowArtifacts from "./requested-to-show-artifacts";
-import handleArtifactsSearchValidatedReset from "./artifacts-search-validated-reset";
-import { io } from "../..";
-import { getNonAcolytePlayersSocketId } from "../../helpers/socket.helpers";
-import { Location } from "../../interfaces/geolocalization";
-import { VoidFunction } from "../../interfaces/generics";
+import IPlayer from "../interfaces/IPlayer";
+import { handleAcolyteScrollPress } from "../socket/handlers/acolyte-scroll-press";
+import handleRemoveSpellPress from "../socket/handlers/remove-spell-press";
+import handleAcolyteMoved from "../socket/handlers/acolyte-moved";
+import handleArtifactPressed from "../socket/handlers/artifact-pressed";
+import { handleAcolyteOrMortimerEnteredOrExitedHS } from "../socket/handlers/entered-exited-hs";
+import handleRequestedToShowArtifacts from "../socket/handlers/requested-to-show-artifacts";
+import handleArtifactsSearchValidatedReset from "../socket/handlers/artifacts-search-validated-reset";
+import { io } from "../";
+import { getNonAcolytePlayersSocketId } from "../helpers/socket.helpers";
+import { Location } from "../interfaces/geolocalization";
+import { VoidFunction } from "../interfaces/generics";
 
-function handleConnection(socket: Socket) {
-  console.log("Client connected to the server socket.");
+function subscribeToEvents(socket: Socket) {
+  console.log(
+    `The client with the id "${socket.id}" connected to the server socket.`
+  );
 
   socket.on(SocketClientToServerEvents.CONNECTION_OPEN, (userEmail: string) => {
     handleConnectionOpening(socket, userEmail);
@@ -179,4 +181,4 @@ async function informNonAcolytesAboutAcolyteExitFromSwamp(
   );
 }
 
-export default handleConnection;
+export default subscribeToEvents;

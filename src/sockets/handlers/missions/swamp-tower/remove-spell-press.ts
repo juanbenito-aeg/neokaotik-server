@@ -1,10 +1,10 @@
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
-} from "../../constants/fcm";
-import User from "../../database/userDatabase";
-import { UserRole } from "../../constants/player";
-import { sendMessageToOneOrMoreRecipients } from "../../utils";
+} from "../../../../constants/fcm";
+import playerDb from "../../../../database/userDatabase";
+import { UserRole } from "../../../../constants/player";
+import { sendMessageToOneOrMoreRecipients } from "../../../../utils";
 
 async function handleRemoveSpellPress() {
   console.log("Mortimer has pressed the 'Remove spell' button.");
@@ -26,11 +26,11 @@ async function updateAcolytesSummonedToHosField() {
     has_been_summoned_to_hos: true,
   };
 
-  await User.updateUsersByField(fieldToFilterBy, changeToApply);
+  await playerDb.updateUsersByField(fieldToFilterBy, changeToApply);
 }
 
 async function sendSummonedToHosMessage() {
-  const acolytes = await User.getAcolytes();
+  const acolytes = await playerDb.getAcolytes();
   const acolytesPushToken = acolytes.map((acolyte) => acolyte.pushToken);
 
   const data = {

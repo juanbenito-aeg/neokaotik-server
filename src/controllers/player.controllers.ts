@@ -6,8 +6,6 @@ const getPlayer = async (req: Request, res: Response) => {
     params: { playerEmail },
   } = req;
 
-  console.log("Received playerEmail:", playerEmail);
-
   if (!playerEmail) {
     return res.status(400).send({
       status: "FAILED",

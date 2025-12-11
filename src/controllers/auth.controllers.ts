@@ -2,7 +2,7 @@ import authServices from "../services/auth.services";
 import { Request, Response } from "express";
 import { Methods } from "../constants/general";
 
-const loginPlayer = async (req: Request, res: Response) => {
+const logIn = async (req: Request, res: Response) => {
   const playerEmail = res.locals.playerEmail;
   const fcmToken = res.locals.fcmToken;
   console.log(`Logging in with Email: ${playerEmail}.`);
@@ -43,7 +43,7 @@ const loginPlayer = async (req: Request, res: Response) => {
   }
 };
 
-const loggedPlayer = async (req: Request, res: Response) => {
+const accessLoggedIn = async (req: Request, res: Response) => {
   const playerEmail = res.locals.playerEmail;
   const fcmToken = res.locals.fcmToken;
   console.log(`Player with email: ${playerEmail} already logged in.`);
@@ -72,8 +72,8 @@ const loggedPlayer = async (req: Request, res: Response) => {
 };
 
 const authController = {
-  loginPlayer,
-  loggedPlayer,
+  logIn,
+  accessLoggedIn,
 };
 
 export default authController;

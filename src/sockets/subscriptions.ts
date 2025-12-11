@@ -14,7 +14,7 @@ import { HydratedDocument, Types } from "mongoose";
 import IPlayer from "../interfaces/IPlayer";
 import handleScrollPress from "./handlers/missions/swamp-tower/scroll-press";
 import handleRemoveSpellPress from "./handlers/missions/swamp-tower/remove-spell-press";
-import handleAcolyteMoved from "../socket/handlers/acolyte-moved";
+import handleAcolyteMoved from "./handlers/missions/artifacts/acolyte-moved";
 import handleArtifactPressed from "../socket/handlers/artifact-pressed";
 import handleRequestedToShowArtifacts from "./handlers/missions/artifacts/requested-to-show-artifacts";
 import handleArtifactsSearchValidatedReset from "../socket/handlers/artifacts-search-validated-reset";

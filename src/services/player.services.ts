@@ -4,7 +4,7 @@ import IPlayer from "../interfaces/IPlayer";
 
 const getPlayer = async (playerEmail: string) => {
   try {
-    console.log("Fetching user from MongoDB...");
+    console.log("Fetching player from MongoDB...");
 
     const player = await playerDb.getPlayerByField({ email: playerEmail });
     return player;
@@ -15,7 +15,7 @@ const getPlayer = async (playerEmail: string) => {
 
 const createPlayer = async (newPlayer: IPlayer) => {
   try {
-    console.log("User not found in MongoDB.");
+    console.log("Player not found in MongoDB.");
     console.log("Creating user...");
 
     const createdPlayer = await playerDb.createPlayer(newPlayer);

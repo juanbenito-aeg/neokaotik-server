@@ -4,7 +4,7 @@ import IPlayer from "../../interfaces/IPlayer";
 import { PlayerRole } from "../../constants/player";
 
 describe("GET /user/get-acolytes", () => {
-  it("should return all users with the role 'acolyte'", async () => {
+  it("should return all players with the role 'acolyte'", async () => {
     const response = await request(app).get("/user/get-acolytes");
 
     expect(response.statusCode).toBe(200);
@@ -23,7 +23,7 @@ describe("PATCH /user/update/:userEmail", () => {
   const fieldToUpdate = "experience";
   const newValue = 61000;
 
-  it("should update the user with the specified email", async () => {
+  it("should update the player with the specified email", async () => {
     const response = await request(app)
       .patch("/user/update/juan.benito@ikasle.aeg.eus")
       .send({ [fieldToUpdate]: newValue });
@@ -35,7 +35,7 @@ describe("PATCH /user/update/:userEmail", () => {
     expect(user[fieldToUpdate]).toEqual(newValue);
   });
 
-  it("should answer with a 403 Forbidden error when no user with the specified email exists in the DB", async () => {
+  it("should answer with a 403 Forbidden error when no player with the specified email exists in the DB", async () => {
     const invalidEmail = "j.b@ikasle.aeg.eus";
 
     const response = await request(app)
@@ -44,7 +44,7 @@ describe("PATCH /user/update/:userEmail", () => {
 
     expect(response.statusCode).toBe(403);
 
-    const errorMessage = `Cannot find user with the email "${invalidEmail}".`;
+    const errorMessage = `Cannot find player with the email "${invalidEmail}".`;
 
     expect(response.body.data.error).toBe(errorMessage);
   });

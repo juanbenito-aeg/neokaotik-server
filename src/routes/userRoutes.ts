@@ -1,26 +1,24 @@
-import express from "express";
+import express, { Router } from "express";
 const router = express.Router();
 
 import middleware from "../middlewares/auth.middleware";
-import userController from "../controllers/userController";
+import playerController from "../controllers/player.controllers";
+import authController from "../controllers/auth.controllers";
 
-// TESTING
-router.get("/mongo", middleware.verifyIdToken, userController.getMongoUser);
-
-router.post("/log-in", middleware.verifyIdToken, userController.loginUser);
+router.post("/log-in", middleware.verifyIdToken, authController.logIn);
 
 router.post(
   "/access-logged-in",
   middleware.verifyIdToken,
-  userController.loggedUser
+  authController.accessLoggedIn
 );
 
-router.get("/get/:userEmail", userController.getUser);
+router.get("/get/:playerEmail", playerController.getPlayer);
 
-router.patch("/update/:userEmail", userController.updateUser);
+router.patch("/update/:playerEmail", playerController.updatePlayer);
 
-router.get("/get-acolytes", userController.getAcolytes);
+router.get("/get-acolytes", playerController.getAcolytes);
 
-router.get("/non-acolyte-players", userController.getNonAcolytePlayers);
+router.get("/non-acolyte-players", playerController.getNonAcolytePlayers);
 
 export default router;

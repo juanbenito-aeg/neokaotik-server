@@ -43,7 +43,7 @@ interface ClientToServerEvents {
     acolyteEmail: string,
     isInside: boolean
   ) => void;
-  [SocketClientToServerEvents.INSIDE_OUTSIDE_TOWER_ENTRANCE]: (
+  [SocketClientToServerEvents.ACOLYTE_INSIDE_OUTSIDE_TOWER]: (
     acolyteIsInEntranceTower: boolean
   ) => void;
   [SocketClientToServerEvents.REMOVE_SPELL_PRESS]: () => void;

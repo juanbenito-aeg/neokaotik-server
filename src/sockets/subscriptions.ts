@@ -8,7 +8,7 @@ import {
   SocketGeneralEvents,
 } from "../constants/socket";
 import { handleAccessToExitFromLab } from "../socket/handlers/angelo-lab";
-import { handleAcolyteTowerEntranceStatus } from "../socket/handlers/acolyte-tower";
+import handleAcolyteInsideOutsideTower from "./handlers/missions/swamp-tower/acolyte-inside-outside-tower";
 import { sendAcolyteEnteredExitedNotification } from "../mqtt/handlers/tower-door";
 import { HydratedDocument, Types } from "mongoose";
 import IPlayer from "../interfaces/IPlayer";
@@ -48,9 +48,9 @@ function subscribeToEvents(socket: Socket) {
   );
 
   socket.on(
-    SocketClientToServerEvents.INSIDE_OUTSIDE_TOWER_ENTRANCE,
-    async (isInTowerEntrance: boolean) => {
-      handleAcolyteTowerEntranceStatus(socket.id, isInTowerEntrance);
+    SocketClientToServerEvents.ACOLYTE_INSIDE_OUTSIDE_TOWER,
+    (isInTowerEntrance: boolean) => {
+      handleAcolyteInsideOutsideTower(socket.id, isInTowerEntrance);
     }
   );
 

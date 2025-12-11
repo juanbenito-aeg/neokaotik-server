@@ -1,6 +1,6 @@
 import externalApiService from "./external-api.services";
 import { PlayerRole, Email } from "../constants/player";
-import userService from "./userService";
+import playerService from "./player.services";
 import { Methods } from "../constants/general";
 
 const loginPlayer = async (playerEmail: string, fcmToken: string) => {
@@ -10,10 +10,10 @@ const loginPlayer = async (playerEmail: string, fcmToken: string) => {
     );
 
     if (!kaotikaPlayer) {
-      throw new Error(`User not found in Kaotika with email: ${playerEmail}`);
+      throw new Error(`Player not found in Kaotika with email: ${playerEmail}`);
     }
 
-    const mongoPlayer = await userService.getUser(playerEmail);
+    const mongoPlayer = await playerService.getPlayer(playerEmail);
 
     const putOrPost = [];
 
@@ -25,7 +25,7 @@ const loginPlayer = async (playerEmail: string, fcmToken: string) => {
 
       const newPlayer = { ...kaotikaPlayer, ...newDbUserAdditionalFields };
 
-      const createdUser = await userService.createUser(newPlayer);
+      const createdUser = await playerService.createPlayer(newPlayer);
 
       putOrPost.push(Methods.POST);
       putOrPost.push(createdUser);
@@ -33,7 +33,7 @@ const loginPlayer = async (playerEmail: string, fcmToken: string) => {
       return putOrPost;
     }
 
-    const updatedPlayer = await userService.updateUser(playerEmail, {
+    const updatedPlayer = await playerService.updatePlayer(playerEmail, {
       active: true,
       pushToken: fcmToken,
       ...kaotikaPlayer,
@@ -54,10 +54,10 @@ const logedPlayer = async (playerEmail: string, fcmToken: string) => {
       playerEmail
     );
     if (!kaotikaPlayer) {
-      throw new Error(`User not found in Kaotika with email: ${playerEmail}`);
+      throw new Error(`Player not found in Kaotika with email: ${playerEmail}`);
     }
 
-    const updatedPlayer = await userService.updateUser(playerEmail, {
+    const updatedPlayer = await playerService.updatePlayer(playerEmail, {
       active: true,
       pushToken: fcmToken,
       ...kaotikaPlayer,

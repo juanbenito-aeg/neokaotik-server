@@ -2,38 +2,38 @@ import playerDb from "../db/player.db";
 import { Fields } from "../interfaces/generics";
 import IPlayer from "../interfaces/IPlayer";
 
-const getUser = async (userEmail: string) => {
+const getPlayer = async (playerEmail: string) => {
   try {
     console.log("Fetching user from MongoDB...");
 
-    const player = await playerDb.getPlayerByField({ email: userEmail });
+    const player = await playerDb.getPlayerByField({ email: playerEmail });
     return player;
   } catch (error) {
     throw error;
   }
 };
 
-const createUser = async (newUser: IPlayer) => {
+const createPlayer = async (newPlayer: IPlayer) => {
   try {
     console.log("User not found in MongoDB.");
     console.log("Creating user...");
 
-    const createdUser = await playerDb.createPlayer(newUser);
-    return createdUser;
+    const createdPlayer = await playerDb.createPlayer(newPlayer);
+    return createdPlayer;
   } catch (error) {
     throw error;
   }
 };
 
-const updateUser = async (userEmail: string, changes: Fields) => {
+const updatePlayer = async (playerEmail: string, changes: Fields) => {
   try {
-    console.log("Updating user...");
+    console.log("Updating player...");
 
-    const updatedUser = await playerDb.updatePlayerByField(
-      { email: userEmail },
+    const updatedPlayer = await playerDb.updatePlayerByField(
+      { email: playerEmail },
       changes
     );
-    return updatedUser;
+    return updatedPlayer;
   } catch (error) {
     throw error;
   }
@@ -53,12 +53,12 @@ const getNonAcolytePlayers = async () => {
   return nonAcolytePlayers;
 };
 
-const userService = {
-  getUser,
-  createUser,
-  updateUser,
+const playerServices = {
+  getPlayer,
+  createPlayer,
+  updatePlayer,
   getAcolytes,
   getNonAcolytePlayers,
 };
 
-export default userService;
+export default playerServices;

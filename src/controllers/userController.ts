@@ -31,37 +31,6 @@ const getMongoUser = async (req: Request, res: Response) => {
   }
 };
 
-// TESTING
-const getKaotikaUser = async (req: Request, res: Response) => {
-  const userEmail = res.locals.userEmail;
-
-  if (!userEmail) {
-    return res.status(400).send({
-      status: "FAILED",
-      data: { error: "userEmail not available" },
-    });
-  }
-
-  try {
-    const user = await userService.getKaotikaUser(userEmail);
-    if (!user) {
-      return res.status(403).send({
-        status: "FAILED",
-        data: {
-          error: `Can't find user in Kaotika with the Email: ${userEmail}`,
-        },
-      });
-    }
-    res.send({ user });
-  } catch (error: any) {
-    res.status(500).send({
-      status: "FAILED",
-      message: "Error fetching user from Kaotika",
-      data: { error: error?.message || error },
-    });
-  }
-};
-
 const loginUser = async (req: Request, res: Response) => {
   const userEmail = res.locals.userEmail;
   const fcmToken = res.locals.fcmToken;
@@ -221,7 +190,6 @@ const getNonAcolytePlayers = async (req: Request, res: Response) => {
 
 const userController = {
   getMongoUser,
-  getKaotikaUser,
   loginUser,
   loggedUser,
   getUser,

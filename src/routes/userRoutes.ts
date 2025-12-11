@@ -1,11 +1,8 @@
-import express, { Router } from "express";
+import express from "express";
 const router = express.Router();
 
 import middleware from "../middlewares/auth.middleware";
 import userController from "../controllers/userController";
-
-// TESTING
-router.get("/kaotika", middleware.verifyIdToken, userController.getKaotikaUser);
 
 // TESTING
 router.get("/mongo", middleware.verifyIdToken, userController.getMongoUser);

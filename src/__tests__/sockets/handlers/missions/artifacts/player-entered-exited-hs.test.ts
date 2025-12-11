@@ -1,12 +1,12 @@
 import { Types } from "mongoose";
-import playerDb from "../../db/player.db";
-import handlePlayerEnteredExitedHS from "../../sockets/handlers/missions/artifacts/player-entered-exited-hs";
-import { SocketServerToClientEvents } from "../../constants/socket";
-import { sendMessageToOneOrMoreRecipients } from "../../services/fcm.services";
-import io from "../../config/sockets";
+import playerDb from "../../../../../db/player.db";
+import handlePlayerEnteredExitedHS from "../../../../../sockets/handlers/missions/artifacts/player-entered-exited-hs";
+import { SocketServerToClientEvents } from "../../../../../constants/socket";
+import { sendMessageToOneOrMoreRecipients } from "../../../../../services/fcm.services";
+import io from "../../../../../config/sockets";
 
-jest.mock("../../db/player.db");
-jest.mock("../../services/fcm.services");
+jest.mock("../../../../../db/player.db");
+jest.mock("../../../../../services/fcm.services");
 
 describe("entered-exited-hs socket event", () => {
   let mockEmit: any;

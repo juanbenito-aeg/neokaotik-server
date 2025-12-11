@@ -1,13 +1,13 @@
 import { Types } from "mongoose";
-import io from "../../config/sockets";
-import { ArtifactState } from "../../constants/general";
-import artifactDb from "../../db/artifact.db";
-import handleArtifactPressed from "../../sockets/handlers/missions/artifacts/artifact-pressed";
-import { Location } from "../../interfaces/geolocalization";
+import io from "../../../../../config/sockets";
+import { ArtifactState } from "../../../../../constants/general";
+import artifactDb from "../../../../../db/artifact.db";
+import handleArtifactPressed from "../../../../../sockets/handlers/missions/artifacts/artifact-pressed";
+import { Location } from "../../../../../interfaces/geolocalization";
 
-jest.mock("../../db/player.db");
-jest.mock("../../db/artifact.db");
-jest.mock("../../helpers/socket.helpers");
+jest.mock("../../../../../db/player.db");
+jest.mock("../../../../../db/artifact.db");
+jest.mock("../../../../../helpers/socket.helpers");
 
 describe("'handleArtifactPressed' socket event handler", () => {
   let mockEmit: jest.Mock;

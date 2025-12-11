@@ -1,12 +1,12 @@
-import { client } from "../..";
+import { client } from "../../../..";
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
-} from "../../constants/fcm";
-import { MqttTopics } from "../../constants/mqtt";
-import User from "../../database/userDatabase";
-import { UserRole } from "../../constants/player";
-import { sendMessageToOneOrMoreRecipients } from "../../utils";
+} from "../../../../constants/fcm";
+import { MqttTopics } from "../../../../constants/mqtt";
+import User from "../../../../database/userDatabase";
+import { UserRole } from "../../../../constants/player";
+import { sendMessageToOneOrMoreRecipients } from "../../../../utils";
 
 async function handleTowerCardid(cardId: string) {
   const acolyteWithReceivedCardId = await getAcolyteWithReceivedCardId(cardId);

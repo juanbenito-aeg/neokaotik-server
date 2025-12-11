@@ -16,7 +16,8 @@ import { MqttEvents } from "./constants/mqtt";
 import { SocketGeneralEvents } from "./constants/socket";
 import handleConnection from "./socket/handlers/connection";
 import mqtt from "mqtt";
-import { handleConnect, handleMessage } from "./mqtt/handlers/generics";
+import subscribeToTopics from "./mqtt/subscriptions";
+import handleMessage from "./mqtt/handlers/message";
 
 initializeApp({
   credential: applicationDefault(),
@@ -34,7 +35,7 @@ app.use("/api/artifacts", artifactRoutes);
 io.on(SocketGeneralEvents.CONNECTION, handleConnection);
 
 const client = mqtt.connect("mqtt://broker.hivemq.com");
-client.on(MqttEvents.CONNECT, handleConnect);
+client.on(MqttEvents.CONNECT, subscribeToTopics);
 client.on(MqttEvents.MESSAGE, handleMessage);
 
 async function start() {

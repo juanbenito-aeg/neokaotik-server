@@ -1,15 +1,15 @@
 import { HydratedDocument } from "mongoose";
-import { client, io } from "../..";
+import { client, io } from "../../../..";
 import {
   NotificationTypes,
   ScreenChangingNotificationDestinations,
-} from "../../constants/fcm";
-import { MqttTopics } from "../../constants/mqtt";
-import { SocketServerToClientEvents } from "../../constants/socket";
-import User from "../../database/userDatabase";
-import { UserRole } from "../../constants/player";
-import { sendMessageToOneOrMoreRecipients } from "../../utils";
-import IPlayer from "../../interfaces/IPlayer";
+} from "../../../../constants/fcm";
+import { MqttTopics } from "../../../../constants/mqtt";
+import { SocketServerToClientEvents } from "../../../../constants/socket";
+import User from "../../../../database/userDatabase";
+import { UserRole } from "../../../../constants/player";
+import { sendMessageToOneOrMoreRecipients } from "../../../../utils";
+import IPlayer from "../../../../interfaces/IPlayer";
 
 async function handlerTowerDoor(cardId: string) {
   const acolyte = await User.getUserByField({ card_id: cardId });

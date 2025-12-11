@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import artifactServices from "../services/artifactServices";
+import artifactServices from "../services/mission.services";
 
 async function getArtifacts(req: Request, res: Response) {
   try {

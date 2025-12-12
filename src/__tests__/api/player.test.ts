@@ -3,9 +3,9 @@ import { app } from "../../config/server";
 import IPlayer from "../../interfaces/IPlayer";
 import { PlayerRole } from "../../constants/player";
 
-describe("GET /user/get-acolytes", () => {
+describe("GET /players/acolytes", () => {
   it("should return all players with the role 'acolyte'", async () => {
-    const response = await request(app).get("/user/get-acolytes");
+    const response = await request(app).get("/players/acolytes");
 
     expect(response.statusCode).toBe(200);
 
@@ -19,13 +19,13 @@ describe("GET /user/get-acolytes", () => {
   });
 });
 
-describe("PATCH /user/update/:userEmail", () => {
+describe("PATCH /players/:email", () => {
   const fieldToUpdate = "experience";
   const newValue = 61000;
 
   it("should update the player with the specified email", async () => {
     const response = await request(app)
-      .patch("/user/update/juan.benito@ikasle.aeg.eus")
+      .patch("/players/juan.benito@ikasle.aeg.eus")
       .send({ [fieldToUpdate]: newValue });
 
     expect(response.statusCode).toBe(200);
@@ -39,7 +39,7 @@ describe("PATCH /user/update/:userEmail", () => {
     const invalidEmail = "j.b@ikasle.aeg.eus";
 
     const response = await request(app)
-      .patch(`/user/update/${invalidEmail}`)
+      .patch(`/players/${invalidEmail}`)
       .send({ [fieldToUpdate]: newValue });
 
     expect(response.statusCode).toBe(403);
@@ -50,9 +50,9 @@ describe("PATCH /user/update/:userEmail", () => {
   });
 });
 
-describe("GET /user/non-acolyte-players", () => {
+describe("GET /players/non-acolytes", () => {
   it("should return all players that are not acolytes", async () => {
-    const response = await request(app).get("/user/non-acolyte-players");
+    const response = await request(app).get("/players/non-acolytes");
 
     const nonAcolytes: IPlayer[] = response.body;
 
@@ -62,10 +62,10 @@ describe("GET /user/non-acolyte-players", () => {
   });
 });
 
-describe("GET /user/get/:userEmail", () => {
+describe("GET /players/:email", () => {
   it("should return player with the specified email", async () => {
     const email = "oskar.calvo@aeg.eus";
-    const response = await request(app).get(`/user/get/${email}`);
+    const response = await request(app).get(`/players/${email}`);
 
     expect.objectContaining({ email: email });
     expect(response.statusCode).toBe(200);
@@ -73,7 +73,7 @@ describe("GET /user/get/:userEmail", () => {
 
   it("should return an error if the email is invalid", async () => {
     const email = "p.j@km.es";
-    const response = await request(app).get(`/user/get/${email}`);
+    const response = await request(app).get(`/players/${email}`);
 
     expect(response.statusCode).toBe(403);
     expect(response.body.errorMessage).not.toBeNull();

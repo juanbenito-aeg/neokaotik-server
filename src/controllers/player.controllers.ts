@@ -3,22 +3,22 @@ import { Request, Response } from "express";
 
 const getPlayer = async (req: Request, res: Response) => {
   const {
-    params: { playerEmail },
+    params: { email },
   } = req;
 
-  if (!playerEmail) {
+  if (!email) {
     return res.status(400).send({
       status: "FAILED",
-      data: { error: "Parameter ':playerEmail' cannot be empty" },
+      data: { error: "Parameter ':email' cannot be empty" },
     });
   }
 
   try {
-    const player = await playerServices.getPlayer(playerEmail);
+    const player = await playerServices.getPlayer(email);
     if (!player) {
       return res.status(403).send({
         status: "FAILED",
-        data: { error: `Can't find player with the Email: ${playerEmail}` },
+        data: { error: `Can't find player with the email: ${email}` },
       });
     }
     res.send({ player });
@@ -34,23 +34,23 @@ const getPlayer = async (req: Request, res: Response) => {
 const updatePlayer = async (req: Request, res: Response) => {
   const {
     body,
-    params: { playerEmail },
+    params: { email },
   } = req;
 
-  if (!playerEmail) {
+  if (!email) {
     return res.status(400).send({
       status: "FAILED",
-      data: { error: "Parameter ':playerEmail' can not be empty" },
+      data: { error: "Parameter ':email' can not be empty" },
     });
   }
 
   try {
-    const updatedPlayer = await playerServices.updatePlayer(playerEmail, body);
+    const updatedPlayer = await playerServices.updatePlayer(email, body);
 
     if (!updatedPlayer) {
       return res.status(403).send({
         status: "FAILED",
-        data: { error: `Cannot find player with the email "${playerEmail}".` },
+        data: { error: `Cannot find player with the email "${email}".` },
       });
     }
     console.log("Player updated successfully.");
@@ -89,11 +89,11 @@ const getNonAcolytePlayers = async (req: Request, res: Response) => {
   }
 };
 
-const playerController = {
+const playerControllers = {
   getPlayer,
   updatePlayer,
   getAcolytes,
   getNonAcolytePlayers,
 };
 
-export default playerController;
+export default playerControllers;

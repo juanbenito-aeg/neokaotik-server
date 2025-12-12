@@ -71,9 +71,9 @@ const accessLoggedIn = async (req: Request, res: Response) => {
   }
 };
 
-const authController = {
+const authControllers = {
   logIn,
   accessLoggedIn,
 };
 
-export default authController;
+export default authControllers;

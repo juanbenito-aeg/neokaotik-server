@@ -1,7 +1,7 @@
-import userDatabase from "../database/userDatabase";
+import playerDb from "../db/player.db";
 
 async function getAcolytesSocketId() {
-  const acolytes = await userDatabase.getAcolytes("socketId");
+  const acolytes = await playerDb.getAcolytes("socketId");
 
   const acolytesSocketId = acolytes.map((acolyte) => acolyte.socketId);
 
@@ -9,7 +9,7 @@ async function getAcolytesSocketId() {
 }
 
 async function getNonAcolytePlayersSocketId() {
-  const nonAcolytePlayers = await userDatabase.getNonAcolytePlayers();
+  const nonAcolytePlayers = await playerDb.getNonAcolytePlayers();
 
   const nonAcolytePlayersSocketId = nonAcolytePlayers.map(
     (nonAcolytePlayer) => nonAcolytePlayer.socketId

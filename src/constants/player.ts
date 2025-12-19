@@ -5,11 +5,11 @@ enum Email {
   ACOLYTE = "@ikasle.aeg.eus",
 }
 
-enum UserRole {
+enum PlayerRole {
   VILLAIN = "villain",
   MORTIMER = "mortimer",
   ISTVAN = "istvan",
   ACOLYTE = "acolyte",
 }
 
-export { Email, UserRole };
+export { Email, PlayerRole };

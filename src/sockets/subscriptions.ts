@@ -1,0 +1,96 @@
+import { Socket } from "socket.io";
+import {
+  SocketClientToServerEvents,
+  SocketGeneralEvents,
+} from "../constants/socket";
+import handleAccessToExitFromLab from "./handlers/missions/angelo-lab/access-to-exit-from-lab";
+import handleAcolyteInsideOutsideTower from "./handlers/missions/swamp-tower/acolyte-inside-outside-tower";
+import { Types } from "mongoose";
+import handleScrollPress from "./handlers/missions/swamp-tower/scroll-press";
+import handleRemoveSpellPress from "./handlers/missions/swamp-tower/remove-spell-press";
+import handleAcolyteMoved from "./handlers/missions/artifacts/acolyte-moved";
+import handleArtifactPressed from "./handlers/missions/artifacts/artifact-pressed";
+import handleRequestedToShowArtifacts from "./handlers/missions/artifacts/requested-to-show-artifacts";
+import handleArtifactsSearchValidatedReset from "./handlers/missions/artifacts/artifacts-search-validated-reset";
+import { Location } from "../interfaces/geolocalization";
+import { VoidFunction } from "../interfaces/generics";
+import handleConnectionOpen from "./handlers/connections/connection-open";
+import handlePlayerEnteredExitedHS from "./handlers/missions/artifacts/player-entered-exited-hs";
+import handleDisconnection from "./handlers/connections/disconnection";
+
+function subscribeToEvents(socket: Socket) {
+  console.log(
+    `The client with the id "${socket.id}" connected to the server socket.`
+  );
+
+  socket.on(
+    SocketClientToServerEvents.CONNECTION_OPEN,
+    (playerEmail: string) => {
+      handleConnectionOpen(socket, playerEmail);
+    }
+  );
+
+  socket.on(
+    SocketClientToServerEvents.PLAYER_ENTERED_EXITED_HS,
+    handlePlayerEnteredExitedHS
+  );
+
+  socket.on(
+    SocketClientToServerEvents.REQUESTED_TO_SHOW_ARTIFACTS,
+    handleRequestedToShowArtifacts
+  );
+
+  socket.on(
+    SocketClientToServerEvents.ACOLYTE_INSIDE_OUTSIDE_TOWER,
+    (isInTowerEntrance: boolean) => {
+      handleAcolyteInsideOutsideTower(socket.id, isInTowerEntrance);
+    }
+  );
+
+  socket.on(
+    SocketClientToServerEvents.ACCESS_TO_EXIT_FROM_LAB,
+    (acolyteEmail: string, isInside: boolean) => {
+      handleAccessToExitFromLab(socket.id, acolyteEmail, isInside);
+    }
+  );
+
+  socket.on(SocketClientToServerEvents.SCROLL_PRESS, handleScrollPress);
+
+  socket.on(
+    SocketClientToServerEvents.REMOVE_SPELL_PRESS,
+    handleRemoveSpellPress
+  );
+
+  socket.on(SocketClientToServerEvents.ACOLYTE_MOVED, handleAcolyteMoved);
+
+  socket.on(
+    SocketClientToServerEvents.ARTIFACT_PRESSED,
+    (
+      acolyteId: Types.ObjectId,
+      acolyteLocation: Location,
+      artifactId: Types.ObjectId,
+      acknowledgeEvent: VoidFunction
+    ) => {
+      handleArtifactPressed(
+        acolyteId,
+        acolyteLocation,
+        artifactId,
+        acknowledgeEvent,
+        socket.id
+      );
+    }
+  );
+
+  socket.on(
+    SocketClientToServerEvents.ARTIFACTS_SEARCH_VALIDATED_RESET,
+    (isSearchValidated: boolean) => {
+      handleArtifactsSearchValidatedReset(isSearchValidated, socket.id);
+    }
+  );
+
+  socket.on(SocketGeneralEvents.DISCONNECT, () => {
+    handleDisconnection(socket);
+  });
+}
+
+export default subscribeToEvents;

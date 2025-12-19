@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import IArtifact from "../interfaces/IArtifact";
-import { ArtifactState } from "../constants/general";
+import { ArtifactState } from "../constants/missions";
 
 const pointSchema = new Schema(
   {

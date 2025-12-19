@@ -3,9 +3,4 @@ enum Methods {
   PUT = 1,
 }
 
-enum ArtifactState {
-  ACTIVE = "active",
-  COLLECTED = "collected",
-}
-
-export { Methods, ArtifactState };
+export { Methods };

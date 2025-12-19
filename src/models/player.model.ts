@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import IPlayer from "../interfaces/IPlayer";
+import { AngeloLocation } from "../constants/missions";
 
 const { Schema, model } = mongoose;
 
@@ -232,6 +233,13 @@ const playerSchema = new Schema<IPlayer>({
   found_artifacts: [{ type: ObjectId, ref: "Artifact", required: false }],
   has_completed_artifacts_search: { type: Boolean, required: false },
   is_inside_hs: { type: Boolean, required: false },
+  isCaptured: { type: Boolean, required: false },
+  location: {
+    type: String,
+    required: false,
+    enum: Object.values(AngeloLocation),
+  },
+  isGuilty: { type: Boolean, required: false },
 });
 
 const Player = model<IPlayer>("Player", playerSchema);

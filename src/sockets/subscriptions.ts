@@ -17,6 +17,7 @@ import { VoidFunction } from "../interfaces/generics";
 import handleConnectionOpen from "./handlers/connections/connection-open";
 import handlePlayerEnteredExitedHS from "./handlers/missions/artifacts/player-entered-exited-hs";
 import handleDisconnection from "./handlers/connections/disconnection";
+import handleAcolyteAcceptedBetrayal from "./handlers/missions/angelo-betrayer/acolyte-accepted-betrayal";
 
 function subscribeToEvents(socket: Socket) {
   console.log(
@@ -86,6 +87,11 @@ function subscribeToEvents(socket: Socket) {
     (isSearchValidated: boolean) => {
       handleArtifactsSearchValidatedReset(isSearchValidated, socket.id);
     }
+  );
+
+  socket.on(
+    SocketClientToServerEvents.ACOLYTE_ACCEPTED_BETRAYAL,
+    handleAcolyteAcceptedBetrayal
   );
 
   socket.on(SocketGeneralEvents.DISCONNECT, () => {

@@ -4,7 +4,7 @@ import {
 } from "../constants/socket";
 import { Types } from "mongoose";
 import { Location } from "./geolocalization";
-import { VoidFunction } from "./generics";
+import { Fields, VoidFunction } from "./generics";
 
 // Declaration of the events used when sending and broadcasting events to the client
 interface ServerToClientEvents {
@@ -33,6 +33,10 @@ interface ServerToClientEvents {
   [SocketServerToClientEvents.REQUESTED_TO_SHOW_ARTIFACTS]: () => void;
   [SocketServerToClientEvents.ARTIFACTS_SEARCH_VALIDATION_RESET_MANAGED]: (
     acolytesHaveCompletedArtifactsSearch: boolean
+  ) => void;
+  [SocketServerToClientEvents.ACOLYTE_BECAME_BETRAYER]: (
+    acolyteId: Types.ObjectId,
+    acolyteUpdatedFields: Fields
   ) => void;
 }
 
@@ -65,6 +69,9 @@ interface ClientToServerEvents {
   [SocketClientToServerEvents.REQUESTED_TO_SHOW_ARTIFACTS]: () => void;
   [SocketClientToServerEvents.ARTIFACTS_SEARCH_VALIDATED_RESET]: (
     isSearchValidated: boolean
+  ) => void;
+  [SocketClientToServerEvents.ACOLYTE_ACCEPTED_BETRAYAL]: (
+    acolyteId: Types.ObjectId
   ) => void;
 }
 

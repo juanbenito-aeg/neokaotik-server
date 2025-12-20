@@ -1,4 +1,4 @@
-import { Document, HydratedDocument, Types } from "mongoose";
+import { Types } from "mongoose";
 import playerDb from "../../../../db/player.db";
 import { ROTTEN_SET_DECREPIT_BETRAYER } from "../../../../constants/missions";
 import io from "../../../../config/sockets";

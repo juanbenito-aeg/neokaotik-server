@@ -25,22 +25,23 @@ const loginPlayer = async (playerEmail: string, fcmToken: string) => {
 
       const newPlayer = { ...kaotikaPlayer, ...newDbUserAdditionalFields };
 
-      const createdUser = await playerServices.createPlayer(newPlayer);
+      const createdPlayer = await playerServices.createPlayer(newPlayer);
 
-      putOrPost.push(Methods.POST);
-      putOrPost.push(createdUser);
+      putOrPost.push(Methods.POST, createdPlayer);
 
       return putOrPost;
     }
 
     const updatedPlayer = await playerServices.updatePlayer(playerEmail, {
+      ...kaotikaPlayer,
       active: true,
       pushToken: fcmToken,
-      ...kaotikaPlayer,
+      isBetrayer: mongoPlayer.isBetrayer,
+      gold: mongoPlayer.gold,
+      inventory: mongoPlayer.inventory,
     });
 
-    putOrPost.push(Methods.PUT);
-    putOrPost.push(updatedPlayer);
+    putOrPost.push(Methods.PUT, updatedPlayer);
 
     return putOrPost;
   } catch (error) {
@@ -53,14 +54,20 @@ const logedPlayer = async (playerEmail: string, fcmToken: string) => {
     const kaotikaPlayer = await externalApiService.getKaotikaPlayer(
       playerEmail
     );
+
     if (!kaotikaPlayer) {
       throw new Error(`Player not found in Kaotika with email: ${playerEmail}`);
     }
 
+    const mongoPlayer = (await playerServices.getPlayer(playerEmail))!;
+
     const updatedPlayer = await playerServices.updatePlayer(playerEmail, {
+      ...kaotikaPlayer,
       active: true,
       pushToken: fcmToken,
-      ...kaotikaPlayer,
+      isBetrayer: mongoPlayer.isBetrayer,
+      gold: mongoPlayer.gold,
+      inventory: mongoPlayer.inventory,
     });
 
     return updatedPlayer;

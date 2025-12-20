@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import { AngeloLocation } from "../constants/missions";
 
 interface CommonAttributesAndModifiers {
   intelligence: number;
@@ -40,6 +41,9 @@ interface IPlayer {
   found_artifacts?: Types.ObjectId[];
   has_completed_artifacts_search?: boolean;
   is_inside_hs?: boolean;
+  isCaptured?: boolean;
+  location?: AngeloLocation;
+  isGuilty?: boolean;
 }
 
 interface CommonEquipmentFields {

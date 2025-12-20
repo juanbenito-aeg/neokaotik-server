@@ -7,6 +7,7 @@ enum SocketServerToClientEvents {
   PLAYER_ENTERED_EXITED_HS = "player entered/exited HS",
   REQUESTED_TO_SHOW_ARTIFACTS = "requested to show artifacts",
   ARTIFACTS_SEARCH_VALIDATION_RESET_MANAGED = "artifacts search validation/reset managed",
+  ACOLYTE_BECAME_BETRAYER = "acolyte became betrayer",
 }
 
 enum SocketClientToServerEvents {
@@ -20,6 +21,7 @@ enum SocketClientToServerEvents {
   PLAYER_ENTERED_EXITED_HS = "player entered/exited HS",
   REQUESTED_TO_SHOW_ARTIFACTS = "requested to show artifacts",
   ARTIFACTS_SEARCH_VALIDATED_RESET = "artifacts search validated/reset",
+  ACOLYTE_ACCEPTED_BETRAYAL = "acolyte accepted betrayal",
 }
 
 enum SocketGeneralEvents {

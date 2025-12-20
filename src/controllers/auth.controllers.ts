@@ -20,14 +20,14 @@ const logIn = async (req: Request, res: Response) => {
     const player = putOrPost[1];
 
     if (putOrPost[0] === Methods.POST) {
-      console.log("Player created successfully.\n");
+      console.log("Player created successfully.");
       return res.status(201).send({
         status: "OK",
         message: "Player created successfully",
         user: player,
       });
     } else {
-      console.log("Player updated successfully.\n");
+      console.log("Player updated successfully.");
       return res.status(200).send({
         status: "OK",
         message: "Player updated successfully",
@@ -57,7 +57,7 @@ const accessLoggedIn = async (req: Request, res: Response) => {
 
   try {
     const updatedPlayer = await authServices.logedPlayer(playerEmail, fcmToken);
-    console.log("Player updated successfully.\n");
+    console.log("Player updated successfully.");
     return res.status(200).send({
       status: "OK",
       message: "Player updated successfully",

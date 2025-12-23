@@ -34,7 +34,9 @@ async function handlerTowerDoor(cardId: string) {
       acolyteData
     );
 
-    await sendAcolyteEnteredExitedNotification(updatedAcolyte);
+    if (!updatedAcolyte.isBetrayer) {
+      await sendAcolyteEnteredExitedNotification(updatedAcolyte);
+    }
 
     client.publish(
       MqttTopics.TOWER_DOOR,

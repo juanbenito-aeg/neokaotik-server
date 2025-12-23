@@ -18,6 +18,7 @@ import handleConnectionOpen from "./handlers/connections/connection-open";
 import handlePlayerEnteredExitedHS from "./handlers/missions/artifacts/player-entered-exited-hs";
 import handleDisconnection from "./handlers/connections/disconnection";
 import handleAcolyteAcceptedBetrayal from "./handlers/missions/angelo-betrayer/acolyte-accepted-betrayal";
+import handleAngeloSubdued from "./handlers/missions/angelo-betrayer/angelo-subdued";
 
 function subscribeToEvents(socket: Socket) {
   console.log(
@@ -93,6 +94,8 @@ function subscribeToEvents(socket: Socket) {
     SocketClientToServerEvents.ACOLYTE_ACCEPTED_BETRAYAL,
     handleAcolyteAcceptedBetrayal
   );
+
+  socket.on(SocketClientToServerEvents.ANGELO_SUBDUED, handleAngeloSubdued);
 
   socket.on(SocketGeneralEvents.DISCONNECT, () => {
     handleDisconnection(socket);

@@ -38,6 +38,7 @@ interface ServerToClientEvents {
     acolyteId: Types.ObjectId,
     acolyteUpdatedFields: Fields
   ) => void;
+  [SocketServerToClientEvents.ANGELO_SUBDUED]: VoidFunction;
 }
 
 // Declaration of the events used when receiving events from the client
@@ -73,6 +74,7 @@ interface ClientToServerEvents {
   [SocketClientToServerEvents.ACOLYTE_ACCEPTED_BETRAYAL]: (
     acolyteId: Types.ObjectId
   ) => void;
+  [SocketClientToServerEvents.ANGELO_SUBDUED]: VoidFunction;
 }
 
 interface AcolyteDataToBroadcast {

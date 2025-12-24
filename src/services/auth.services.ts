@@ -2,6 +2,7 @@ import externalApiService from "./external-api.services";
 import { PlayerRole, Email } from "../constants/player";
 import playerServices from "./player.services";
 import { Methods } from "../constants/general";
+import IPlayer from "../interfaces/IPlayer";
 
 const loginPlayer = async (playerEmail: string, fcmToken: string) => {
   try {
@@ -20,7 +21,8 @@ const loginPlayer = async (playerEmail: string, fcmToken: string) => {
     if (!mongoPlayer) {
       const newDbUserAdditionalFields = getNewDbPlayerAdditionalFields(
         playerEmail,
-        fcmToken
+        fcmToken,
+        kaotikaPlayer
       );
 
       const newPlayer = { ...kaotikaPlayer, ...newDbUserAdditionalFields };
@@ -39,6 +41,7 @@ const loginPlayer = async (playerEmail: string, fcmToken: string) => {
       isBetrayer: mongoPlayer.isBetrayer,
       gold: mongoPlayer.gold,
       inventory: mongoPlayer.inventory,
+      attributes: mongoPlayer.attributes,
     });
 
     putOrPost.push(Methods.PUT, updatedPlayer);
@@ -68,6 +71,7 @@ const logedPlayer = async (playerEmail: string, fcmToken: string) => {
       isBetrayer: mongoPlayer.isBetrayer,
       gold: mongoPlayer.gold,
       inventory: mongoPlayer.inventory,
+      attributes: mongoPlayer.attributes,
     });
 
     return updatedPlayer;
@@ -78,7 +82,8 @@ const logedPlayer = async (playerEmail: string, fcmToken: string) => {
 
 const getNewDbPlayerAdditionalFields = (
   playerEmail: string,
-  fcmToken: string
+  fcmToken: string,
+  kaotikaPlayer: IPlayer
 ) => {
   const newDbPlayerAdditionalFields = {
     active: false,
@@ -90,6 +95,7 @@ const getNewDbPlayerAdditionalFields = (
   switch (newDbPlayerAdditionalFields.rol) {
     case PlayerRole.ACOLYTE: {
       Object.assign(newDbPlayerAdditionalFields, {
+        attributes: { ...kaotikaPlayer.attributes, resistance: 100 },
         isInside: false,
         is_in_tower_entrance: false,
         is_inside_tower: false,
@@ -98,6 +104,8 @@ const getNewDbPlayerAdditionalFields = (
         found_artifacts: [],
         has_completed_artifacts_search: false,
         is_inside_hs: false,
+        diseases: [],
+        isCursed: false,
       });
       break;
     }

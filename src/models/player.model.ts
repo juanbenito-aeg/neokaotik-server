@@ -203,12 +203,25 @@ const inventorySchema = new Schema(
   { _id: false }
 );
 
+const attributesSchema = new Schema(
+  {
+    intelligence: { type: Number, required: true },
+    dexterity: { type: Number, required: true },
+    charisma: { type: Number, required: true },
+    constitution: { type: Number, required: true },
+    strength: { type: Number, required: true },
+    insanity: { type: Number, required: true },
+    resistance: Number,
+  },
+  { _id: false }
+);
+
 const playerSchema = new Schema<IPlayer>({
   pushToken: String,
   active: Boolean,
   rol: String,
   socketId: String,
-  attributes: commonAttributesAndModifiersSchema,
+  attributes: attributesSchema,
   equipment: equipmentSchema,
   inventory: inventorySchema,
   name: String,
@@ -240,6 +253,8 @@ const playerSchema = new Schema<IPlayer>({
     enum: Object.values(AngeloLocation),
   },
   isGuilty: { type: Boolean, required: false },
+  diseases: [{ type: ObjectId, ref: "Disease" }],
+  isCursed: Boolean,
 });
 
 const Player = model<IPlayer>("Player", playerSchema);

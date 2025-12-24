@@ -17,8 +17,6 @@
 
     /* Output Options */
     "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
 
     /* Type Safety */
     "strict": true,

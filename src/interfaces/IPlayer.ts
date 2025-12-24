@@ -15,7 +15,7 @@ interface IPlayer {
   active: boolean;
   rol: string;
   socketId: string;
-  attributes: CommonAttributesAndModifiers;
+  attributes: CommonAttributesAndModifiers & { resistance?: number };
   equipment: Equipment;
   inventory: Inventory;
   name: string;
@@ -44,6 +44,8 @@ interface IPlayer {
   isCaptured?: boolean;
   location?: AngeloLocation;
   isGuilty?: boolean;
+  diseases?: Types.ObjectId[];
+  isCursed?: boolean;
 }
 
 interface CommonEquipmentFields {

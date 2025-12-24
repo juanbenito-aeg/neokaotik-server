@@ -1,3 +1,4 @@
+import { PlayerRole } from "../constants/player";
 import playerDb from "../db/player.db";
 import { Fields } from "../interfaces/generics";
 import IPlayer from "../interfaces/IPlayer";
@@ -53,12 +54,34 @@ const getNonAcolytePlayers = async () => {
   return nonAcolytePlayers;
 };
 
+const getNewAndOutOfSyncWithKaotikaFields = (
+  fcmToken: string,
+  player: IPlayer
+) => {
+  const newAndOutOfSyncWithKaotikaFields = {
+    active: true,
+    pushToken: fcmToken,
+  };
+
+  if (player.rol === PlayerRole.ACOLYTE) {
+    Object.assign(newAndOutOfSyncWithKaotikaFields, {
+      isBetrayer: player.isBetrayer,
+      gold: player.gold,
+      inventory: player.inventory,
+      attributes: player.attributes,
+    });
+  }
+
+  return newAndOutOfSyncWithKaotikaFields;
+};
+
 const playerServices = {
   getPlayer,
   createPlayer,
   updatePlayer,
   getAcolytes,
   getNonAcolytePlayers,
+  getNewAndOutOfSyncWithKaotikaFields,
 };
 
 export default playerServices;

@@ -34,14 +34,12 @@ const loginPlayer = async (playerEmail: string, fcmToken: string) => {
       return putOrPost;
     }
 
+    const newAndOutOfSyncWithKaotikaFields =
+      playerServices.getNewAndOutOfSyncWithKaotikaFields(fcmToken, mongoPlayer);
+
     const updatedPlayer = await playerServices.updatePlayer(playerEmail, {
       ...kaotikaPlayer,
-      active: true,
-      pushToken: fcmToken,
-      isBetrayer: mongoPlayer.isBetrayer,
-      gold: mongoPlayer.gold,
-      inventory: mongoPlayer.inventory,
-      attributes: mongoPlayer.attributes,
+      ...newAndOutOfSyncWithKaotikaFields,
     });
 
     putOrPost.push(Methods.PUT, updatedPlayer);
@@ -64,14 +62,12 @@ const logedPlayer = async (playerEmail: string, fcmToken: string) => {
 
     const mongoPlayer = (await playerServices.getPlayer(playerEmail))!;
 
+    const newAndOutOfSyncWithKaotikaFields =
+      playerServices.getNewAndOutOfSyncWithKaotikaFields(fcmToken, mongoPlayer);
+
     const updatedPlayer = await playerServices.updatePlayer(playerEmail, {
       ...kaotikaPlayer,
-      active: true,
-      pushToken: fcmToken,
-      isBetrayer: mongoPlayer.isBetrayer,
-      gold: mongoPlayer.gold,
-      inventory: mongoPlayer.inventory,
-      attributes: mongoPlayer.attributes,
+      ...newAndOutOfSyncWithKaotikaFields,
     });
 
     return updatedPlayer;

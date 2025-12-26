@@ -1,13 +1,22 @@
 import { Request, Response } from "express";
-import artifactServices from "../services/mission.services";
+import missionServices from "../services/mission.services";
 
 async function getArtifacts(req: Request, res: Response) {
   try {
-    const artifacts = await artifactServices.getArtifacts();
+    const artifacts = await missionServices.getArtifacts();
     res.send(artifacts);
   } catch (error: any) {
     res.status(500).send(error.message);
   }
 }
 
-export default { getArtifacts };
+async function getDiseases(req: Request, res: Response) {
+  try {
+    const diseases = await missionServices.getDiseases();
+    res.send(diseases);
+  } catch (error: any) {
+    res.status(500).send(error.message);
+  }
+}
+
+export default { getArtifacts, getDiseases };

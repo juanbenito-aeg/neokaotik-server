@@ -9,6 +9,7 @@ enum SocketServerToClientEvents {
   ARTIFACTS_SEARCH_VALIDATION_RESET_MANAGED = "artifacts search validation/reset managed",
   ACOLYTE_BECAME_BETRAYER = "acolyte became betrayer",
   ANGELO_SUBDUED = "Angelo subdued",
+  ACOLYTE_RESISTANCE_RESTORED = "acolyte resistance restored",
 }
 
 enum SocketClientToServerEvents {
@@ -24,6 +25,7 @@ enum SocketClientToServerEvents {
   ARTIFACTS_SEARCH_VALIDATED_RESET = "artifacts search validated/reset",
   ACOLYTE_ACCEPTED_BETRAYAL = "acolyte accepted betrayal",
   ANGELO_SUBDUED = "Angelo subdued",
+  ACOLYTE_RESTED = "acolyte rested",
 }
 
 enum SocketGeneralEvents {

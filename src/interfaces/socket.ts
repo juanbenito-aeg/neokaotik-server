@@ -39,6 +39,10 @@ interface ServerToClientEvents {
     acolyteUpdatedFields: Fields
   ) => void;
   [SocketServerToClientEvents.ANGELO_SUBDUED]: VoidFunction;
+  [SocketServerToClientEvents.ACOLYTE_RESISTANCE_RESTORED]: (
+    acolyteId: Types.ObjectId,
+    acolyteUpdatedAttributes: Fields
+  ) => void;
 }
 
 // Declaration of the events used when receiving events from the client
@@ -75,6 +79,9 @@ interface ClientToServerEvents {
     acolyteId: Types.ObjectId
   ) => void;
   [SocketClientToServerEvents.ANGELO_SUBDUED]: VoidFunction;
+  [SocketClientToServerEvents.ACOLYTE_RESTED]: (
+    acolyteId: Types.ObjectId
+  ) => void;
 }
 
 interface AcolyteDataToBroadcast {

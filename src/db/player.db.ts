@@ -36,7 +36,7 @@ const updatePlayerByField = async (
       fieldToFilterBy,
       changesToApply,
       { new: true }
-    );
+    ).lean();
     return updatedPlayer;
   } catch (error: any) {
     throw error;

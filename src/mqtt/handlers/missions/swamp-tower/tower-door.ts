@@ -1,4 +1,3 @@
-import { HydratedDocument } from "mongoose";
 import io from "../../../../config/sockets";
 import client from "../../../../config/mqtt";
 import {
@@ -47,9 +46,7 @@ async function handlerTowerDoor(cardId: string) {
   }
 }
 
-async function sendAcolyteEnteredExitedNotification(
-  acolyte: HydratedDocument<IPlayer>
-) {
+async function sendAcolyteEnteredExitedNotification(acolyte: IPlayer) {
   const fieldToFilterBy = { rol: PlayerRole.MORTIMER };
   const fieldsToIncludeOrExclude = "pushToken";
 

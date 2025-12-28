@@ -4,7 +4,7 @@ import playerServices from "./player.services";
 import { Methods } from "../constants/general";
 import IPlayer from "../interfaces/IPlayer";
 
-const loginPlayer = async (playerEmail: string, fcmToken: string) => {
+const logIn = async (playerEmail: string, fcmToken: string) => {
   try {
     const kaotikaPlayer = await externalApiService.getKaotikaPlayer(
       playerEmail
@@ -37,10 +37,14 @@ const loginPlayer = async (playerEmail: string, fcmToken: string) => {
     const newAndOutOfSyncWithKaotikaFields =
       playerServices.getNewAndOutOfSyncWithKaotikaFields(fcmToken, mongoPlayer);
 
-    const updatedPlayer = await playerServices.updatePlayer(playerEmail, {
+    const updatedPlayer = (await playerServices.updatePlayer(playerEmail, {
       ...kaotikaPlayer,
       ...newAndOutOfSyncWithKaotikaFields,
-    });
+    }))!;
+
+    if (!updatedPlayer.isBetrayer && updatedPlayer.rol === PlayerRole.ACOLYTE) {
+      await playerServices.applyAttributeModifiers(updatedPlayer);
+    }
 
     putOrPost.push(Methods.PUT, updatedPlayer);
 
@@ -50,7 +54,7 @@ const loginPlayer = async (playerEmail: string, fcmToken: string) => {
   }
 };
 
-const logedPlayer = async (playerEmail: string, fcmToken: string) => {
+const accessLoggedIn = async (playerEmail: string, fcmToken: string) => {
   try {
     const kaotikaPlayer = await externalApiService.getKaotikaPlayer(
       playerEmail
@@ -65,10 +69,14 @@ const logedPlayer = async (playerEmail: string, fcmToken: string) => {
     const newAndOutOfSyncWithKaotikaFields =
       playerServices.getNewAndOutOfSyncWithKaotikaFields(fcmToken, mongoPlayer);
 
-    const updatedPlayer = await playerServices.updatePlayer(playerEmail, {
+    const updatedPlayer = (await playerServices.updatePlayer(playerEmail, {
       ...kaotikaPlayer,
       ...newAndOutOfSyncWithKaotikaFields,
-    });
+    }))!;
+
+    if (!updatedPlayer.isBetrayer && updatedPlayer.rol === PlayerRole.ACOLYTE) {
+      await playerServices.applyAttributeModifiers(updatedPlayer);
+    }
 
     return updatedPlayer;
   } catch (error) {
@@ -128,8 +136,8 @@ const assignRoleByEmail = (email: string) => {
 };
 
 const authServices = {
-  loginPlayer,
-  logedPlayer,
+  logIn,
+  accessLoggedIn,
 };
 
 export default authServices;

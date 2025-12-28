@@ -2,6 +2,7 @@ import "./config/firebase-admin";
 import "./config/server";
 import "./config/sockets";
 import "./config/mqtt";
+import "./config/cron";
 import mongoose from "mongoose";
 import "dotenv/config";
 import { httpServer } from "./config/server";

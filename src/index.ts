@@ -1,11 +1,10 @@
 import "./config/firebase-admin";
-import "./config/server";
+import { httpServer } from "./config/server";
 import "./config/sockets";
 import "./config/mqtt";
 import "./config/cron";
 import mongoose from "mongoose";
 import "dotenv/config";
-import { httpServer } from "./config/server";
 
 (async () => {
   await mongoose.connect(process.env.MONGODB_URI_PRODUCTION!);

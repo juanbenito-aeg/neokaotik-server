@@ -150,6 +150,7 @@ const playerServices = {
   getNonAcolytePlayers,
   getNewAndOutOfSyncWithKaotikaFields,
   applyAttributeModifiers,
+  applyEthaziumCurseModifier,
 };
 
 export default playerServices;

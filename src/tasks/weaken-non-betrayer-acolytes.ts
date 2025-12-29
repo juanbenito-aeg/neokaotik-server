@@ -23,4 +23,4 @@ async function decreaseResistanceBy10() {
   await playerDb.updatePlayersByField(fieldsToFilterBy, changesToApply);
 }
 
-export { weakenNonBetrayerAcolytes };
+export { weakenNonBetrayerAcolytes, decreaseResistanceBy10 };

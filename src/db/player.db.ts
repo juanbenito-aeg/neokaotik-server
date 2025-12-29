@@ -17,6 +17,14 @@ const getPlayerByField = async (
   }
 };
 
+const getPlayersByFields = async (
+  fieldsToFilterBy: Fields,
+  fieldsToIncludeOrExclude = ""
+) => {
+  const players = await Player.find(fieldsToFilterBy, fieldsToIncludeOrExclude);
+  return players;
+};
+
 const createPlayer = async (newPlayer: IPlayer) => {
   try {
     const playerToInsert = new Player(newPlayer);
@@ -73,6 +81,7 @@ const getNonAcolytePlayers = async () => {
 
 const playerDb = {
   getPlayerByField,
+  getPlayersByFields,
   createPlayer,
   updatePlayerByField,
   updatePlayersByField,

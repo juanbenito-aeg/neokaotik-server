@@ -43,6 +43,10 @@ interface ServerToClientEvents {
     acolyteId: Types.ObjectId,
     acolyteUpdatedAttributes: Fields
   ) => void;
+  [SocketServerToClientEvents.CRON_TASK_EXECUTED]: (
+    acolyteId: Types.ObjectId,
+    acolyteUpdatedFields: Fields
+  ) => void;
 }
 
 // Declaration of the events used when receiving events from the client

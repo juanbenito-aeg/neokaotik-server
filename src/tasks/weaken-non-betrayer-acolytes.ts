@@ -3,7 +3,7 @@ import { PlayerRole } from "../constants/player";
 import dieaseDb from "../db/diease.db";
 import playerDb from "../db/player.db";
 import playerServices from "../services/player.services";
-import { handleCronTask } from "../sockets/handlers/missions/decay-flesh/cron-task";
+import { handleCronTask } from "../sockets/handlers/missions/decay-flesh/cron-task-executed";
 
 async function weakenNonBetrayerAcolytes() {
   await decreaseResistanceBy10();

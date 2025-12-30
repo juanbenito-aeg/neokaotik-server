@@ -21,7 +21,10 @@ const getPlayersByFields = async (
   fieldsToFilterBy: Fields,
   fieldsToIncludeOrExclude = ""
 ) => {
-  const players = await Player.find(fieldsToFilterBy, fieldsToIncludeOrExclude);
+  const players = await Player.find(
+    fieldsToFilterBy,
+    fieldsToIncludeOrExclude
+  ).lean();
   return players;
 };
 

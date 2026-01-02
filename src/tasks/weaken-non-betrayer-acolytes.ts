@@ -3,22 +3,23 @@ import { PlayerRole } from "../constants/player";
 import dieaseDb from "../db/diease.db";
 import playerDb from "../db/player.db";
 import playerServices from "../services/player.services";
-import { handleCronTask } from "../sockets/handlers/missions/decay-flesh/cron-task";
+import IPlayer from "../interfaces/IPlayer";
+import io from "../config/sockets";
+import { SocketServerToClientEvents } from "../constants/socket";
 
 async function weakenNonBetrayerAcolytes() {
   await decreaseResistanceBy10();
 
-  await applyRandomDiseases();
-
-  const acolyte = await playerDb.getPlayerByField({
+  const acolytes = await playerDb.getPlayersByFields({
     isBetrayer: false,
     rol: PlayerRole.ACOLYTE,
   });
 
-  handleCronTask(acolyte!._id, {
-    diseases: acolyte!.diseases,
-    attributes: acolyte!.attributes,
-  });
+  for (const acolyte of acolytes) {
+    await applyRandomDiseases(acolyte);
+    await playerServices.applyAttributeModifiers(acolyte);
+    await emitCronTask(acolyte._id);
+  }
 
   console.log("Non-betrayer acolytes were weakened by a scheduled task.");
 }
@@ -39,41 +40,53 @@ async function decreaseResistanceBy10() {
   await playerDb.updatePlayersByField(fieldsToFilterBy, changesToApply);
 }
 
-async function applyRandomDiseases() {
-  const acolytes = await playerDb.getPlayersByFields({
-    isBetrayer: false,
-    rol: PlayerRole.ACOLYTE,
-  });
+async function applyRandomDiseases(acolyte: IPlayer) {
   const diseases = await dieaseDb.getDiseases();
 
-  for (const acolyte of acolytes) {
-    if (acolyte.diseases!.length < 3) {
-      const availableDiseases = diseases.filter(
-        (disease) =>
-          !acolyte.diseases!.find((id: Types.ObjectId) =>
-            id.equals(disease._id)
-          )
+  if (acolyte.diseases!.length < 3) {
+    const availableDiseases = diseases.filter(
+      (disease) =>
+        !acolyte.diseases!.find((id: Types.ObjectId) => id.equals(disease._id))
+    );
+
+    if (availableDiseases.length > 0) {
+      const randomDisease =
+        availableDiseases[Math.floor(Math.random() * availableDiseases.length)];
+
+      await playerDb.updatePlayerByField(
+        {
+          email: acolyte.email,
+        },
+        {
+          $addToSet: { diseases: randomDisease!._id },
+        }
       );
-
-      if (availableDiseases.length > 0) {
-        const randomDisease =
-          availableDiseases[
-            Math.floor(Math.random() * availableDiseases.length)
-          ];
-
-        await playerDb.updatePlayerByField(
-          {
-            email: acolyte.email,
-          },
-          {
-            $addToSet: { diseases: randomDisease!._id },
-          }
-        );
-
-        await playerServices.applyAttributeModifiers(acolyte);
-      }
     }
   }
+}
+
+async function emitCronTask(acolyteId: Types.ObjectId) {
+  const updatedAcolyte = (await playerDb.getPlayerByField({ _id: acolyteId }))!;
+
+  const acolyteUpdatedFields = {
+    diseases: updatedAcolyte.diseases,
+    attributes: updatedAcolyte.attributes,
+  };
+
+  const acolyteSocketId: string = updatedAcolyte.socketId;
+
+  const mortimer = (await playerDb.getPlayerByField({
+    rol: PlayerRole.MORTIMER,
+  }))!;
+  const mortimerSocketId: string = mortimer.socketId;
+
+  const relevantSocketIds: string[] = [acolyteSocketId, mortimerSocketId];
+
+  io.to(relevantSocketIds).emit(
+    SocketServerToClientEvents.CRON_TASK_EXECUTED,
+    acolyteId,
+    acolyteUpdatedFields
+  );
 }
 
 export { weakenNonBetrayerAcolytes, decreaseResistanceBy10 };

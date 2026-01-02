@@ -51,6 +51,10 @@ interface ServerToClientEvents {
     acolyteId: Types.ObjectId,
     acolyteUpdatedFields: Fields
   ) => void;
+  [SocketServerToClientEvents.ACOLYTE_CURSED]: (
+    acolyteId: Types.ObjectId,
+    acolyteUpdatedFields: Fields
+  ) => void;
 }
 
 // Declaration of the events used when receiving events from the client
@@ -93,6 +97,9 @@ interface ClientToServerEvents {
   [SocketClientToServerEvents.ACOLYTE_INFECTED]: (
     acolyteId: Types.ObjectId,
     diseaseId: Types.ObjectId
+  ) => void;
+  [SocketClientToServerEvents.ACOLYTE_CURSED]: (
+    acolyteId: Types.ObjectId
   ) => void;
 }
 

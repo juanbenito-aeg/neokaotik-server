@@ -6,6 +6,7 @@ import playerServices from "../services/player.services";
 import IPlayer from "../interfaces/IPlayer";
 import io from "../config/sockets";
 import { SocketServerToClientEvents } from "../constants/socket";
+import { getNonAcolytePlayersSocketId } from "../helpers/socket.helpers";
 
 async function weakenNonBetrayerAcolytes() {
   await decreaseResistanceBy10();
@@ -75,12 +76,12 @@ async function emitCronTask(acolyteId: Types.ObjectId) {
 
   const acolyteSocketId: string = updatedAcolyte.socketId;
 
-  const mortimer = (await playerDb.getPlayerByField({
-    rol: PlayerRole.MORTIMER,
-  }))!;
-  const mortimerSocketId: string = mortimer.socketId;
+  const nonAcolytePlayersSocketIds = await getNonAcolytePlayersSocketId();
 
-  const relevantSocketIds: string[] = [acolyteSocketId, mortimerSocketId];
+  const relevantSocketIds: string[] = [
+    acolyteSocketId,
+    ...nonAcolytePlayersSocketIds,
+  ];
 
   io.to(relevantSocketIds).emit(
     SocketServerToClientEvents.CRON_TASK_EXECUTED,

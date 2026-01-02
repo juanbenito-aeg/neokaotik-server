@@ -20,6 +20,7 @@ import handleDisconnection from "./handlers/connections/disconnection";
 import handleAcolyteAcceptedBetrayal from "./handlers/missions/angelo-betrayer/acolyte-accepted-betrayal";
 import handleAngeloSubdued from "./handlers/missions/angelo-betrayer/angelo-subdued";
 import handleAcolyteRested from "./handlers/missions/decay-flesh/acolyte-rested";
+import { handleAcolyteInfected } from "./handlers/missions/decay-flesh/acolyte-infected";
 
 function subscribeToEvents(socket: Socket) {
   console.log(
@@ -104,6 +105,8 @@ function subscribeToEvents(socket: Socket) {
       handleAcolyteRested(acolyteId, socket.id);
     }
   );
+
+  socket.on(SocketClientToServerEvents.ACOLYTE_INFECTED, handleAcolyteInfected);
 
   socket.on(SocketGeneralEvents.DISCONNECT, () => {
     handleDisconnection(socket);

@@ -3,4 +3,10 @@ enum Methods {
   PUT = 1,
 }
 
-export { Methods };
+enum AidType {
+  POULTICE,
+  ETHAZIUM,
+  DISEASE,
+}
+
+export { Methods, AidType };

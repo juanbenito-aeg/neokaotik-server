@@ -5,6 +5,7 @@ import {
 import { Types } from "mongoose";
 import { Location } from "./geolocalization";
 import { Fields, VoidFunction } from "./generics";
+import { AidType } from "../constants/general";
 
 // Declaration of the events used when sending and broadcasting events to the client
 interface ServerToClientEvents {
@@ -55,6 +56,10 @@ interface ServerToClientEvents {
     acolyteId: Types.ObjectId,
     acolyteUpdatedFields: Fields
   ) => void;
+  [SocketServerToClientEvents.MORTIMER_AIDED_ACOLYTE]: (
+    acolyteId: Types.ObjectId,
+    acolyteUpdatedFields: Fields
+  ) => void;
 }
 
 // Declaration of the events used when receiving events from the client
@@ -100,6 +105,11 @@ interface ClientToServerEvents {
   ) => void;
   [SocketClientToServerEvents.ACOLYTE_CURSED]: (
     acolyteId: Types.ObjectId
+  ) => void;
+  [SocketClientToServerEvents.MORTIMER_AIDED_ACOLYTE]: (
+    acolyteId: Types.ObjectId,
+    aidType: AidType,
+    diseaseId?: Types.ObjectId
   ) => void;
 }
 

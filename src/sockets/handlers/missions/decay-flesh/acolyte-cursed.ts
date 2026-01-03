@@ -6,6 +6,10 @@ import io from "../../../../config/sockets";
 import { SocketServerToClientEvents } from "../../../../constants/socket";
 
 async function handleAcolyteCursed(acolyteId: Types.ObjectId) {
+  const acolyte = (await playerDb.getPlayerByField({ _id: acolyteId }))!;
+
+  if (acolyte.isCursed) return;
+
   const fieldToFilterBy = { _id: acolyteId };
   const changeToApply = { isCursed: true };
 

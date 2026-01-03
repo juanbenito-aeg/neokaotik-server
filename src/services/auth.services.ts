@@ -122,7 +122,9 @@ const getNewDbPlayerAdditionalFields = (
       break;
     }
 
-    case PlayerRole.MORTIMER: {
+    case PlayerRole.MORTIMER:
+    case PlayerRole.ISTVAN:
+    case PlayerRole.VILLAIN: {
       Object.assign(newDbPlayerAdditionalFields, { is_inside_hs: false });
       break;
     }

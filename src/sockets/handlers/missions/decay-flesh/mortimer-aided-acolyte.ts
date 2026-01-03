@@ -14,7 +14,7 @@ async function handleMortimerAidedAcolyte(
   let updatedFields;
   const fieldToFilterBy = { _id: acolyteId };
 
-  if (aidType === AidType.CATAPLASMA) {
+  if (aidType === AidType.POULTICE) {
     const changeToApply = { "attributes.resistance": 100 };
 
     const updatedAcolyte = (await playerDb.updatePlayerByField(

@@ -4,7 +4,7 @@ enum Methods {
 }
 
 enum AidType {
-  CATAPLASMA,
+  POULTICE,
   ETHAZIUM,
   DISEASE,
 }

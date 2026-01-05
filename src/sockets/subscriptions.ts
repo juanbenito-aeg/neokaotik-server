@@ -24,6 +24,7 @@ import { handleAcolyteInfected } from "./handlers/missions/decay-flesh/acolyte-i
 import handleAcolyteCursed from "./handlers/missions/decay-flesh/acolyte-cursed";
 import handleMortimerAidedAcolyte from "./handlers/missions/decay-flesh/mortimer-aided-acolyte";
 import { AidType } from "../constants/general";
+import handleMortimerNotifiedForAngeloDeliver from "./handlers/missions/angelo-betrayer/mortimer-notified-for-Angelo's-deliver";
 
 function subscribeToEvents(socket: Socket) {
   console.log(
@@ -126,6 +127,13 @@ function subscribeToEvents(socket: Socket) {
       diseaseId?: Types.ObjectId
     ) => {
       handleMortimerAidedAcolyte(acolyteId, aidType, diseaseId);
+    }
+  );
+
+  socket.on(
+    SocketClientToServerEvents.MORTIMER_NOTIFIED_FOR_ANGELO_DELIVERY,
+    () => {
+      handleMortimerNotifiedForAngeloDeliver();
     }
   );
 

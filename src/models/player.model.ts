@@ -255,6 +255,7 @@ const playerSchema = new Schema<IPlayer>({
   isGuilty: { type: Boolean, required: false },
   diseases: [{ type: ObjectId, ref: "Disease" }],
   isCursed: Boolean,
+  voteAngeloTrial: { type: String, required: false },
 });
 
 const Player = model<IPlayer>("Player", playerSchema);

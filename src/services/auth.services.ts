@@ -118,14 +118,22 @@ const getNewDbPlayerAdditionalFields = (
         is_inside_hs: false,
         diseases: [],
         isCursed: false,
+        voteAngeloTrial: "",
       });
       break;
     }
 
-    case PlayerRole.MORTIMER:
+    case PlayerRole.MORTIMER: {
+      Object.assign(newDbPlayerAdditionalFields, { is_inside_hs: false });
+      break;
+    }
+
     case PlayerRole.ISTVAN:
     case PlayerRole.VILLAIN: {
-      Object.assign(newDbPlayerAdditionalFields, { is_inside_hs: false });
+      Object.assign(newDbPlayerAdditionalFields, {
+        is_inside_hs: false,
+        voteAngeloTrial: "",
+      });
       break;
     }
   }

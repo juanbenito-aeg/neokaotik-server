@@ -46,6 +46,7 @@ interface IPlayer {
   isGuilty?: boolean;
   diseases?: Types.ObjectId[];
   isCursed?: boolean;
+  voteAngeloTrial?: string;
 }
 
 interface CommonEquipmentFields {

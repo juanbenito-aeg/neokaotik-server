@@ -60,6 +60,9 @@ interface ServerToClientEvents {
     acolyteId: Types.ObjectId,
     acolyteUpdatedFields: Fields
   ) => void;
+  [SocketServerToClientEvents.ANGELO_DELIVERED]: (
+    angeloUpdatedFields: Fields
+  ) => void;
 }
 
 // Declaration of the events used when receiving events from the client
@@ -111,6 +114,7 @@ interface ClientToServerEvents {
     aidType: AidType,
     diseaseId?: Types.ObjectId
   ) => void;
+  [SocketClientToServerEvents.ANGELO_DELIVERED]: () => void;
 }
 
 interface AcolyteDataToBroadcast {

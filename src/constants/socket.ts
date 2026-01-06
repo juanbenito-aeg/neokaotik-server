@@ -14,6 +14,7 @@ enum SocketServerToClientEvents {
   ACOLYTE_INFECTED = "acolyte infected",
   ACOLYTE_CURSED = "acolyte cursed",
   MORTIMER_AIDED_ACOLYTE = "Mortimer aided acolyte",
+  ANGELO_DELIVERED = "Angelo delivered",
 }
 
 enum SocketClientToServerEvents {
@@ -34,6 +35,7 @@ enum SocketClientToServerEvents {
   ACOLYTE_CURSED = "acolyte cursed",
   MORTIMER_AIDED_ACOLYTE = "Mortimer aided acolyte",
   MORTIMER_NOTIFIED_FOR_ANGELO_DELIVERY = "Mortimer notified for Angelo's delivery",
+  ANGELO_DELIVERED = "Angelo delivered",
 }
 
 enum SocketGeneralEvents {

@@ -25,6 +25,7 @@ import handleAcolyteCursed from "./handlers/missions/decay-flesh/acolyte-cursed"
 import handleMortimerAidedAcolyte from "./handlers/missions/decay-flesh/mortimer-aided-acolyte";
 import { AidType } from "../constants/general";
 import handleMortimerNotifiedForAngeloDeliver from "./handlers/missions/angelo-betrayer/mortimer-notified-for-Angelo's-deliver";
+import handleAngeloDelivered from "./handlers/missions/angelo-betrayer/angelo-delivered";
 
 function subscribeToEvents(socket: Socket) {
   console.log(
@@ -136,6 +137,10 @@ function subscribeToEvents(socket: Socket) {
       handleMortimerNotifiedForAngeloDeliver();
     }
   );
+
+  socket.on(SocketClientToServerEvents.ANGELO_DELIVERED, () => {
+    handleAngeloDelivered();
+  });
 
   socket.on(SocketGeneralEvents.DISCONNECT, () => {
     handleDisconnection(socket);

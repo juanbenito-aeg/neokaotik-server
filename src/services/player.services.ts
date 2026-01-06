@@ -70,6 +70,7 @@ const getNewAndOutOfSyncWithKaotikaFields = (
       gold: player.gold,
       inventory: player.inventory,
       attributes: player.attributes,
+      voteAngeloTrial: player.voteAngeloTrial,
     });
   }
 

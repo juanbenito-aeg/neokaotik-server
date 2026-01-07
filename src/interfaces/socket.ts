@@ -115,6 +115,7 @@ interface ClientToServerEvents {
     diseaseId?: Types.ObjectId
   ) => void;
   [SocketClientToServerEvents.ANGELO_DELIVERED]: () => void;
+  [SocketClientToServerEvents.ANGELO_TRIAL_BEGAN]: () => void;
 }
 
 interface AcolyteDataToBroadcast {

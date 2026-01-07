@@ -79,7 +79,7 @@ async function handleMortimerAidedAcolyte(
   ];
 
   io.to(relevantSocketIds).emit(
-    SocketServerToClientEvents.CRON_TASK_EXECUTED,
+    SocketServerToClientEvents.MORTIMER_AIDED_ACOLYTE,
     acolyteId,
     updatedFields
   );

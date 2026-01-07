@@ -90,4 +90,8 @@ async function emitCronTask(acolyteId: Types.ObjectId) {
   );
 }
 
-export { weakenNonBetrayerAcolytes, decreaseResistanceBy10 };
+export {
+  weakenNonBetrayerAcolytes,
+  decreaseResistanceBy10,
+  applyRandomDiseases,
+};

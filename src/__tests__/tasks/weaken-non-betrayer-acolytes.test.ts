@@ -1,6 +1,9 @@
 import { PlayerRole } from "../../constants/player";
 import playerDb from "../../db/player.db";
-import { decreaseResistanceBy10 } from "../../tasks/weaken-non-betrayer-acolytes";
+import {
+  applyRandomDiseases,
+  decreaseResistanceBy10,
+} from "../../tasks/weaken-non-betrayer-acolytes";
 
 describe("Weakening non-betrayer acolytes", () => {
   describe("decreaseResistanceBy10", () => {
@@ -29,6 +32,23 @@ describe("Weakening non-betrayer acolytes", () => {
           resistanceBefore < 10 ? 0 : resistanceBefore - 10
         );
       });
+    });
+  });
+
+  describe("applyRandomDiseases", () => {
+    it("should not exceed 3 diseases for a non-betrayer acolyte", async () => {
+      const acolyte = (await playerDb.getPlayerByField({
+        isBetrayer: false,
+        rol: PlayerRole.ACOLYTE,
+      }))!;
+
+      await applyRandomDiseases(acolyte);
+
+      const updatedAcolyte = (await playerDb.getPlayerByField({
+        _id: acolyte._id,
+      }))!;
+
+      expect(updatedAcolyte.diseases!.length).toBeLessThan(4);
     });
   });
 });

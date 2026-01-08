@@ -9,4 +9,10 @@ enum AngeloLocation {
   DUNGEON = "Dungeon",
 }
 
-export { ArtifactState, AngeloLocation };
+enum VoteAngeloTrial {
+  INNOCENT = "Innocent",
+  GUILTY = "Guilty",
+  NONE = "None",
+}
+
+export { ArtifactState, AngeloLocation, VoteAngeloTrial };

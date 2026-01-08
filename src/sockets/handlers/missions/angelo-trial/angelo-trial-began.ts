@@ -33,10 +33,7 @@ async function handleAngeloTrialBegan() {
   let nonAcolytesPushToken: string[] = [];
 
   nonAcolytes.map((nonAcolyte) => {
-    if (
-      nonAcolyte.rol !== PlayerRole.MORTIMER ||
-      nonAcolyte._id !== angelo._id
-    ) {
+    if (nonAcolyte.rol !== PlayerRole.ANGELO) {
       nonAcolytesPushToken.push(nonAcolyte.pushToken);
     }
   });

@@ -6,6 +6,7 @@ import { Types } from "mongoose";
 import { Location } from "./geolocalization";
 import { Fields, VoidFunction } from "./generics";
 import { AidType } from "../constants/general";
+import { VoteAngeloTrial } from "../constants/missions";
 
 // Declaration of the events used when sending and broadcasting events to the client
 interface ServerToClientEvents {
@@ -31,7 +32,7 @@ interface ServerToClientEvents {
     acolyteOrMortimerId: Types.ObjectId,
     isInsideHS: boolean
   ) => void;
-  [SocketServerToClientEvents.REQUESTED_TO_SHOW_ARTIFACTS]: () => void;
+  [SocketServerToClientEvents.REQUESTED_TO_SHOW_ARTIFACTS]: VoidFunction;
   [SocketServerToClientEvents.ARTIFACTS_SEARCH_VALIDATION_RESET_MANAGED]: (
     acolytesHaveCompletedArtifactsSearch: boolean
   ) => void;
@@ -63,6 +64,10 @@ interface ServerToClientEvents {
   [SocketServerToClientEvents.ANGELO_DELIVERED]: (
     angeloUpdatedFields: Fields
   ) => void;
+  [SocketServerToClientEvents.PLAYER_VOTED_ANGELO_TRIAL]: (
+    playerId: string,
+    vote: VoteAngeloTrial
+  ) => void;
 }
 
 // Declaration of the events used when receiving events from the client
@@ -75,7 +80,7 @@ interface ClientToServerEvents {
   [SocketClientToServerEvents.ACOLYTE_INSIDE_OUTSIDE_TOWER]: (
     acolyteIsInEntranceTower: boolean
   ) => void;
-  [SocketClientToServerEvents.REMOVE_SPELL_PRESS]: () => void;
+  [SocketClientToServerEvents.REMOVE_SPELL_PRESS]: VoidFunction;
   [SocketClientToServerEvents.ACOLYTE_MOVED]: (
     acolyteId: Types.ObjectId,
     acolyteLocation: Location
@@ -91,7 +96,7 @@ interface ClientToServerEvents {
     isInsideHS: boolean,
     acknowledgeEvent: VoidFunction
   ) => void;
-  [SocketClientToServerEvents.REQUESTED_TO_SHOW_ARTIFACTS]: () => void;
+  [SocketClientToServerEvents.REQUESTED_TO_SHOW_ARTIFACTS]: VoidFunction;
   [SocketClientToServerEvents.ARTIFACTS_SEARCH_VALIDATED_RESET]: (
     isSearchValidated: boolean
   ) => void;
@@ -114,8 +119,12 @@ interface ClientToServerEvents {
     aidType: AidType,
     diseaseId?: Types.ObjectId
   ) => void;
-  [SocketClientToServerEvents.ANGELO_DELIVERED]: () => void;
-  [SocketClientToServerEvents.ANGELO_TRIAL_BEGAN]: () => void;
+  [SocketClientToServerEvents.ANGELO_DELIVERED]: VoidFunction;
+  [SocketClientToServerEvents.ANGELO_TRIAL_BEGAN]: VoidFunction;
+  [SocketClientToServerEvents.PLAYER_VOTED_ANGELO_TRIAL]: (
+    playerId: string,
+    vote: VoteAngeloTrial
+  ) => void;
 }
 
 interface AcolyteDataToBroadcast {

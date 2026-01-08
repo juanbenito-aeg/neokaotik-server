@@ -27,6 +27,7 @@ import { AidType } from "../constants/general";
 import handleMortimerNotifiedForAngeloDeliver from "./handlers/missions/angelo-betrayer/mortimer-notified-for-Angelo's-deliver";
 import handleAngeloDelivered from "./handlers/missions/angelo-betrayer/angelo-delivered";
 import handleAngeloTrialBegan from "./handlers/missions/angelo-trial/angelo-trial-began";
+import { handlePlayerVotedAngeloTrial } from "./handlers/missions/angelo-trial/player-voted-angelo-trial";
 
 function subscribeToEvents(socket: Socket) {
   console.log(
@@ -146,6 +147,11 @@ function subscribeToEvents(socket: Socket) {
   socket.on(SocketClientToServerEvents.ANGELO_TRIAL_BEGAN, () => {
     handleAngeloTrialBegan();
   });
+
+  socket.on(
+    SocketClientToServerEvents.PLAYER_VOTED_ANGELO_TRIAL,
+    handlePlayerVotedAngeloTrial
+  );
 
   socket.on(SocketGeneralEvents.DISCONNECT, () => {
     handleDisconnection(socket);

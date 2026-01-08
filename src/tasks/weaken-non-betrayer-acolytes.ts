@@ -7,6 +7,7 @@ import IPlayer from "../interfaces/IPlayer";
 import io from "../config/sockets";
 import { SocketServerToClientEvents } from "../constants/socket";
 import { getNonAcolytePlayersSocketId } from "../helpers/socket.helpers";
+import { Fields } from "../interfaces/generics";
 
 async function weakenNonBetrayerAcolytes() {
   await decreaseResistanceBy10();
@@ -19,7 +20,7 @@ async function weakenNonBetrayerAcolytes() {
   for (const acolyte of acolytes) {
     await applyRandomDiseases(acolyte);
     await playerServices.applyAttributeModifiers(acolyte);
-    await emitCronTask(acolyte._id);
+    await emitCronTask(acolyte._id, acolyte.socketId, acolyte.attributes);
   }
 
   console.log("Non-betrayer acolytes were weakened by a scheduled task.");
@@ -66,15 +67,20 @@ async function applyRandomDiseases(acolyte: IPlayer) {
   }
 }
 
-async function emitCronTask(acolyteId: Types.ObjectId) {
-  const updatedAcolyte = (await playerDb.getPlayerByField({ _id: acolyteId }))!;
+async function emitCronTask(
+  acolyteId: Types.ObjectId,
+  acolyteSocketId: string,
+  acolyteUpdatedAttributes: Fields
+) {
+  const { diseases: acolyteUpdatedDiseases } = (await playerDb.getPlayerByField(
+    { _id: acolyteId },
+    "diseases"
+  ))!;
 
   const acolyteUpdatedFields = {
-    diseases: updatedAcolyte.diseases,
-    attributes: updatedAcolyte.attributes,
+    attributes: acolyteUpdatedAttributes,
+    diseases: acolyteUpdatedDiseases,
   };
-
-  const acolyteSocketId: string = updatedAcolyte.socketId;
 
   const nonAcolytePlayersSocketIds = await getNonAcolytePlayersSocketId();
 

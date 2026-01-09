@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { ArtifactState } from "../constants/general";
+import { ArtifactState } from "../constants/missions";
 import { Location } from "./geolocalization";
 
 interface IArtifact {

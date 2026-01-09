@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import { AngeloLocation } from "../constants/missions";
 
 interface CommonAttributesAndModifiers {
   intelligence: number;
@@ -14,7 +15,7 @@ interface IPlayer {
   active: boolean;
   rol: string;
   socketId: string;
-  attributes: CommonAttributesAndModifiers;
+  attributes: CommonAttributesAndModifiers & { resistance?: number };
   equipment: Equipment;
   inventory: Inventory;
   name: string;
@@ -40,6 +41,12 @@ interface IPlayer {
   found_artifacts?: Types.ObjectId[];
   has_completed_artifacts_search?: boolean;
   is_inside_hs?: boolean;
+  isCaptured?: boolean;
+  location?: AngeloLocation;
+  isGuilty?: boolean;
+  diseases?: Types.ObjectId[];
+  isCursed?: boolean;
+  voteAngeloTrial?: string;
 }
 
 interface CommonEquipmentFields {

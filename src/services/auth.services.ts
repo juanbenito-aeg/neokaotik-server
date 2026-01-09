@@ -2,45 +2,71 @@ import externalApiService from "./external-api.services";
 import { PlayerRole, Email } from "../constants/player";
 import playerServices from "./player.services";
 import { Methods } from "../constants/general";
+import IPlayer from "../interfaces/IPlayer";
 
-const loginPlayer = async (playerEmail: string, fcmToken: string) => {
+const getKaotikaAndMongoPlayer = async (playerEmail: string) => {
+  const kaotikaPlayer = await externalApiService.getKaotikaPlayer(playerEmail);
+
+  if (!kaotikaPlayer) {
+    throw new Error(`Player not found in Kaotika with email: ${playerEmail}.`);
+  }
+
+  const mongoPlayer = await playerServices.getPlayer(playerEmail);
+
+  return { kaotikaPlayer, mongoPlayer };
+};
+
+const updatePlayerAndApplyAttributeModifiers = async (
+  fcmToken: string,
+  mongoPlayer: IPlayer,
+  kaotikaPlayer: IPlayer
+) => {
+  const newAndOutOfSyncWithKaotikaFields =
+    playerServices.getNewAndOutOfSyncWithKaotikaFields(fcmToken, mongoPlayer);
+
+  const updatedPlayer = (await playerServices.updatePlayer(mongoPlayer.email, {
+    ...kaotikaPlayer,
+    ...newAndOutOfSyncWithKaotikaFields,
+  }))!;
+
+  if (!updatedPlayer.isBetrayer && updatedPlayer.rol === PlayerRole.ACOLYTE) {
+    await playerServices.applyAttributeModifiers(updatedPlayer);
+  }
+
+  return updatedPlayer;
+};
+
+const logIn = async (playerEmail: string, fcmToken: string) => {
   try {
-    const kaotikaPlayer = await externalApiService.getKaotikaPlayer(
+    const { kaotikaPlayer, mongoPlayer } = await getKaotikaAndMongoPlayer(
       playerEmail
     );
-
-    if (!kaotikaPlayer) {
-      throw new Error(`Player not found in Kaotika with email: ${playerEmail}`);
-    }
-
-    const mongoPlayer = await playerServices.getPlayer(playerEmail);
 
     const putOrPost = [];
 
     if (!mongoPlayer) {
       const newDbUserAdditionalFields = getNewDbPlayerAdditionalFields(
         playerEmail,
-        fcmToken
+        fcmToken,
+        kaotikaPlayer
       );
 
       const newPlayer = { ...kaotikaPlayer, ...newDbUserAdditionalFields };
 
-      const createdUser = await playerServices.createPlayer(newPlayer);
+      const createdPlayer = await playerServices.createPlayer(newPlayer);
 
-      putOrPost.push(Methods.POST);
-      putOrPost.push(createdUser);
+      putOrPost.push(Methods.POST, createdPlayer);
 
       return putOrPost;
     }
 
-    const updatedPlayer = await playerServices.updatePlayer(playerEmail, {
-      active: true,
-      pushToken: fcmToken,
-      ...kaotikaPlayer,
-    });
+    const updatedPlayer = await updatePlayerAndApplyAttributeModifiers(
+      fcmToken,
+      mongoPlayer,
+      kaotikaPlayer
+    );
 
-    putOrPost.push(Methods.PUT);
-    putOrPost.push(updatedPlayer);
+    putOrPost.push(Methods.PUT, updatedPlayer);
 
     return putOrPost;
   } catch (error) {
@@ -48,20 +74,17 @@ const loginPlayer = async (playerEmail: string, fcmToken: string) => {
   }
 };
 
-const logedPlayer = async (playerEmail: string, fcmToken: string) => {
+const accessLoggedIn = async (playerEmail: string, fcmToken: string) => {
   try {
-    const kaotikaPlayer = await externalApiService.getKaotikaPlayer(
+    const { kaotikaPlayer, mongoPlayer } = await getKaotikaAndMongoPlayer(
       playerEmail
     );
-    if (!kaotikaPlayer) {
-      throw new Error(`Player not found in Kaotika with email: ${playerEmail}`);
-    }
 
-    const updatedPlayer = await playerServices.updatePlayer(playerEmail, {
-      active: true,
-      pushToken: fcmToken,
-      ...kaotikaPlayer,
-    });
+    const updatedPlayer = await updatePlayerAndApplyAttributeModifiers(
+      fcmToken,
+      mongoPlayer!,
+      kaotikaPlayer
+    );
 
     return updatedPlayer;
   } catch (error) {
@@ -71,7 +94,8 @@ const logedPlayer = async (playerEmail: string, fcmToken: string) => {
 
 const getNewDbPlayerAdditionalFields = (
   playerEmail: string,
-  fcmToken: string
+  fcmToken: string,
+  kaotikaPlayer: IPlayer
 ) => {
   const newDbPlayerAdditionalFields = {
     active: false,
@@ -83,6 +107,7 @@ const getNewDbPlayerAdditionalFields = (
   switch (newDbPlayerAdditionalFields.rol) {
     case PlayerRole.ACOLYTE: {
       Object.assign(newDbPlayerAdditionalFields, {
+        attributes: { ...kaotikaPlayer.attributes, resistance: 100 },
         isInside: false,
         is_in_tower_entrance: false,
         is_inside_tower: false,
@@ -91,12 +116,24 @@ const getNewDbPlayerAdditionalFields = (
         found_artifacts: [],
         has_completed_artifacts_search: false,
         is_inside_hs: false,
+        diseases: [],
+        isCursed: false,
+        voteAngeloTrial: "",
       });
       break;
     }
 
     case PlayerRole.MORTIMER: {
       Object.assign(newDbPlayerAdditionalFields, { is_inside_hs: false });
+      break;
+    }
+
+    case PlayerRole.ISTVAN:
+    case PlayerRole.VILLAIN: {
+      Object.assign(newDbPlayerAdditionalFields, {
+        is_inside_hs: false,
+        voteAngeloTrial: "",
+      });
       break;
     }
   }
@@ -117,8 +154,8 @@ const assignRoleByEmail = (email: string) => {
 };
 
 const authServices = {
-  loginPlayer,
-  logedPlayer,
+  logIn,
+  accessLoggedIn,
 };
 
 export default authServices;

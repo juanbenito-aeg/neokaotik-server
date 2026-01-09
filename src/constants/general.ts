@@ -3,9 +3,10 @@ enum Methods {
   PUT = 1,
 }
 
-enum ArtifactState {
-  ACTIVE = "active",
-  COLLECTED = "collected",
+enum AidType {
+  POULTICE,
+  ETHAZIUM,
+  DISEASE,
 }
 
-export { Methods, ArtifactState };
+export { Methods, AidType };

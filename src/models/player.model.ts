@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import IPlayer from "../interfaces/IPlayer";
+import { AngeloLocation } from "../constants/missions";
 
 const { Schema, model } = mongoose;
 
@@ -202,12 +203,25 @@ const inventorySchema = new Schema(
   { _id: false }
 );
 
+const attributesSchema = new Schema(
+  {
+    intelligence: { type: Number, required: true },
+    dexterity: { type: Number, required: true },
+    charisma: { type: Number, required: true },
+    constitution: { type: Number, required: true },
+    strength: { type: Number, required: true },
+    insanity: { type: Number, required: true },
+    resistance: Number,
+  },
+  { _id: false }
+);
+
 const playerSchema = new Schema<IPlayer>({
   pushToken: String,
   active: Boolean,
   rol: String,
   socketId: String,
-  attributes: commonAttributesAndModifiersSchema,
+  attributes: attributesSchema,
   equipment: equipmentSchema,
   inventory: inventorySchema,
   name: String,
@@ -232,6 +246,16 @@ const playerSchema = new Schema<IPlayer>({
   found_artifacts: [{ type: ObjectId, ref: "Artifact", required: false }],
   has_completed_artifacts_search: { type: Boolean, required: false },
   is_inside_hs: { type: Boolean, required: false },
+  isCaptured: { type: Boolean, required: false },
+  location: {
+    type: String,
+    required: false,
+    enum: Object.values(AngeloLocation),
+  },
+  isGuilty: { type: Boolean, required: false },
+  diseases: [{ type: ObjectId, ref: "Disease" }],
+  isCursed: Boolean,
+  voteAngeloTrial: { type: String, required: false },
 });
 
 const Player = model<IPlayer>("Player", playerSchema);

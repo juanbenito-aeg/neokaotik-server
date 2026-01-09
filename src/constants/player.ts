@@ -10,6 +10,7 @@ enum PlayerRole {
   MORTIMER = "mortimer",
   ISTVAN = "istvan",
   ACOLYTE = "acolyte",
+  ANGELO = "angelo",
 }
 
 export { Email, PlayerRole };

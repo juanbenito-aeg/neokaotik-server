@@ -17,6 +17,17 @@ import { VoidFunction } from "../interfaces/generics";
 import handleConnectionOpen from "./handlers/connections/connection-open";
 import handlePlayerEnteredExitedHS from "./handlers/missions/artifacts/player-entered-exited-hs";
 import handleDisconnection from "./handlers/connections/disconnection";
+import handleAcolyteAcceptedBetrayal from "./handlers/missions/angelo-betrayer/acolyte-accepted-betrayal";
+import handleAngeloSubdued from "./handlers/missions/angelo-betrayer/angelo-subdued";
+import handleAcolyteRested from "./handlers/missions/decay-flesh/acolyte-rested";
+import { handleAcolyteInfected } from "./handlers/missions/decay-flesh/acolyte-infected";
+import handleAcolyteCursed from "./handlers/missions/decay-flesh/acolyte-cursed";
+import handleMortimerAidedAcolyte from "./handlers/missions/decay-flesh/mortimer-aided-acolyte";
+import { AidType } from "../constants/general";
+import handleMortimerNotifiedForAngeloDeliver from "./handlers/missions/angelo-betrayer/mortimer-notified-for-Angelo's-deliver";
+import handleAngeloDelivered from "./handlers/missions/angelo-betrayer/angelo-delivered";
+import handleAngeloTrialBegan from "./handlers/missions/angelo-trial/angelo-trial-began";
+import { handlePlayerVotedAngeloTrial } from "./handlers/missions/angelo-trial/player-voted-angelo-trial";
 
 function subscribeToEvents(socket: Socket) {
   console.log(
@@ -86,6 +97,60 @@ function subscribeToEvents(socket: Socket) {
     (isSearchValidated: boolean) => {
       handleArtifactsSearchValidatedReset(isSearchValidated, socket.id);
     }
+  );
+
+  socket.on(
+    SocketClientToServerEvents.ACOLYTE_ACCEPTED_BETRAYAL,
+    handleAcolyteAcceptedBetrayal
+  );
+
+  socket.on(SocketClientToServerEvents.ANGELO_SUBDUED, handleAngeloSubdued);
+
+  socket.on(
+    SocketClientToServerEvents.ACOLYTE_RESTED,
+    (acolyteId: Types.ObjectId) => {
+      handleAcolyteRested(acolyteId, socket.id);
+    }
+  );
+
+  socket.on(SocketClientToServerEvents.ACOLYTE_INFECTED, handleAcolyteInfected);
+
+  socket.on(
+    SocketClientToServerEvents.ACOLYTE_CURSED,
+    (acolyteId: Types.ObjectId) => {
+      handleAcolyteCursed(acolyteId);
+    }
+  );
+
+  socket.on(
+    SocketClientToServerEvents.MORTIMER_AIDED_ACOLYTE,
+    (
+      acolyteId: Types.ObjectId,
+      aidType: AidType,
+      diseaseId?: Types.ObjectId
+    ) => {
+      handleMortimerAidedAcolyte(acolyteId, aidType, diseaseId);
+    }
+  );
+
+  socket.on(
+    SocketClientToServerEvents.MORTIMER_NOTIFIED_FOR_ANGELO_DELIVERY,
+    () => {
+      handleMortimerNotifiedForAngeloDeliver();
+    }
+  );
+
+  socket.on(SocketClientToServerEvents.ANGELO_DELIVERED, () => {
+    handleAngeloDelivered();
+  });
+
+  socket.on(SocketClientToServerEvents.ANGELO_TRIAL_BEGAN, () => {
+    handleAngeloTrialBegan();
+  });
+
+  socket.on(
+    SocketClientToServerEvents.PLAYER_VOTED_ANGELO_TRIAL,
+    handlePlayerVotedAngeloTrial
   );
 
   socket.on(SocketGeneralEvents.DISCONNECT, () => {

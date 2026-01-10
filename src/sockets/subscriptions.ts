@@ -28,6 +28,7 @@ import handleMortimerNotifiedForAngeloDeliver from "./handlers/missions/angelo-b
 import handleAngeloDelivered from "./handlers/missions/angelo-betrayer/angelo-delivered";
 import handleAngeloTrialBegan from "./handlers/missions/angelo-trial/angelo-trial-began";
 import { handlePlayerVotedAngeloTrial } from "./handlers/missions/angelo-trial/player-voted-angelo-trial";
+import handleAngeloTrialValidatedOrCanceled from "./handlers/missions/angelo-trial/angelo-trial-validated-or-canceled";
 
 function subscribeToEvents(socket: Socket) {
   console.log(
@@ -151,6 +152,13 @@ function subscribeToEvents(socket: Socket) {
   socket.on(
     SocketClientToServerEvents.PLAYER_VOTED_ANGELO_TRIAL,
     handlePlayerVotedAngeloTrial
+  );
+
+  socket.on(
+    SocketClientToServerEvents.ANGELO_TRIAL_VALIDATED_OR_CANCELED,
+    (isTrialValidated) => {
+      handleAngeloTrialValidatedOrCanceled(isTrialValidated);
+    }
   );
 
   socket.on(SocketGeneralEvents.DISCONNECT, () => {

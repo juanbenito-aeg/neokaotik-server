@@ -16,6 +16,7 @@ enum SocketServerToClientEvents {
   MORTIMER_AIDED_ACOLYTE = "Mortimer aided acolyte",
   ANGELO_DELIVERED = "Angelo delivered",
   PLAYER_VOTED_ANGELO_TRIAL = "player voted in Angelo's trial",
+  ANGELO_TRIAL_VALIDATED_OR_CANCELED = "Angelo's trial validated/canceled",
 }
 
 enum SocketClientToServerEvents {
@@ -39,6 +40,7 @@ enum SocketClientToServerEvents {
   ANGELO_DELIVERED = "Angelo delivered",
   ANGELO_TRIAL_BEGAN = "Angelo's trial began",
   PLAYER_VOTED_ANGELO_TRIAL = "player voted in Angelo's trial",
+  ANGELO_TRIAL_VALIDATED_OR_CANCELED = "Angelo's trial validated/canceled",
 }
 
 enum SocketGeneralEvents {

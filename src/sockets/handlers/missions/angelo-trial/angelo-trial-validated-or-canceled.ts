@@ -28,7 +28,7 @@ async function handleAngeloTrialValidatedOrCanceled(isTrialValidated: boolean) {
   let relevantFields;
   let playersVotes;
 
-  const acolytesSocketIds = await getAcolytesSocketId();
+  const acolytesSocketIds = acolytes.map((acolyte) => acolyte.socketId);
 
   const nonAcolytesSocketIds = await getNonAcolytePlayersSocketId();
 
@@ -124,7 +124,7 @@ async function handleAngeloTrialValidatedOrCanceled(isTrialValidated: boolean) {
   );
 
   io.to(relevantSocketIds).emit(
-    SocketServerToClientEvents.ANGELO_TRIAL_VALIDATED_OR_CANCELED,
+    SocketServerToClientEvents.ANGELO_TRIAL_FINISHED,
     relevantFields,
     playersVotes
   );

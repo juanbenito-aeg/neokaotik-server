@@ -68,7 +68,7 @@ interface ServerToClientEvents {
     playerId: string,
     vote: VoteAngeloTrial
   ) => void;
-  [SocketServerToClientEvents.ANGELO_TRIAL_VALIDATED_OR_CANCELED]: (
+  [SocketServerToClientEvents.ANGELO_TRIAL_FINISHED]: (
     angeloUpdatedFields: Fields,
     playersVote?: Object
   ) => void;

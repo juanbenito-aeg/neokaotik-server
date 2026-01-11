@@ -28,7 +28,7 @@ async function handleAngeloTrialValidatedOrCanceled(isTrialValidated: boolean) {
   let relevantFields;
   let playersVotes;
 
-  const acolytesSocketIds = await getAcolytesSocketId();
+  const acolytesSocketIds = acolytes.map((acolyte) => acolyte.socketId);
 
   const nonAcolytesSocketIds = await getNonAcolytePlayersSocketId();
 

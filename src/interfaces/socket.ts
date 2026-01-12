@@ -68,6 +68,10 @@ interface ServerToClientEvents {
     playerId: string,
     vote: VoteAngeloTrial
   ) => void;
+  [SocketServerToClientEvents.ANGELO_TRIAL_FINISHED]: (
+    angeloUpdatedFields: Fields,
+    playersVote?: Object
+  ) => void;
 }
 
 // Declaration of the events used when receiving events from the client
@@ -124,6 +128,9 @@ interface ClientToServerEvents {
   [SocketClientToServerEvents.PLAYER_VOTED_ANGELO_TRIAL]: (
     playerId: string,
     vote: VoteAngeloTrial
+  ) => void;
+  [SocketClientToServerEvents.ANGELO_TRIAL_VALIDATED_OR_CANCELED]: (
+    isTrialValidated: boolean
   ) => void;
 }
 

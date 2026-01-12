@@ -26,7 +26,7 @@ async function handleMortimerAidedAcolyte(
 
     await playerServices.applyAttributeModifiers(updatedAcolyte);
 
-    updatedFields = updatedAcolyte.attributes;
+    updatedFields = { attributes: updatedAcolyte.attributes };
   } else if (aidType === AidType.ETHAZIUM) {
     const changeToApply = { isCursed: false };
 

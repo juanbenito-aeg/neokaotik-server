@@ -13,6 +13,7 @@ router.post(
 );
 router.post(
   "/access-logged-in",
+  jwtMiddleware.verifyJWT,
   authMiddleware.verifyIdToken,
   authControllers.accessLoggedIn
 );

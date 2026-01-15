@@ -24,7 +24,7 @@ import { handleAcolyteInfected } from "./handlers/missions/decay-flesh/acolyte-i
 import handleAcolyteCursed from "./handlers/missions/decay-flesh/acolyte-cursed";
 import handleMortimerAidedAcolyte from "./handlers/missions/decay-flesh/mortimer-aided-acolyte";
 import { AidType } from "../constants/general";
-import handleMortimerNotifiedForAngeloDeliver from "./handlers/missions/angelo-betrayer/mortimer-notified-for-Angelo's-deliver";
+import handleMortimerNotifiedForAngeloDeliver from "./handlers/missions/angelo-betrayer/mortimer-notified-for-angelo-deliver";
 import handleAngeloDelivered from "./handlers/missions/angelo-betrayer/angelo-delivered";
 import handleAngeloTrialBegan from "./handlers/missions/angelo-trial/angelo-trial-began";
 import { handlePlayerVotedAngeloTrial } from "./handlers/missions/angelo-trial/player-voted-angelo-trial";

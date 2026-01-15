@@ -1,4 +1,3 @@
-import "dotenv/config";
 import * as jwt from "jsonwebtoken";
 
 const generateAccessToken = (email: string) => {
@@ -15,4 +14,6 @@ const generateRefreshToken = (email: string) => {
   return result;
 };
 
-export { generateAccessToken, generateRefreshToken };
+const jwtServices = { generateAccessToken, generateRefreshToken };
+
+export { jwtServices };

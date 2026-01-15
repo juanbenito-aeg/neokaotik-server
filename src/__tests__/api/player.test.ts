@@ -2,6 +2,16 @@ import request from "supertest";
 import { app } from "../../config/server";
 import IPlayer from "../../interfaces/IPlayer";
 import { PlayerRole } from "../../constants/player";
+import { Request, Response, NextFunction } from "express";
+
+jest.mock("../../middleware/jwt.middleware", () => ({
+  jwtMiddleware: {
+    createJWT: jest.fn(),
+    verifyJWT: jest.fn((req: Request, res: Response, next: NextFunction) => {
+      next();
+    }),
+  },
+}));
 
 describe("GET /players/acolytes", () => {
   it("should return all players with the role 'acolyte'", async () => {

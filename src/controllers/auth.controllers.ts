@@ -5,6 +5,8 @@ import { Methods } from "../constants/general";
 const logIn = async (req: Request, res: Response) => {
   const playerEmail = res.locals.playerEmail;
   const fcmToken = res.locals.fcmToken;
+  const accessToken = res.locals.accessToken;
+  const refreshToken = res.locals.refreshToken;
 
   console.log(`Logging in with email: ${playerEmail}.`);
 
@@ -29,6 +31,8 @@ const logIn = async (req: Request, res: Response) => {
         status: "OK",
         message: "Player created successfully",
         user: player,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
       });
     } else {
       console.log("Player updated successfully.");
@@ -37,6 +41,8 @@ const logIn = async (req: Request, res: Response) => {
         status: "OK",
         message: "Player updated successfully",
         user: player,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
       });
     }
   } catch (error) {

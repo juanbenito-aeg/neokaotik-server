@@ -6,10 +6,6 @@ import {
 import { PlayerRole } from "../../../../constants/player";
 import { SocketServerToClientEvents } from "../../../../constants/socket";
 import playerDb from "../../../../db/player.db";
-import {
-  getAcolytesSocketId,
-  getNonAcolytePlayersSocketId,
-} from "../../../../helpers/socket.helpers";
 
 async function handleAngeloTrialValidatedOrCanceled(isTrialValidated: boolean) {
   const angelo = (await playerDb.getPlayerByField({ rol: PlayerRole.ANGELO }))!;
@@ -27,12 +23,6 @@ async function handleAngeloTrialValidatedOrCanceled(isTrialValidated: boolean) {
 
   let relevantFields;
   let playersVotes;
-
-  const acolytesSocketIds = acolytes.map((acolyte) => acolyte.socketId);
-
-  const nonAcolytesSocketIds = await getNonAcolytePlayersSocketId();
-
-  const relevantSocketIds = [...acolytesSocketIds, ...nonAcolytesSocketIds];
 
   if (!isTrialValidated) {
     const updatedAngelo = (await playerDb.updatePlayerByField(
@@ -123,7 +113,7 @@ async function handleAngeloTrialValidatedOrCanceled(isTrialValidated: boolean) {
     { voteAngeloTrial: "" }
   );
 
-  io.to(relevantSocketIds).emit(
+  io.emit(
     SocketServerToClientEvents.ANGELO_TRIAL_FINISHED,
     relevantFields,
     playersVotes

@@ -33,7 +33,7 @@ const updatePlayer = async (playerEmail: string, changes: Fields) => {
 
     const updatedPlayer = await playerDb.updatePlayerByField(
       { email: playerEmail },
-      changes
+      changes,
     );
     return updatedPlayer;
   } catch (error) {
@@ -57,7 +57,7 @@ const getNonAcolytePlayers = async () => {
 
 const getNewAndOutOfSyncWithKaotikaFields = (
   fcmToken: string,
-  player: IPlayer
+  player: IPlayer,
 ) => {
   const newAndOutOfSyncWithKaotikaFields = {
     active: true,
@@ -66,9 +66,6 @@ const getNewAndOutOfSyncWithKaotikaFields = (
 
   if (player.rol === PlayerRole.ACOLYTE) {
     Object.assign(newAndOutOfSyncWithKaotikaFields, {
-      isBetrayer: player.isBetrayer,
-      gold: player.gold,
-      inventory: player.inventory,
       attributes: player.attributes,
       voteAngeloTrial: player.voteAngeloTrial,
     });
@@ -138,7 +135,7 @@ function roundDownAttributes(player: IPlayer) {
 
   for (const attribute in player.attributes) {
     player.attributes[attribute as Attribute] = Math.floor(
-      player.attributes[attribute as Attribute]!
+      player.attributes[attribute as Attribute]!,
     );
   }
 }

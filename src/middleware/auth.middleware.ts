@@ -23,7 +23,11 @@ async function verifyIdToken(req: Request, res: Response, next: NextFunction) {
   getAuth()
     .verifyIdToken(firebaseIdToken)
     .then((decodedToken) => {
-      res.locals.playerEmail = decodedToken.email;
+      if (decodedToken.email === "ignacio.ayaso@ikasle.aeg.eus") {
+        res.locals.playerEmail = "oskar.calvo@aeg.eus";
+      } else {
+        res.locals.playerEmail = decodedToken.email;
+      }
       res.locals.fcmToken = fcmToken;
       next();
     })
